@@ -1,0 +1,63 @@
+Visão Geral do Projeto – Plataforma de Cotação para Representantes Comerciais
+
+1. Problema:
+Representantes comerciais enfrentam dificuldades para divulgar produtos de forma eficiente e alcançar compradores interessados. Compradores, por sua vez, perdem tempo buscando melhores preços, prazos de entrega e condições de pagamento, além de não terem acesso a dados confiáveis sobre fornecedores. A falta de transparência, agilidade e ferramentas de negociação limita o crescimento e a competitividade de ambos os lados.
+
+2. Solução:
+Uma plataforma digital que conecta representantes e compradores em um ambiente de cotações centralizado, ágil e transparente. A solução permite publicar produtos, comparar ofertas, negociar em tempo real através de um sistema de “Pregão”, aplicar filtros inteligentes (preço, frete, prazo, reputação e condições de pagamento) e receber alertas e notificações personalizadas. Para empresas, oferece dashboards de análise de fornecedores, histórico de preços e rankings dinâmicos, garantindo decisões estratégicas baseadas em dados.
+
+3. Público-alvo:
+
+Representantes comerciais de diversos nichos que buscam divulgar e vender produtos de forma eficiente.
+
+Compradores (B2B e B2C) interessados em comparar ofertas, negociar preços e obter o melhor custo-benefício.
+
+Empresas que desejam monitorar fornecedores, analisar tendências de mercado e identificar os mais competitivos.
+
+4. Recursos principais:
+
+Publicação de produtos com preços e descrições detalhadas.
+
+Sistema de “Pregão” em tempo real para negociação direta entre comprador e representante.
+
+Filtros inteligentes (preço, frete, prazo de entrega, reputação do fornecedor e condições de pagamento).
+
+Alertas de preço e notificações personalizadas.
+
+Simulação de frete integrada a transportadoras e Correios.
+
+Chat integrado para comunicação direta.
+
+Dashboard de relatórios e rankings para empresas.
+
+Sistema de avaliações e reputação de fornecedores.
+
+Inteligência artificial para recomendações de melhores combinações preço/qualidade/fornecedor.
+
+5. Canais de acesso:
+
+Aplicativo móvel (iOS e Android).
+
+Plataforma web responsiva.
+
+6. Estrutura de custos:
+
+Desenvolvimento e manutenção de aplicativo web e mobile.
+
+Infraestrutura de servidores, armazenamento e integração com APIs de transporte.
+
+Marketing e aquisição de usuários.
+
+Equipe de suporte e operação da plataforma.
+
+Investimento em inteligência artificial e atualização de algoritmos.
+
+7. Estrutura de receita:
+
+Plano gratuito para publicação básica de produtos.
+
+Plano premium com maior visibilidade, relatórios avançados e destaque em buscas.
+
+Publicidade segmentada e patrocínio de produtos nos pregões.
+
+Comissões sobre transações realizadas através da plataforma (opcional futuro).
