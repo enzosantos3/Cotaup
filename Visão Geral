@@ -1,63 +1,6 @@
-Visão Geral do Projeto – Plataforma de Cotação para Representantes Comerciais
-
-1. Problema:
-Representantes comerciais enfrentam dificuldades para divulgar produtos de forma eficiente e alcançar compradores interessados. Compradores, por sua vez, perdem tempo buscando melhores preços, prazos de entrega e condições de pagamento, além de não terem acesso a dados confiáveis sobre fornecedores. A falta de transparência, agilidade e ferramentas de negociação limita o crescimento e a competitividade de ambos os lados.
-
-2. Solução:
-Uma plataforma digital que conecta representantes e compradores em um ambiente de cotações centralizado, ágil e transparente. A solução permite publicar produtos, comparar ofertas, negociar em tempo real através de um sistema de “Pregão”, aplicar filtros inteligentes (preço, frete, prazo, reputação e condições de pagamento) e receber alertas e notificações personalizadas. Para empresas, oferece dashboards de análise de fornecedores, histórico de preços e rankings dinâmicos, garantindo decisões estratégicas baseadas em dados.
-
-3. Público-alvo:
-
-Representantes comerciais de diversos nichos que buscam divulgar e vender produtos de forma eficiente.
-
-Compradores (B2B e B2C) interessados em comparar ofertas, negociar preços e obter o melhor custo-benefício.
-
-Empresas que desejam monitorar fornecedores, analisar tendências de mercado e identificar os mais competitivos.
-
-4. Recursos principais:
-
-Publicação de produtos com preços e descrições detalhadas.
-
-Sistema de “Pregão” em tempo real para negociação direta entre comprador e representante.
-
-Filtros inteligentes (preço, frete, prazo de entrega, reputação do fornecedor e condições de pagamento).
-
-Alertas de preço e notificações personalizadas.
-
-Simulação de frete integrada a transportadoras e Correios.
-
-Chat integrado para comunicação direta.
-
-Dashboard de relatórios e rankings para empresas.
-
-Sistema de avaliações e reputação de fornecedores.
-
-Inteligência artificial para recomendações de melhores combinações preço/qualidade/fornecedor.
-
-5. Canais de acesso:
-
-Aplicativo móvel (iOS e Android).
-
-Plataforma web responsiva.
-
-6. Estrutura de custos:
-
-Desenvolvimento e manutenção de aplicativo web e mobile.
-
-Infraestrutura de servidores, armazenamento e integração com APIs de transporte.
-
-Marketing e aquisição de usuários.
-
-Equipe de suporte e operação da plataforma.
-
-Investimento em inteligência artificial e atualização de algoritmos.
-
-7. Estrutura de receita:
-
-Plano gratuito para publicação básica de produtos.
-
-Plano premium com maior visibilidade, relatórios avançados e destaque em buscas.
-
-Publicidade segmentada e patrocínio de produtos nos pregões.
-
-Comissões sobre transações realizadas através da plataforma (opcional futuro).
+Visão Geral do Projeto
+Representantes comerciais enfrentam dificuldades para divulgar produtos de forma eficiente e alcançar compradores interessados. Do outro lado, compradores perdem tempo buscando melhores preços, prazos de entrega e condições de pagamento, além de não disporem de dados confiáveis sobre fornecedores. A falta de transparência, agilidade e ferramentas de negociação limita o crescimento e a competitividade de ambos os lados.
+Para solucionar esse problema, propõe-se o desenvolvimento de uma plataforma digital que conecta representantes e compradores em um ambiente de cotações centralizado, ágil e transparente. Essa solução possibilita a publicação de produtos, a comparação de ofertas, a negociação em tempo real por meio de um sistema de “Pregão”, a aplicação de filtros inteligentes como preço, frete, prazo, reputação e condições de pagamento, além do recebimento de alertas e notificações personalizadas. As empresas também poderão acessar dashboards de análise de fornecedores, histórico de preços e rankings dinâmicos, garantindo decisões estratégicas baseadas em dados.
+O público-alvo contempla representantes comerciais de diferentes nichos que buscam ampliar a divulgação e as vendas de seus produtos, compradores B2B e B2C interessados em comparar ofertas e negociar preços em busca do melhor custo-benefício, além de empresas que desejam monitorar fornecedores, analisar tendências de mercado e identificar os mais competitivos.
+A plataforma oferecerá funcionalidades como publicação de produtos com preços e descrições detalhadas, negociação em tempo real, filtros inteligentes, alertas de preços, simulação de frete integrada a transportadoras e Correios, chat direto entre representantes e compradores, relatórios e rankings, sistema de reputação e recomendações de fornecedores baseadas em inteligência artificial.
+O acesso será realizado por aplicativo móvel, disponível para iOS e Android, e por versão web responsiva. Sua estrutura de custos incluirá desenvolvimento e manutenção do aplicativo e da plataforma web, infraestrutura de servidores, integrações com APIs de transporte, marketing, aquisição de usuários, equipe de suporte e operação, além de investimento em inteligência artificial. O modelo de receita prevê um plano gratuito para publicação básica de produtos, um plano premium com relatórios avançados e maior visibilidade, publicidade segmentada, patrocínio de produtos nos pregões e, futuramente, a possibilidade de cobrança de comissão sobre transações realizadas pela plataforma.
