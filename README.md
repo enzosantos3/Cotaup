@@ -1,4 +1,4 @@
-# 🌐 Cotação
+# 🌐 CotaUp
 
 ## Problema
 Representantes comerciais têm dificuldade em divulgar produtos e alcançar compradores. Compradores perdem tempo buscando melhores preços, prazos e condições de pagamento, sem acesso a dados confiáveis sobre fornecedores. A falta de transparência e agilidade limita a competitividade de ambos os lados.
