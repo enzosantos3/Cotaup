@@ -26,4 +26,19 @@ public class FornecedorService {
         repository.deleteById(id);
     }
 
+    public FornecedorModel atualizarFornecedor(Long id, FornecedorModel fornecedorAtualizado){
+        FornecedorModel fornecedorExistente = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Fornecedor nao foi encontrado com o id: " + id));
+        fornecedorExistente.setCnpj(fornecedorAtualizado.getCnpj());
+        fornecedorExistente.setEmail(fornecedorAtualizado.getEmail());
+        fornecedorExistente.setEndereco(fornecedorAtualizado.getEndereco());
+        fornecedorExistente.setNomeFantasia(fornecedorAtualizado.getNomeFantasia());
+        fornecedorExistente.setRazaoSocial(fornecedorAtualizado.getRazaoSocial());
+        fornecedorExistente.setTelefone(fornecedorAtualizado.getTelefone());
+        fornecedorExistente.setRepresentante(fornecedorAtualizado.getRepresentante());
+        fornecedorExistente.setInscricaoEstadual(fornecedorAtualizado.getInscricaoEstadual());
+
+        return repository.save(fornecedorExistente);
+    }
+
 }
