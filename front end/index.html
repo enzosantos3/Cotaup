@@ -1,67 +1,112 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CotaUp - Login</title>
-  <!-- Importa o CSS -->
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CotaUp - Fornecedores</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-  <!-- LOGIN -->
-  <div id="login" class="container" style="display:block;">
-    <div class="logo">
-      <img src="images/CotaUp2.png" alt="CotaUp Logo">
-    </div>
-    <form id="loginForm">
-      <input type="text" id="loginUser" placeholder="E-mail ou CNPJ" required>
-      <input type="password" id="loginPass" placeholder="Senha" required>
-      <button type="submit">Entrar</button>
-    </form>
-    <div class="links">
-      <a href="#">Esqueci minha senha?</a><br>
-      <a onclick="showScreen('cadastro')">Criar nova conta</a>
-    </div>
+  <!-- BG decor -->
+  <div class="bg-wrap">
+    <div class="bg-blob b1"></div>
+    <div class="bg-blob b2"></div>
   </div>
 
-  <!-- CADASTRO -->
-  <div id="cadastro" class="container">
-    <h2>Cadastro de Fornecedor</h2>
-    <form id="cadastroForm">
-      <input type="text" placeholder="Nome Fantasia" required>
-      <input type="text" placeholder="Razão Social" required>
-      <input type="text" placeholder="CNPJ" required>
-      <input type="text" placeholder="Telefone" required>
-      <input type="text" placeholder="Nome do Contato" required>
-      <input type="text" placeholder="Endereço" required>
-      <input type="text" placeholder="CEP" required>
-      <select required>
-        <option value="">Selecione o Tipo de Fornecedor</option>
-        <option value="distribuidor">Distribuidor</option>
-        <option value="fabricante">Fabricante</option>
-      </select>
-      <input type="email" placeholder="E-mail de Acesso" required>
-      <input type="password" placeholder="Senha" required>
-      <button type="submit">Cadastrar</button>
-    </form>
-    <div class="links">
-      <a onclick="showScreen('login')">Voltar ao Login</a>
+  <!-- TOASTS -->
+  <div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- MODAL CONFIRMAÇÃO -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal__card">
+      <div class="modal__icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 9v4M12 17h.01"/>
+          <circle cx="12" cy="12" r="9"/>
+        </svg>
+      </div>
+      <h3 class="modal__title">Confirmar exclusão</h3>
+      <p class="modal__desc">Essa ação não pode ser desfeita. Deseja realmente excluir?</p>
+      <div class="modal__actions">
+        <button class="btn btn-light" id="modalCancel">Cancelar</button>
+        <button class="btn btn-danger" id="modalConfirm">Excluir</button>
+      </div>
     </div>
   </div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboard" class="container dashboard">
-    <h2>Bem-vindo à CotaUp 🚀</h2>
-    <p>Você está logado como <span id="userName"></span></p>
-    <p><strong>CNPJ:</strong> <span id="userCnpj"></span></p>
-    <p><strong>Endereço:</strong> <span id="userEndereco"></span></p>
-    <p><strong>Telefone:</strong> <span id="userTelefone"></span></p>
-    <p><strong>Representante:</strong> <span id="userRepresentante"></span></p>
-    <button onclick="showScreen('login')">Sair</button>
+  <!-- CRUD FORNECEDORES (única tela) -->
+  <div id="fornecedores" class="container" style="display:block;">
+    <header class="topbar card">
+      <div class="topbar__brand">
+        <img src="images/CotaUp2.png" alt="logo">
+        <span>Fornecedores</span>
+      </div>
+      <div class="topbar__actions">
+        <button class="btn btn-danger" id="btnClearAll">Limpar tudo</button>
+      </div>
+    </header>
+
+    <section class="content">
+      <!-- Formulário (Create/Update) -->
+      <div class="card">
+        <form id="fornecedorForm" class="grid">
+          <input type="hidden" id="fornId">
+
+          <input type="text" id="nomeFantasia" placeholder="Nome Fantasia" required>
+          <input type="text" id="razaoSocial" placeholder="Razão Social" required>
+
+          <input type="text" id="cnpj" placeholder="CNPJ" required>
+          <input type="number" id="inscricaoEstadual" placeholder="Inscrição Estadual" required>
+
+          <input type="text" id="representante" placeholder="Representante" required>
+          <input type="text" id="telefone" placeholder="Telefone" required>
+
+          <input type="email" id="email" placeholder="E-mail" required>
+          <input type="text" id="endereco" placeholder="Endereço" required>
+
+          <div class="form-row">
+            <button type="submit" id="btnSalvar" class="btn btn-primary">Cadastrar</button>
+            <button type="button" id="btnCancelar" class="btn btn-light" style="display:none;">Cancelar edição</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Barra de busca -->
+      <div class="card search-card">
+        <input type="text" id="busca" placeholder="Buscar por Nome Fantasia, CNPJ, Representante..." class="search-input">
+      </div>
+
+      <!-- Tabela -->
+      <div class="card table-card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome Fantasia</th>
+                <th>Razão Social</th>
+                <th>CNPJ</th>
+                <th>Inscrição Estadual</th>
+                <th>Representante</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th>Endereço</th>
+                <th class="th-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="listaFornecedores"></tbody>
+          </table>
+          <div id="emptyState" class="empty-state" style="display:none;">
+            <div class="empty-illustration">📦</div>
+            <h4>Nenhum fornecedor cadastrado</h4>
+            <p>Preencha o formulário acima e clique em <b>Cadastrar</b>.</p>
+          </div>
+        </div>
+        <div class="pagination" id="paginacao"></div>
+      </div>
+    </section>
   </div>
 
-  <!-- Importa o JS -->
   <script src="script.js"></script>
 </body>
 </html>
