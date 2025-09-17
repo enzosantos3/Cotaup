@@ -28,8 +28,9 @@ public class FornecedorController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletarFornecedor(@PathVariable Long id){
+    public ResponseEntity<String> deletarFornecedor(@PathVariable Long id){
         service.deletarFornecedor(id);
+        return ResponseEntity.ok("Fornecedor deletado com sucesso!");
     }
 
 }
