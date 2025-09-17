@@ -141,7 +141,6 @@ async function createFornecedor(data) {
   const payload = {...data};
   // não enviamos id ao criar
   delete payload.id;
-  await carregarFornecedores();
   return await request(`${API_BASE}`, {
     method: 'POST',
     body: JSON.stringify(payload)
@@ -199,6 +198,9 @@ async function updateFornecedor(id, campos) {
   }
 }
 
+
+
+
 async function deleteFornecedor(id) {
   try {
     console.log("Deletando fornecedor com ID:", id);
@@ -227,9 +229,7 @@ async function deleteFornecedor(id) {
 // ---------- RENDERIZAÇÃO ----------
 function renderLista(lista) {
   if (!tbody) return;
-
   tbody.innerHTML = '';
-
   if (!lista || lista.length === 0) {
     if (emptyState) emptyState.style.display = 'block';
     return;
@@ -240,14 +240,10 @@ function renderLista(lista) {
   lista.forEach(f => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
+      <td>${f.id ?? ''}</td>
       <td>${f.nomeFantasia ?? ''}</td>
       <td>${f.razaoSocial ?? ''}</td>
       <td>${f.cnpj ?? ''}</td>
-      <td>${f.inscricaoEstadual ?? ''}</td>
-      <td>${f.representante ?? ''}</td>
-      <td>${f.telefone ?? ''}</td>
-      <td>${f.email ?? ''}</td>
-      <td>${f.endereco ?? ''}</td>
       <td>
         <button data-id="${f.id}" class="btn-edit">Editar</button>
         <button data-id="${f.id}" class="btn-del">Excluir</button>
@@ -256,17 +252,6 @@ function renderLista(lista) {
     tbody.appendChild(tr);
   });
 
-  // Delegação de eventos para os botões
-  tbody.addEventListener('click', function(e) {
-    if (e.target.classList.contains('btn-edit')) {
-      const id = e.target.dataset.id;
-      editarFornecedor(id);
-    } else if (e.target.classList.contains('btn-del')) {
-      const id = e.target.dataset.id;
-      deleteFornecedor(id);
-    }
-  });
-}
   // delegação de eventos
   tbody.querySelectorAll('.btn-edit').forEach(btn => {
     btn.addEventListener('click', async (e) => {
@@ -295,7 +280,7 @@ function renderLista(lista) {
       }
     });
   });
-
+}
 
 // ---------- CARREGAR LISTA ----------
 async function carregarLista() {
@@ -357,58 +342,9 @@ btnClearAll?.addEventListener("click", async ()=>{
   }
 });
 
-// ---------- FUNÇÃO PARA PREENCHER A TABELA (FALTANDO) ----------
-function preencherFornecedorNaTabela(fornecedor) {
-    return `
-        <td>${fornecedor.nomeFantasia || ''}</td>
-        <td>${fornecedor.razaoSocial || ''}</td>
-        <td>${fornecedor.cnpj || ''}</td>
-        <td>${fornecedor.inscricaoEstadual || ''}</td>
-        <td>${fornecedor.representante || ''}</td>
-        <td>${fornecedor.telefone || ''}</td>
-        <td>${fornecedor.email || ''}</td>
-        <td>${fornecedor.endereco || ''}</td>
-        <td class="td-actions">
-            <button class="btn-action edit" onclick="editarFornecedor(${fornecedor.id})">Editar</button>
-            <button class="btn-action delete" onclick="excluirFornecedor(${fornecedor.id})">Excluir</button>
-        </td>
-    `;
-}
-
-// ---------- FUNÇÃO PARA RENDERIZAR TODOS OS FORNECEDORES ----------
-function renderizarFornecedores(fornecedores) {
-    const tbody = document.getElementById('listaFornecedores');
-    const emptyState = document.getElementById('emptyState');
-    
-    if (!fornecedores || fornecedores.length === 0) {
-        tbody.innerHTML = '';
-        emptyState.style.display = 'flex';
-        return;
-    }
-    
-    emptyState.style.display = 'none';
-    tbody.innerHTML = fornecedores.map(fornecedor => `
-        <tr>
-            ${preencherFornecedorNaTabela(fornecedor)}
-        </tr>
-    `).join('');
-}
-
-// ---------- ATUALIZAR: função que busca e exibe os fornecedores ----------
-async function carregarFornecedores() {
-    try {
-        const fornecedores = await fetchFornecedores();
-        renderizarFornecedores(fornecedores);
-    } catch (error) {
-        console.error('Erro ao carregar fornecedores:', error);
-        showToast('Erro ao carregar fornecedores', 'error');
-    }
-}
-
 // ---------- INICIALIZAÇÃO ----------
 window.addEventListener('DOMContentLoaded', async ()=>{
   // aviso rápido: execute o frontend através de um servidor (Live Server, npx serve, etc.)
   console.log("Inicializando CRUD (API):", API_BASE);
-  carregarFornecedores();
   await carregarLista();
 });
