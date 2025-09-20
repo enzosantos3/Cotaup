@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/fornecedor")
@@ -29,7 +31,7 @@ public class FornecedorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletarFornecedor(@PathVariable Long id){
+    public ResponseEntity<String> deletarFornecedor(@PathVariable("id") Long id){
         service.deletarFornecedor(id);
         return ResponseEntity.ok("Fornecedor deletado com sucesso!");
     }
