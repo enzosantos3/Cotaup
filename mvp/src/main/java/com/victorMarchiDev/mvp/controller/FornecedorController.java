@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
@@ -38,11 +39,21 @@ public class FornecedorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<FornecedorModel> atualizarFornecedor(
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @RequestBody FornecedorModel fornecedorAtualizado){
 
         FornecedorModel fornecedorAtualizadoSalvo = service.atualizarFornecedor(id, fornecedorAtualizado);
         return ResponseEntity.ok(fornecedorAtualizadoSalvo);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FornecedorModel> getFornecedorById(@PathVariable("id") Long id) {
+        Optional<FornecedorModel> fornecedorEncontrado = service.getFornecedorById(id);
+
+        return fornecedorEncontrado
+                .map(ResponseEntity::ok)                     // se existir, retorna 200 + body
+                .orElseGet(() -> ResponseEntity.notFound().build()); // se não existir, retorna 404
+    }
+
 
 }
