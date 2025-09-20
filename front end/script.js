@@ -149,6 +149,7 @@ function renderLista(lista) {
     const tr = document.createElement('tr');
     tr.dataset.id = f.id;
     tr.innerHTML = `
+      <td>${f.id ?? ''}</td>
       <td>${f.nomeFantasia ?? ''}</td>
       <td>${f.razaoSocial ?? ''}</td>
       <td>${f.cnpj ?? ''}</td>
