@@ -118,9 +118,25 @@ async function createFornecedor(data) {
   const payload = {...data}; delete payload.id;
   return await request(`${API_BASE}`, { method: 'POST', body: JSON.stringify(payload) });
 }
+
 async function updateFornecedor(id, data) {
-  return await request(`${API_BASE}/${normalizeIdOrThrow(id)}`, { method: 'PUT', body: JSON.stringify(data) });
+  // Garante que o ID é um número válido
+  const idNum = Number(id);
+  if (!idNum || isNaN(idNum)) {
+    throw new Error(`ID inválido: ${id}`);
+  }
+
+  // Remove o ID do payload se existir (backend geralmente ignora o ID do body)
+  const payload = { ...data };
+  delete payload.id;
+
+  // Faz a requisição PUT
+  return await request(`${API_BASE}/${idNum}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload)
+  });
 }
+
 async function deleteFornecedor(id) {
   const normalized = normalizeIdOrThrow(id);
   const url = `${API_BASE}/${normalized}`;

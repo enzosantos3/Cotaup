@@ -5,6 +5,7 @@ import com.victorMarchiDev.mvp.repository.FornecedorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FornecedorService {
@@ -39,6 +40,10 @@ public class FornecedorService {
         fornecedorExistente.setInscricaoEstadual(fornecedorAtualizado.getInscricaoEstadual());
 
         return repository.save(fornecedorExistente);
+    }
+
+    public Optional<FornecedorModel> getFornecedorById(Long id){
+        return repository.findById(id);
     }
 
 }
