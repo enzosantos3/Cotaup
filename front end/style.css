@@ -82,6 +82,13 @@ input:focus, select:focus{ border-color:#94A3B8; box-shadow:0 0 0 4px rgba(25,11
 .search-card{ padding: 12px; margin-top: 10px; }
 .search-input{ height:52px; }
 
+/* Remove as setas no Chrome, Safari, Edge e Opera */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .table-card{ margin-top: 12px; padding: 10px; }
 .table-wrap{ width:100%; overflow:auto; border-radius:12px; }
 table{ width:100%; border-collapse:collapse; font-size:14px; }
