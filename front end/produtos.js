@@ -60,7 +60,8 @@ function getFormData(){
     categoria: document.getElementById("categoria").value.trim(),
     marca: document.getElementById("marca").value.trim(),
     unidade: document.getElementById("unidade").value.trim(),
-    quantidade: document.getElementById("quantidade").value.trim()
+    quantidade: document.getElementById("quantidade").value.trim(),
+    codigoEAN: document.getElementById("codigoEAN").value.trim()
   };
 }
 
@@ -71,6 +72,7 @@ function setFormData(p){
   document.getElementById("marca").value = p.marca ?? "";
   document.getElementById("unidade").value = p.unidade ?? "caixa";
   document.getElementById("quantidade").value = p.quantidade ?? "";
+  document.getElementById("codigoEAN").value = p.codigoEAN ?? "";
 }
 
 function limparFormulario(){
@@ -156,6 +158,7 @@ function renderLista(lista) {
       <td>${p.marca ?? ''}</td>
       <td>${p.unidade ?? ''}</td>
       <td>${p.quantidade ?? ''}</td>
+      <td>${p.codigoEAN ?? ''}</td>
       <td>
         <button data-id="${p.id}" class="btn-edit">Editar</button>
         <button data-id="${p.id}" class="btn-del">Excluir</button>

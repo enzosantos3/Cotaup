@@ -38,6 +38,7 @@ public class ProdutoService {
         produtoExistente.setMarca(produtoAtualizado.getMarca());
         produtoExistente.setQuantidade(produtoAtualizado.getQuantidade());
         produtoExistente.setUnidade(produtoAtualizado.getUnidade());
+        produtoExistente.setCodigoEAN(produtoAtualizado.getCodigoEAN());
         return repository.save(produtoExistente);
     }
 

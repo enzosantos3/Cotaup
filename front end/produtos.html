@@ -65,12 +65,15 @@
             <option value="Unidade">Unidade</option>
             <option value="Pacote">Pacote</option>
             <option value="Display">Display</option>
-            <option value="Duzia">Dúzia</option>
             <option value="Cartela">Cartela</option>
+            <option value="Cartela">Litros</option>
+            <option value="Cartela">Metros</option>
+            <option value="Cartela">Palete</option>
           </select>
 
-          <input type="text" id="quantidade" placeholder="Quantidade" required>
-          <input type="number" id="codigoBarras" placeholder="EAN - 13" required>
+          <input type="number" id="quantidade" placeholder="Quantidade" required>
+
+          <input type="number" id="codigoEAN" placeholder="Código EAN" required>
 
           <div class="form-row">
             <button type="submit" id="btnSalvar" class="btn btn-primary">Cadastrar</button>
@@ -82,7 +85,7 @@
 
       <!-- Barra de busca -->
       <div class="card search-card">
-        <input type="text" id="busca" placeholder="Buscar por Nome, Marca, Categoria..." class="search-input">
+        <input type="text" id="busca" placeholder="Buscar por Nome, Marca, Categoria, Código EAN..." class="search-input">
       </div>
 
       <!-- Tabela -->
@@ -97,6 +100,7 @@
                 <th>Marca</th>
                 <th>Unidade</th>
                 <th>Quantidade</th>
+                <th>Código EAN</th>
                 <th class="th-actions">Ações</th>
               </tr>
             </thead>
