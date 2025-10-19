@@ -117,12 +117,25 @@ async function updateProduto(id, data) {
   const payload = {...data}; delete payload.id;
   return await request(`${API_BASE}/${idNum}`, { method: 'PUT', body: JSON.stringify(payload) });
 }
+
 async function deleteProduto(id) {
   const normalized = normalizeIdOrThrow(id);
   const url = `${API_BASE}/${normalized}`;
-  const res = await fetch(url, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } });
-  if (!res.ok) throw new Error(await res.text() || "Erro ao deletar produto");
+  console.log("Tentando deletar produto em:", url);
+
+  const res = await fetch(url, { 
+    method: 'DELETE', 
+    headers: { 'Content-Type': 'application/json' } 
+  });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(errText || `Erro ao deletar produto`);
+  }
+
+  console.log("Produto deletado com sucesso:", normalized);
 }
+
 
 // ---------- RENDERIZAÇÃO ----------
 function renderLista(lista) {

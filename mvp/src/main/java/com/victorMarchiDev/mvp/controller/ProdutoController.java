@@ -40,8 +40,8 @@ public class ProdutoController {
         return ResponseEntity.ok(produtoAtualizadoSalvo);
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> deletarProduto(Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletarProduto(@PathVariable("id") Long id){
         produtoService.deletarProduto(id);
         return ResponseEntity.ok().body("Produto deletado com sucesso");
     }
