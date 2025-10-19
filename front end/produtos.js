@@ -160,11 +160,20 @@ function renderLista(lista) {
       <td>${p.quantidade ?? ''}</td>
       <td>${p.codigoEAN ?? ''}</td>
       <td>
-        <button data-id="${p.id}" class="btn-edit">Editar</button>
-        <button data-id="${p.id}" class="btn-del">Excluir</button>
+      <i class="bi bi-pencil text-primary me-4 btn-edit" style="cursor:pointer;" data-id="${p.id}"></i>
+      <i class="bi bi-trash text-danger btn-del" style="cursor:pointer;" data-id="${p.id}"></i>
       </td>
     `;
     tbody.appendChild(tr);
+
+    // Adiciona os event listeners após criar os ícones
+    tr.querySelector('.bi-pencil').addEventListener('click', () => {
+        editar(p.id);
+    });
+
+    tr.querySelector('.bi-trash').addEventListener('click', () => {
+        excluir(p.id);
+    });
   });
 }
 
