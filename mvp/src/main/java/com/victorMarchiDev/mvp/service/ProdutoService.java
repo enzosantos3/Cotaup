@@ -41,8 +41,9 @@ public class ProdutoService {
         return repository.save(produtoExistente);
     }
 
-    public Optional<ProdutoModel> deletarProduto(Long id){
-        return repository.findById(id);
+    public Optional<String> deletarProduto(Long id){
+        repository.deleteById(id);
+        return Optional.ofNullable("Produto deletado com sucesso!");
     }
 
 }
