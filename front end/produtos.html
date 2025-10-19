@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CotaUp - Produtos</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- BG decor -->
+  <div class="bg-wrap">
+    <div class="bg-blob b1"></div>
+    <div class="bg-blob b2"></div>
+  </div>
+
+  <!-- TOASTS -->
+  <div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- MODAL CONFIRMAÇÃO -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal__card">
+      <div class="modal__icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 9v4M12 17h.01"/>
+          <circle cx="12" cy="12" r="9"/>
+        </svg>
+      </div>
+      <h3 class="modal__title">Confirmar exclusão</h3>
+      <p class="modal__desc">Essa ação não pode ser desfeita. Deseja realmente excluir?</p>
+      <div class="modal__actions">
+        <button class="btn btn-light" id="modalCancel">Cancelar</button>
+        <button class="btn btn-danger" id="modalConfirm">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRUD FORNECEDORES (única tela) -->
+  <div id="fornecedores" class="container" style="display:block;">
+    <header class="topbar card">
+      <div class="topbar__brand">
+        <img src="images/CotaUp2.png" alt="logo">
+        <span>Produtos</span>
+      </div>
+      <div class="topbar__actions">
+        <button class="btn btn-danger" id="btnClearAll">Limpar tudo</button>
+      </div>
+    </header>
+
+    <section class="content">
+      <!-- Formulário (Create/Update) -->
+      <div class="card">
+        <form id="fornecedorForm" class="grid">
+          <input type="hidden" id="fornId">
+
+          <input type="text" id="nome" placeholder="Nome" required>
+          <input type="text" id="categoria" placeholder="Categoria" required>
+
+          <input type="text" id="marca" placeholder="Marca" required>
+
+          <select name="Unidade" id="unidade" aria-placeholder="Unidade" required>
+            <option value="caixa">Caixa</option>
+            <option value="fardo">Fardo</option>
+            <option value="kg">KG</option>
+            <option value="unidade">Unidade</option>
+            <option value="pacote">Pacote</option>
+            <option value="display">Display</option>
+            <option value="duzia">Dúzia</option>
+            <option value="cartela">Cartela</option>
+          </select>
+
+          <input type="text" id="quantidade" placeholder="Quantidade" required>
+          <!--<input type="number" id="unidade" placeholder="Unidade" required>-->
+
+          <div class="form-row">
+            <button type="submit" id="btnSalvar" class="btn btn-primary">Cadastrar</button>
+            <button type="button" id="btnCancelar" class="btn btn-light" style="display:none;">Cancelar edição</button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Barra de busca -->
+      <div class="card search-card">
+        <input type="text" id="busca" placeholder="Buscar por Nome, Marca, Categoria..." class="search-input">
+      </div>
+
+      <!-- Tabela -->
+      <div class="card table-card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Marca</th>
+                <th>Unidade</th>
+                <th>Quantidade</th>
+                <th class="th-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="listaFornecedores"></tbody>
+          </table>
+          <div id="emptyState" class="empty-state" style="display:none;">
+            <div class="empty-illustration">📦</div>
+            <h4>Nenhum produto cadastrado</h4>
+            <p>Preencha o formulário acima e clique em <b>Cadastrar</b>.</p>
+          </div>
+        </div>
+        <div class="pagination" id="paginacao"></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="produtos.js"></script>
+</body>
+</html>
