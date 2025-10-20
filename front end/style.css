@@ -67,8 +67,9 @@ input::placeholder{ color:#9CA3AF; }
 input:focus, select:focus{ border-color:#94A3B8; box-shadow:0 0 0 4px rgba(25,118,210,.10); }
 
 /* ========== Topbar ========== */
-.topbar{ display:flex; align-items:center; justify-content:space-between; padding:10px 14px; margin-top:18px; }
-.topbar__brand{ display:flex; align-items:center; gap:10px; font-weight:800; color: var(--dark); }
+.topbar{ display:flex; align-items:center; justify-content:space-between; padding:10px 14px; margin-top:18px; width: 100%;
+  max-width: 1120px;}
+.topbar__brand{ display:flex; align-items:center; gap:900px; font-weight:800; color: var(--dark); }
 .topbar__brand img{ width:36px; height:auto; }
 .topbar__actions{ display:flex; gap:10px; }
 
