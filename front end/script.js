@@ -137,6 +137,17 @@ async function updateFornecedor(id, data) {
   });
 }
 
+const menuItems = document.querySelectorAll('.sidebar .menu-item');
+
+menuItems.forEach(item => {
+  const link = item.querySelector('a');
+  if(link && link.getAttribute('href') === window.location.pathname.split('/').pop()) {
+    item.classList.add('active');
+  }
+});
+
+
+
 async function deleteFornecedor(id) {
   const normalized = normalizeIdOrThrow(id);
   const url = `${API_BASE}/${normalized}`;
@@ -175,11 +186,21 @@ function renderLista(lista) {
       <td>${f.email ?? ''}</td>
       <td>${f.endereco ?? ''}</td>
       <td>
-        <button data-id="${f.id}" class="btn-edit">Editar</button>
-        <button data-id="${f.id}" class="btn-del">Excluir</button>
+      <i class="bi bi-pencil text-primary me-4 btn-edit" style="cursor:pointer;" data-id="${f.id}"></i>
+      <i class="bi bi-trash text-danger btn-del" style="cursor:pointer;" data-id="${f.id}"></i>
       </td>
     `;
     tbody.appendChild(tr);
+
+    // Adiciona os event listeners após criar os ícones
+    tr.querySelector('.bi-pencil').addEventListener('click', () => {
+        editar(f.id);
+    });
+
+    tr.querySelector('.bi-trash').addEventListener('click', () => {
+        excluir(f.id);
+    });
+
   });
 }
 

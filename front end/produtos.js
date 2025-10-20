@@ -138,6 +138,18 @@ async function deleteProduto(id) {
   console.log("Produto deletado com sucesso:", normalized);
 }
 
+// Seleciona todos os itens de menu
+const menuItems = document.querySelectorAll('.sidebar .menu-item');
+
+menuItems.forEach(item => {
+  const link = item.querySelector('a');
+  if(link && link.getAttribute('href') === window.location.pathname.split('/').pop()) {
+    item.classList.add('active');
+  }
+});
+
+
+
 
 // ---------- RENDERIZAÇÃO ----------
 function renderLista(lista) {
