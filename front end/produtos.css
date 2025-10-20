@@ -48,6 +48,7 @@ body{
   display: block;
 }
 
+
 .content{ 
   padding: 18px;
   width: 92%;
@@ -55,7 +56,6 @@ body{
   padding: 24px; /* opcional: dá um respiro interno */
   transition: margin-left .3s ease;
 }
-
 .page-title{ color: var(--dark); font-size: 22px; margin: 4px 0 14px; }
 
 /* Buttons */
@@ -93,7 +93,7 @@ input:focus, select:focus{ border-color:#94A3B8; box-shadow:0 0 0 4px rgba(25,11
   color: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: flex-start; /* mudado de space-between para flex-start */
   padding: 1rem 0;
   position: fixed;
   top: 0;
@@ -108,16 +108,33 @@ input:focus, select:focus{ border-color:#94A3B8; box-shadow:0 0 0 4px rgba(25,11
   margin-bottom: 2rem;
 }
 
-.sidebar-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.sidebar-header img {
+  width: 80px; /* ajuste o tamanho conforme necessário */
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 .sidebar a {
   text-decoration: none;
   color: #fff;
 }
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar .menu-item a {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* mesmo espaçamento que os outros */
+  color: inherit; /* mantém a cor do texto */
+  text-decoration: none;
+  width: 100%;
+}
+
 
 .menu-item {
   display: flex;
@@ -131,23 +148,6 @@ input:focus, select:focus{ border-color:#94A3B8; box-shadow:0 0 0 4px rgba(25,11
 .menu-item:hover {
   background: #34344a;
 }
-
-.sidebar-header img {
-  width: 80px; /* ajuste o tamanho conforme necessário */
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-
-.sidebar .menu-item a {
-  display: flex;
-  align-items: center;
-  gap: 16px; /* mesmo espaçamento que os outros */
-  color: inherit; /* mantém a cor do texto */
-  text-decoration: none;
-  width: 100%;
-}
-
 
 .menu-item.active {
   background: #2d2d44;
