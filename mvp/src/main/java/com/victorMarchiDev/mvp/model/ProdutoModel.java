@@ -15,12 +15,12 @@ public class ProdutoModel {
     private String categoria;
     private String unidade;
     private Double quantidade;
-    private Integer codigoEAN;
+    private Long codigoEAN;
 
     public ProdutoModel() {
     }
 
-    public ProdutoModel(Long id, String nome, String marca, String categoria, String unidade, Double quantidade, Integer codigoEAN) {
+    public ProdutoModel(Long id, String nome, String marca, String categoria, String unidade, Double quantidade, Long codigoEAN) {
         this.id = id;
         this.nome = nome;
         this.marca = marca;
@@ -38,11 +38,11 @@ public class ProdutoModel {
         this.id = id;
     }
 
-    public Integer getCodigoEAN() {
+    public Long getCodigoEAN() {
         return codigoEAN;
     }
 
-    public void setCodigoEAN(Integer codigoEAN) {
+    public void setCodigoEAN(Long codigoEAN) {
         this.codigoEAN = codigoEAN;
     }
 
