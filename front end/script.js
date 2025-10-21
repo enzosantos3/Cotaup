@@ -241,6 +241,29 @@ async function carregarLista() {
   }
 }
 
+// ---------- BUSCA ----------
+inputBusca?.addEventListener("input", async () => {
+  const termo = inputBusca.value.trim().toLowerCase();
+  state.termo = termo; // mantém o termo no state se você quiser usar depois com paginação
+
+  try {
+    const lista = await fetchFornecedores();
+
+    // Filtra pelos campos desejados
+    const filtrada = lista.filter(f =>
+      f.nomeFantasia?.toLowerCase().includes(termo) ||
+      f.razaoSocial?.toLowerCase().includes(termo) ||
+      f.cnpj?.toLowerCase().includes(termo) ||
+      f.representante?.toLowerCase().includes(termo)
+    );
+
+    renderLista(filtrada);
+  } catch (err) {
+    toast({ title: "Erro", msg: "Falha na busca: " + (err.message || ""), type: "err" });
+  }
+});
+
+
 // ---------- SUBMIT DO FORM ----------
 form.addEventListener("submit", async (e)=>{
   e.preventDefault();
