@@ -11,13 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let produtosSelecionados = [];
 
   // ==============================
-  // 🔹 1. Carregar Produtos
+  // 1️⃣ Carregar produtos do backend
   // ==============================
   async function carregarProdutos() {
     try {
-      const response = await fetch("http://localhost:8080/produtos");
-      if (!response.ok) throw new Error("Erro ao buscar produtos");
-      const produtos = await response.json();
+      const res = await fetch("http://localhost:8080/produtos");
+      if (!res.ok) throw new Error("Erro ao buscar produtos");
+      const produtos = await res.json();
 
       produtos.forEach(produto => {
         const option = document.createElement("option");
@@ -32,13 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==============================
-  // 🔹 2. Carregar Fornecedores
+  // 2️⃣ Carregar fornecedores do backend
   // ==============================
   async function carregarFornecedores() {
     try {
-      const response = await fetch("http://localhost:8080/fornecedor");
-      if (!response.ok) throw new Error("Erro ao buscar fornecedores");
-      const fornecedores = await response.json();
+      const res = await fetch("http://localhost:8080/fornecedor");
+      if (!res.ok) throw new Error("Erro ao buscar fornecedores");
+      const fornecedores = await res.json();
 
       fornecedores.forEach(fornecedor => {
         const option = document.createElement("option");
@@ -53,46 +53,38 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==============================
-  // 🔹 3. Adicionar Produto
+  // 3️⃣ Adicionar produto à lista
   // ==============================
   btnAddProduto.addEventListener("click", () => {
-    const produtoId = produtoSelect.value;
+    const produtoId = parseInt(produtoSelect.value);
     const produtoNome = produtoSelect.options[produtoSelect.selectedIndex]?.text;
-    const quantidade = quantidadeInput.value;
-    const preco = precoInput.value;
+    const quantidade = parseInt(quantidadeInput.value);
+    const preco = parseFloat(precoInput.value || 0);
 
     if (!produtoId || !quantidade) {
       alert("Selecione um produto e informe a quantidade!");
       return;
     }
 
-    // Verifica se o produto já está na lista
-    const existe = produtosSelecionados.some(p => p.id === parseInt(produtoId));
-    if (existe) {
-      alert("Este produto já foi adicionado à cotação.");
+    // Evita duplicados
+    if (produtosSelecionados.some(p => p.id === produtoId)) {
+      alert("Produto já adicionado!");
       return;
     }
 
-    const produto = {
-      id: parseInt(produtoId),
-      nome: produtoNome,
-      quantidade: parseInt(quantidade),
-      precoEstimado: parseFloat(preco || 0)
-    };
-
-    produtosSelecionados.push(produto);
+    produtosSelecionados.push({ id: produtoId, nome: produtoNome, quantidade, precoEstimado: preco });
     atualizarTabela();
     limparCamposProduto();
   });
 
   // ==============================
-  // 🔹 4. Atualizar Tabela
+  // 4️⃣ Atualizar tabela de produtos
   // ==============================
   function atualizarTabela() {
     tabelaProdutos.innerHTML = "";
 
     if (produtosSelecionados.length === 0) {
-      tabelaProdutos.innerHTML = `<tr><td colspan="5" class="text-muted">Nenhum produto adicionado</td></tr>`;
+      tabelaProdutos.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Nenhum produto adicionado</td></tr>`;
       return;
     }
 
@@ -114,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==============================
-  // 🔹 5. Remover Produto
+  // 5️⃣ Remover produto
   // ==============================
   window.removerProduto = (index) => {
     produtosSelecionados.splice(index, 1);
@@ -122,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ==============================
-  // 🔹 6. Limpar Campos
+  // 6️⃣ Limpar campos de produto
   // ==============================
   function limparCamposProduto() {
     produtoSelect.value = "";
@@ -131,38 +123,46 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==============================
-  // 🔹 7. Enviar Cotação
+  // 7️⃣ Enviar cotação para backend
   // ==============================
   btnEnviarCotacao.addEventListener("click", async () => {
-    const fornecedoresSelecionados = Array.from(fornecedorSelect.selectedOptions).map(opt => parseInt(opt.value));
+    const fornecedoresSelecionados = Array.from(fornecedorSelect.selectedOptions)
+      .map(opt => ({ id: parseInt(opt.value) }));
 
     if (produtosSelecionados.length === 0) {
-      alert("Adicione pelo menos um produto à cotação!");
+      alert("Adicione pelo menos um produto!");
       return;
     }
 
     if (fornecedoresSelecionados.length === 0) {
-      alert("Selecione ao menos um fornecedor!");
+      alert("Selecione pelo menos um fornecedor!");
       return;
     }
 
     const cotacao = {
-      produtos: produtosSelecionados.map(p => ({
+      name: `Cotação - ${new Date().toISOString().split('T')[0]}`,
+      produtosCotacao: produtosSelecionados.map(p => ({
         id: p.id,
         quantidade: p.quantidade,
         precoEstimado: p.precoEstimado
       })),
-      fornecedoresIds: fornecedoresSelecionados
+      fornecedoresCotacao: fornecedoresSelecionados,
+      status: "ABERTA"
     };
 
     try {
-      const response = await fetch("http://localhost:8080/cotacoes", {
+      const res = await fetch("http://localhost:8080/cotacao", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cotacao)
       });
 
-      if (!response.ok) throw new Error("Erro ao enviar cotação");
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error(data);
+        throw new Error(data.message || "Erro ao enviar cotação");
+      }
 
       alert("Cotação enviada com sucesso!");
       produtosSelecionados = [];
@@ -170,12 +170,12 @@ document.addEventListener("DOMContentLoaded", () => {
       fornecedorSelect.value = "";
     } catch (err) {
       console.error(err);
-      alert("Erro ao enviar cotação. Verifique o console para mais detalhes.");
+      alert("Erro ao enviar cotação. Veja o console para detalhes.");
     }
   });
 
   // ==============================
-  // 🔹 8. Inicialização
+  // 8️⃣ Inicialização
   // ==============================
   carregarProdutos();
   carregarFornecedores();
