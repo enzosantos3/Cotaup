@@ -31,6 +31,58 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  const btnAddFornecedor = document.getElementById("btnAddFornecedor");
+const tabelaFornecedores = document.getElementById("tabelaFornecedores");
+let fornecedoresSelecionados = [];
+
+btnAddFornecedor.addEventListener("click", () => {
+  const fornecedorId = parseInt(fornecedorSelect.value);
+  const fornecedorNome = fornecedorSelect.options[fornecedorSelect.selectedIndex]?.text;
+
+  if (!fornecedorId) {
+    alert("Selecione um fornecedor!");
+    return;
+  }
+
+  // Evita duplicados
+  if (fornecedoresSelecionados.some(f => f.id === fornecedorId)) {
+    alert("Fornecedor já adicionado!");
+    return;
+  }
+
+  fornecedoresSelecionados.push({ id: fornecedorId, nome: fornecedorNome });
+  atualizarTabelaFornecedores();
+});
+
+function atualizarTabelaFornecedores() {
+  tabelaFornecedores.innerHTML = "";
+
+  if (fornecedoresSelecionados.length === 0) {
+    tabelaFornecedores.innerHTML = `<tr><td colspan="3" class="text-center text-muted">Nenhum fornecedor adicionado</td></tr>`;
+    return;
+  }
+
+  fornecedoresSelecionados.forEach((f, index) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${f.id}</td>
+      <td>${f.nome}</td>
+      <td>
+        <button class="btn btn-danger btn-sm" onclick="removerFornecedor(${index})">
+          <i class="bi bi-trash"></i>
+        </button>
+      </td>
+    `;
+    tabelaFornecedores.appendChild(tr);
+  });
+}
+
+window.removerFornecedor = (index) => {
+  fornecedoresSelecionados.splice(index, 1);
+  atualizarTabelaFornecedores();
+};
+
+
   // ==============================
   // 2️⃣ Carregar fornecedores do backend
   // ==============================
@@ -126,9 +178,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // 7️⃣ Enviar cotação para backend
   // ==============================
   btnEnviarCotacao.addEventListener("click", async () => {
-    const fornecedoresSelecionados = Array.from(fornecedorSelect.selectedOptions)
-      .map(opt => ({ id: parseInt(opt.value) }));
-
+    // Já estamos usando a lista manipulada pelo JS
+    const fornecedoresParaEnviar = fornecedoresSelecionados.map(f => ({ id: f.id }));
     if (produtosSelecionados.length === 0) {
       alert("Adicione pelo menos um produto!");
       return;
@@ -140,15 +191,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const cotacao = {
-      name: `Cotação - ${new Date().toISOString().split('T')[0]}`,
-      produtosCotacao: produtosSelecionados.map(p => ({
-        id: p.id,
-        quantidade: p.quantidade,
-        precoEstimado: p.precoEstimado
-      })),
-      fornecedoresCotacao: fornecedoresSelecionados,
-      status: "ABERTA"
-    };
+    name: `Cotação - ${new Date().toISOString().split('T')[0]}`,
+    produtosCotacao: produtosSelecionados.map(p => ({
+    id: p.id,
+    quantidade: p.quantidade,
+    precoEstimado: p.precoEstimado
+  })),
+    fornecedoresCotacao: fornecedoresParaEnviar,
+    status: "ABERTA"
+  };
+
 
     try {
       const res = await fetch("http://localhost:8080/cotacao", {
