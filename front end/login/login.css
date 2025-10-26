@@ -7,6 +7,10 @@ body {
   background: linear-gradient(135deg, #1976D2, #0D47A1) !important;
 }
 
+.direita_fundo{
+  background-color: #1e1e2f;
+}
+
 /* Card de login */
 .card {
   border-radius: 16px;
@@ -89,6 +93,12 @@ p.lead {
   max-height: 90vh;
   overflow-y: auto;
   border-radius: 12px;
+}
+
+.login-image {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover; /* mantém proporção e cobre toda a área */
 }
 
 /* Scroll suave e elegante */
