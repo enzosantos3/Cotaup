@@ -28,4 +28,9 @@ public class CotacaoController {
     public List<CotacaoModel> listarCotacoes(){
         return service.listarCotacoes();
     }
+
+    @GetMapping("/{id}")
+    public CotacaoModel listarCotacoesPorId(@PathVariable("id") Long id){
+        return service.listarCotacaoPorId(id);
+    }
 }

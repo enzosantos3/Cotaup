@@ -33,5 +33,8 @@ public class CotacaoService {
         return repo.findAll();
     }
 
+    public CotacaoModel listarCotacaoPorId(Long id){
+        return repo.findById(id).orElse(null);
+    }
 
 }
