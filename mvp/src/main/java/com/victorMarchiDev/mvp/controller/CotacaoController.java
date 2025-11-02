@@ -5,6 +5,8 @@ import com.victorMarchiDev.mvp.service.CotacaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/cotacao")
@@ -20,5 +22,10 @@ public class CotacaoController {
     public ResponseEntity<CotacaoModel> criarCotacao(@RequestBody CotacaoModel cotacaoModel){
         service.criarCotacao(cotacaoModel);
         return ResponseEntity.ok().body(cotacaoModel);
+    }
+
+    @GetMapping
+    public List<CotacaoModel> listarCotacoes(){
+        return service.listarCotacoes();
     }
 }

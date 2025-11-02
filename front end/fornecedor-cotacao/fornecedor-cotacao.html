@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CotaUp - Cotações Abertas</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- CSS da página -->
+    <link rel="stylesheet" href="fornecedor-cotacao.css">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html">
+                <img src="/images/CotaUp2.png" alt="Logo do Sistema" />
+            </a>
+        </div>
+
+        <ul class="sidebar-menu">
+
+            <li class="menu-item active">
+                <a href="cotacoes.html">
+                    <i class="bi bi-graph-up"></i>
+                    <span>Cotações Abertas</span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a href="fornecedores.html">
+                    <i class="bi bi-truck"></i>
+                    <span>Cotações Respondidas</span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a href="produtos.html">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Sair</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="content">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="page-title">Cotações</h2>
+            </div>
+
+            <!-- Grid de Cotações -->
+            <div class="cotacoes-grid" id="cotacoesBody">
+                <p class="text-center">Carregando...</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- JS -->
+    <script src="fornecedor-cotacao.js"></script>
+
+</body>
+</html>
