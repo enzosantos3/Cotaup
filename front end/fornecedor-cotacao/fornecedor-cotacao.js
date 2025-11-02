@@ -39,10 +39,11 @@ function preencherGridCotacoes(cotacoes) {
                 ${cotacao.status || "Aberta"}
             </span>
         </div>
-        <button class="btn-responder">Responder</button>
+        <a href="/responder-cotacao/responder-cotacao.html?id=${cotacao.id}" class="btn-responder">Responder</a>
     `;
     grid.appendChild(card);
 });
+
 
 }
 
