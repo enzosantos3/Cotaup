@@ -27,17 +27,23 @@ function preencherGridCotacoes(cotacoes) {
     }
 
     cotacoes.forEach(cotacao => {
-        const card = document.createElement("div");
-        card.className = "cotacao-card";
-        card.innerHTML = `
-            <div class="cotacao-title">${cotacao.name}</div>
-            <div class="cotacao-info">Início: ${formatarData(cotacao.dataInicio)}</div>
-            <div class="cotacao-info">Fim: ${formatarData(cotacao.dataFim)}</div>
-            <div class="status ${cotacao.status?.toLowerCase() || 'status-open'}">${cotacao.status || "Aberta"}</div>
-            <button class="btn-responder">Responder</button>
-        `;
-        grid.appendChild(card);
-    });
+    const card = document.createElement("div");
+    card.className = "cotacao-card";
+    card.innerHTML = `
+        <div class="cotacao-title">${cotacao.name}</div>
+        <div class="cotacao-info">Início: ${formatarData(cotacao.dataInicio)}</div>
+        <div class="cotacao-info">Fim: ${formatarData(cotacao.dataFim)}</div>
+        <div class="status-wrapper">
+            <span class="status-label">Status:</span>
+            <span class="status ${cotacao.status?.toLowerCase() || 'status-open'}">
+                ${cotacao.status || "Aberta"}
+            </span>
+        </div>
+        <button class="btn-responder">Responder</button>
+    `;
+    grid.appendChild(card);
+});
+
 }
 
 function formatarData(data) {
