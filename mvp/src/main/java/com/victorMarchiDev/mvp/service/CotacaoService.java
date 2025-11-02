@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CotacaoService {
@@ -26,6 +27,10 @@ public class CotacaoService {
         cotacaoModel.setDataFim(seteDiasDepois);
 
         return repo.save(cotacaoModel);
+    }
+
+    public List<CotacaoModel> listarCotacoes() {
+        return repo.findAll();
     }
 
 
