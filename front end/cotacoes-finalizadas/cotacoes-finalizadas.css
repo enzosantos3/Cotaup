@@ -1,0 +1,162 @@
+/* =============================== */
+/*   COTAÇÕES RESPONDIDAS CSS      */
+/* =============================== */
+
+/* ===== Variáveis e tokens ===== */
+:root {
+  --primary: #1976D2;
+  --primary-700: #155FA8;
+  --dark: #0F172A;
+  --muted: #F5F7FB;
+  --muted-2: #EEF2F7;
+  --border: #E5E7EB;
+  --txt: #111827;
+  --sub: #6B7280;
+  --danger: #E25353;
+  --success: #16A34A;
+  --warn: #F59E0B;
+  --info: #0EA5E9;
+  --radius: 16px;
+  --shadow: 0 8px 32px rgba(15,23,42,.08);
+}
+
+/* ===== Reset & Base ===== */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--txt);
+  background: linear-gradient(180deg,#fff 0%,#f6f9ff 100%);
+  display: flex;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 240px;
+  background: #1e1e2f;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 1rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+}
+.sidebar-header {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+.sidebar-header img {
+  width: 80px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.sidebar a {
+  text-decoration: none;
+  color: #fff;
+}
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.menu-item a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: inherit;
+  text-decoration: none;
+  width: 100%;
+}
+.menu-item:hover {
+  background: #34344a;
+}
+.menu-item.active {
+  background: #2d2d44;
+  border-left: 4px solid #0d6efd;
+}
+.menu-item i {
+  font-size: 1.3rem;
+}
+
+/* ===== Conteúdo ===== */
+.content {
+  margin-left: 240px;
+  padding: 24px;
+  width: calc(100% - 240px);
+}
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 20px;
+}
+
+/* ===== Card e tabela ===== */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+thead th {
+  background: #F8FAFC;
+  padding: 12px 14px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+}
+td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+tr:hover td {
+  background: #FBFEFF;
+}
+
+/* ===== Status e Botões ===== */
+.status-finalizada {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--success);
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  display: inline-block;
+}
+
+.btn-visualizar {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-visualizar:hover {
+  background: var(--primary-700);
+}

@@ -1,6 +1,7 @@
 package com.victorMarchiDev.mvp.service;
 
 
+import com.victorMarchiDev.mvp.enums.StatusCotacao;
 import com.victorMarchiDev.mvp.model.CotacaoModel;
 import com.victorMarchiDev.mvp.model.ProdutoModel;
 import com.victorMarchiDev.mvp.model.PropostaModel;
@@ -58,7 +59,7 @@ public class CotacaoService {
             propostaRepo.save(proposta);
         }
 
-        cotacao.setStatus("FINALIZADA");
+        cotacao.setStatus(StatusCotacao.FINALIZADA);
         repo.save(cotacao);
     }
 
