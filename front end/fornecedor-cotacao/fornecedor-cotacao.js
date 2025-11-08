@@ -48,6 +48,7 @@ function preencherGridCotacoes(cotacoes) {
 }
 
 function formatarData(data) {
-    if (!data) return "-";
-    return new Date(data).toLocaleDateString("pt-BR");
+  if (!data) return "-";
+  const [ano, mes, dia] = data.split("-");
+  return new Date(ano, mes - 1, dia).toLocaleDateString("pt-BR");
 }
