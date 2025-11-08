@@ -69,7 +69,8 @@ public class CotacaoController {
     }
 
     @GetMapping("/finalizadas")
-    public List<CotacaoModel> listarFinalizadas(){
-        return cotacaoRepository.findByStatus(StatusCotacao.FINALIZADA);
+    public ResponseEntity<List<CotacaoModel>> listarFinalizadas() {
+        List<CotacaoModel> cotacoes = cotacaoRepository.findByStatus(StatusCotacao.FINALIZADA);
+        return ResponseEntity.ok(cotacoes);
     }
 }
