@@ -36,7 +36,7 @@ public class CotacaoModel {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataFim;
-    
+
     private String status;
 
     public CotacaoModel() {  }

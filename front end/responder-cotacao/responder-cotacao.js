@@ -36,10 +36,11 @@ function preencherTabelaProdutos(produtos) {
 
   produtos.forEach(prod => {
     const nomeProduto = prod.nome || prod.name || "Produto sem nome";
-    const preco = prod.preco || prod.preco || 0;
-    const quantidade = prod.quantidade || prod.qtd || 0;
+    const preco = prod.preco || 0;
+    const quantidade = prod.quantidade || 0;
 
     const row = document.createElement("tr");
+    row.dataset.produtoId = prod.id; // importante para enviar o id
     row.innerHTML = `
       <td>${nomeProduto}</td>
       <td>${quantidade}</td>
@@ -48,7 +49,7 @@ function preencherTabelaProdutos(produtos) {
         <input 
           type="number" 
           class="form-control oferta-input" 
-          value="${preco.toFixed(2)}" 
+          placeholder="Digite sua oferta" 
           min="0" 
           step="0.01"
         >
@@ -63,37 +64,49 @@ document.getElementById("enviarOferta").addEventListener("click", async () => {
   const linhas = tabela.querySelectorAll("tr");
 
   if (linhas.length === 0) {
-    alert("Nenhum produto para enviar oferta!");
+    alert("Nenhum produto para enviar proposta!");
     return;
   }
 
-  const ofertas = Array.from(linhas)
+  const propostas = Array.from(linhas)
     .map(row => {
+      const produtoId = row.dataset.produtoId;
       const nome = row.cells[0]?.innerText?.trim();
       const quantidade = parseFloat(row.cells[1]?.innerText || 0);
       const input = row.querySelector(".oferta-input");
-      const oferta = parseFloat(input?.value || 0);
+      const precoProposto = parseFloat(input?.value || 0);
 
-      if (!nome) return null;
-      return { nome, quantidade, oferta };
+      if (!produtoId || isNaN(precoProposto)) return null;
+
+      return {
+        produtoId: parseInt(produtoId),
+        nome,
+        quantidade,
+        precoProposto
+      };
     })
     .filter(Boolean);
 
-  console.log("📦 Ofertas a enviar:", ofertas);
+  console.log("📦 Propostas a enviar:", propostas);
+
+  if (propostas.length === 0) {
+    alert("Preencha ao menos uma oferta antes de enviar!");
+    return;
+  }
 
   try {
-    const response = await fetch(`${API_BASE}/cotacao/${cotacaoId}/oferta`, {
+    const response = await fetch(`${API_BASE}/cotacao/${cotacaoId}/propostas`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(ofertas)
+      body: JSON.stringify(propostas)
     });
 
-    if (!response.ok) throw new Error("Falha ao enviar oferta");
+    if (!response.ok) throw new Error("Falha ao enviar proposta");
 
-    alert("✅ Oferta enviada com sucesso!");
-    window.location.href = "../cotacoes.html";
+    alert("✅ Proposta enviada com sucesso!");
+    window.location.href = "../fornecedor-cotacao/fornecedor-cotacao.html";
   } catch (error) {
-    console.error("❌ Erro ao enviar oferta:", error);
-    alert("Erro ao enviar oferta! Veja o console para detalhes.");
+    console.error("❌ Erro ao enviar proposta:", error);
+    alert("Erro ao enviar proposta! Veja o console para detalhes.");
   }
 });
