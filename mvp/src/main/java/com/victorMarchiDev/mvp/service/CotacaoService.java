@@ -20,9 +20,7 @@ public class CotacaoService {
 
     public CotacaoModel criarCotacao(CotacaoModel cotacaoModel){
         LocalDate hoje = LocalDate.now();
-
         LocalDate seteDiasDepois = hoje.plusDays(7);
-
         cotacaoModel.setDataInicio(hoje);
         cotacaoModel.setDataFim(seteDiasDepois);
 
