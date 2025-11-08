@@ -39,7 +39,7 @@ public class CotacaoModel {
     private LocalDate dataFim;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     private StatusCotacao status = StatusCotacao.ABERTA;
 
     public CotacaoModel() {  }
@@ -102,6 +102,6 @@ public class CotacaoModel {
     }
 
     public void setStatus(StatusCotacao statusCotacao) {
-
+        this.status = statusCotacao;
     }
 }
