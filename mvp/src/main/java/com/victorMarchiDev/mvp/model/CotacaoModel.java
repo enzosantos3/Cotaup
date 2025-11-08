@@ -40,7 +40,7 @@ public class CotacaoModel {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusCotacao status;
+    private StatusCotacao status = StatusCotacao.ABERTA;
 
     public CotacaoModel() {  }
 
