@@ -56,7 +56,7 @@ public class CotacaoController {
         service.registrarPropostas(id, propostas);
         return ResponseEntity.ok("Propostas registradas e cotação finalizada com sucesso!");
     }
-
+  
     @GetMapping("/{id}/propostas")
     public ResponseEntity<List<PropostaModel>> listarPropostas (@PathVariable Long id){
         List<PropostaModel> propostas = service.listarPropostasPorCotacao(id);
