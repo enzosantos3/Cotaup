@@ -2,7 +2,9 @@ package com.victorMarchiDev.mvp.controller;
 
 import com.victorMarchiDev.mvp.model.CotacaoModel;
 import com.victorMarchiDev.mvp.model.ProdutoModel;
+import com.victorMarchiDev.mvp.model.PropostaModel;
 import com.victorMarchiDev.mvp.service.CotacaoService;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +42,21 @@ public class CotacaoController {
         List<ProdutoModel> produtos = service.listarProdutosPorCotacao(id);
         if (produtos.isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(produtos);
+    }
+
+    @PostMapping("/{id}/propostas")
+    public ResponseEntity<String> registrarPropostas(
+            @PathVariable Long id,
+            @RequestBody List<PropostaModel> propostas
+    ) {
+        service.registrarPropostas(id, propostas);
+        return ResponseEntity.ok("Propostas registradas e cotação finalizada com sucesso!");
+    }
+
+    @GetMapping("/{id}/propostas")
+    public ResponseEntity<List<PropostaModel>> listarPropostas (@PathVariable Long id){
+        List<PropostaModel> propostas = service.listarPropostasPorCotacao(id);
+        return ResponseEntity.ok(propostas);
     }
 
 }
