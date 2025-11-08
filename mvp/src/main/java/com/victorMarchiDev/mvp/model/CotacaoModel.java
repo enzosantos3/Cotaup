@@ -1,6 +1,7 @@
 package com.victorMarchiDev.mvp.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.victorMarchiDev.mvp.enums.StatusCotacao;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -37,7 +38,9 @@ public class CotacaoModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataFim;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusCotacao status;
 
     public CotacaoModel() {  }
 
@@ -48,7 +51,6 @@ public class CotacaoModel {
         this.produtosCotacao = produtosCotacao;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
-        this.status = status;
     }
 
     public Long getId() {
@@ -99,11 +101,7 @@ public class CotacaoModel {
         this.dataFim = dataFim;
     }
 
-    public String getStatus() {
-        return status;
-    }
+    public void setStatus(StatusCotacao statusCotacao) {
 
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

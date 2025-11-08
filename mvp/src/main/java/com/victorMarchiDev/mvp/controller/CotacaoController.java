@@ -1,8 +1,10 @@
 package com.victorMarchiDev.mvp.controller;
 
+import com.victorMarchiDev.mvp.enums.StatusCotacao;
 import com.victorMarchiDev.mvp.model.CotacaoModel;
 import com.victorMarchiDev.mvp.model.ProdutoModel;
 import com.victorMarchiDev.mvp.model.PropostaModel;
+import com.victorMarchiDev.mvp.repository.CotacaoRepository;
 import com.victorMarchiDev.mvp.service.CotacaoService;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +18,11 @@ import java.util.List;
 public class CotacaoController {
 
     private final CotacaoService service;
+    private final CotacaoRepository cotacaoRepository;
 
-    public CotacaoController(CotacaoService service) {
+    public CotacaoController(CotacaoService service, CotacaoRepository cotacaoRepository) {
         this.service = service;
+        this.cotacaoRepository = cotacaoRepository;
     }
 
     @PostMapping
@@ -59,4 +63,13 @@ public class CotacaoController {
         return ResponseEntity.ok(propostas);
     }
 
+    @GetMapping("/abertas")
+    public List<CotacaoModel> listarAbertas(){
+        return cotacaoRepository.findByStatus(StatusCotacao.ABERTA);
+    }
+
+    @GetMapping("/finalizadas")
+    public List<CotacaoModel> listarFinalizadas(){
+        return cotacaoRepository.findByStatus(StatusCotacao.FINALIZADA);
+    }
 }
