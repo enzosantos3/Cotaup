@@ -31,7 +31,7 @@ public class CotacaoService {
         LocalDate seteDiasDepois = hoje.plusDays(7);
         cotacaoModel.setDataInicio(hoje);
         cotacaoModel.setDataFim(seteDiasDepois);
-
+        cotacaoModel.setStatus(StatusCotacao.ABERTA);
         return repo.save(cotacaoModel);
     }
 
