@@ -20,8 +20,8 @@ public class CotacaoController {
 
     @PostMapping
     public ResponseEntity<CotacaoModel> criarCotacao(@RequestBody CotacaoModel cotacaoModel){
-        service.criarCotacao(cotacaoModel);
-        return ResponseEntity.ok().body(cotacaoModel);
+        CotacaoModel cotacaoSalva = service.criarCotacao(cotacaoModel);
+        return ResponseEntity.ok().body(cotacaoSalva);
     }
 
     @GetMapping
