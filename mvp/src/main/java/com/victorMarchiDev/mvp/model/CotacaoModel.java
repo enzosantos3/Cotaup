@@ -1,5 +1,6 @@
 package com.victorMarchiDev.mvp.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,8 +31,12 @@ public class CotacaoModel {
     )
     private List<ProdutoModel> produtosCotacao;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataInicio;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataFim;
+    
     private String status;
 
     public CotacaoModel() {  }
