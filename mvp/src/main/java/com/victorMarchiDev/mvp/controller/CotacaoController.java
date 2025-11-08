@@ -1,6 +1,7 @@
 package com.victorMarchiDev.mvp.controller;
 
 import com.victorMarchiDev.mvp.model.CotacaoModel;
+import com.victorMarchiDev.mvp.model.ProdutoModel;
 import com.victorMarchiDev.mvp.service.CotacaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,4 +34,12 @@ public class CotacaoController {
     public CotacaoModel listarCotacoesPorId(@PathVariable("id") Long id){
         return service.listarCotacaoPorId(id);
     }
+
+    @GetMapping("/{id}/produtos")
+    public ResponseEntity<List<ProdutoModel>> listarProdutosPorCotacao(@PathVariable Long id) {
+        List<ProdutoModel> produtos = service.listarProdutosPorCotacao(id);
+        if (produtos.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(produtos);
+    }
+
 }
