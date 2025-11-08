@@ -2,6 +2,8 @@ package com.victorMarchiDev.mvp.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "TB_Produtos")
 public class ProdutoModel {
@@ -16,11 +18,12 @@ public class ProdutoModel {
     private String unidade;
     private Double quantidade;
     private Long codigoEAN;
+    private BigDecimal preco;
 
     public ProdutoModel() {
     }
 
-    public ProdutoModel(Long id, String nome, String marca, String categoria, String unidade, Double quantidade, Long codigoEAN) {
+    public ProdutoModel(Long id, String nome, String marca, String categoria, String unidade, Double quantidade, Long codigoEAN, BigDecimal preco) {
         this.id = id;
         this.nome = nome;
         this.marca = marca;
@@ -28,6 +31,7 @@ public class ProdutoModel {
         this.unidade = unidade;
         this.quantidade = quantidade;
         this.codigoEAN = codigoEAN;
+        this.preco = preco;
     }
 
     public Long getId() {
@@ -37,6 +41,10 @@ public class ProdutoModel {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public BigDecimal getPreco() { return preco; }
+
+    public void setPreco(BigDecimal preco) { this.preco = preco; }
 
     public Long getCodigoEAN() {
         return codigoEAN;

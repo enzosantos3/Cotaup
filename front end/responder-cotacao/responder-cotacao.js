@@ -30,17 +30,19 @@ function preencherTabelaProdutos(produtos) {
   tabela.innerHTML = "";
 
   if (!produtos || produtos.length === 0) {
-    tabela.innerHTML = `<tr><td colspan="3" class="text-center">Nenhum produto encontrado.</td></tr>`;
+    tabela.innerHTML = `<tr><td colspan="4" class="text-center">Nenhum produto encontrado.</td></tr>`;
     return;
   }
 
   produtos.forEach(prod => {
     const nomeProduto = prod.nome || prod.name || "Produto sem nome";
-    const preco = prod.precoSugerido || prod.precoEstimado || 0;
+    const preco = prod.preco || prod.preco || 0;
+    const quantidade = prod.quantidade || prod.qtd || 0;
 
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${nomeProduto}</td>
+      <td>${quantidade}</td>
       <td>R$ ${preco.toFixed(2)}</td>
       <td>
         <input 
@@ -68,11 +70,12 @@ document.getElementById("enviarOferta").addEventListener("click", async () => {
   const ofertas = Array.from(linhas)
     .map(row => {
       const nome = row.cells[0]?.innerText?.trim();
+      const quantidade = parseFloat(row.cells[1]?.innerText || 0);
       const input = row.querySelector(".oferta-input");
       const oferta = parseFloat(input?.value || 0);
 
       if (!nome) return null;
-      return { nome, oferta };
+      return { nome, quantidade, oferta };
     })
     .filter(Boolean);
 
