@@ -42,7 +42,7 @@ public class CotacaoController {
     }
 
     @GetMapping("/{id}/produtos")
-    public ResponseEntity<List<ProdutoModel>> listarProdutosPorCotacao(@PathVariable Long id) {
+    public ResponseEntity<List<ProdutoModel>> listarProdutosPorCotacao(@PathVariable("id") Long id) {
         List<ProdutoModel> produtos = service.listarProdutosPorCotacao(id);
         if (produtos.isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(produtos);
@@ -50,7 +50,7 @@ public class CotacaoController {
 
     @PostMapping("/{id}/propostas")
     public ResponseEntity<String> registrarPropostas(
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @RequestBody List<PropostaModel> propostas
     ) {
         service.registrarPropostas(id, propostas);

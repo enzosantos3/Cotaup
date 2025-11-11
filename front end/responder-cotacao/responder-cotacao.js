@@ -35,28 +35,29 @@ function preencherTabelaProdutos(produtos) {
   }
 
   produtos.forEach(prod => {
-    const nomeProduto = prod.nome || prod.name || "Produto sem nome";
-    const preco = prod.preco || 0;
-    const quantidade = prod.quantidade || 0;
+  const nomeProduto = prod.nome || prod.name || "Produto sem nome";
+  const preco = parseFloat(prod.preco || 0);
+  const quantidade = prod.quantidade || 0;
 
-    const row = document.createElement("tr");
-    row.dataset.produtoId = prod.id; // importante para enviar o id
-    row.innerHTML = `
-      <td>${nomeProduto}</td>
-      <td>${quantidade}</td>
-      <td>R$ ${preco.toFixed(2)}</td>
-      <td>
-        <input 
-          type="number" 
-          class="form-control oferta-input" 
-          placeholder="Digite sua oferta" 
-          min="0" 
-          step="0.01"
-        >
-      </td>
-    `;
-    tabela.appendChild(row);
-  });
+  const row = document.createElement("tr");
+  row.dataset.produtoId = prod.id;
+
+  row.innerHTML = `
+    <td>${nomeProduto}</td>
+    <td>${quantidade}</td>
+    <td>R$ ${preco.toFixed(2)}</td>
+    <td>
+      <input 
+        type="number" 
+        class="form-control oferta-input" 
+        placeholder="Digite sua oferta" 
+        min="0" 
+        step="0.01"
+      >
+    </td>
+  `;
+  tabela.appendChild(row);
+});
 }
 
 document.getElementById("enviarOferta").addEventListener("click", async () => {
