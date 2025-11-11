@@ -36,7 +36,7 @@ public class CotacaoService {
     }
 
     public List<ProdutoModel> listarProdutosPorCotacao(Long id) {
-        return repo.findById(id)
+        return repo.findByIdComProdutos(id)
                 .map(CotacaoModel::getProdutosCotacao)
                 .orElse(Collections.emptyList());
     }

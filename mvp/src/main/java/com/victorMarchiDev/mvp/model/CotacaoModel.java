@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.victorMarchiDev.mvp.enums.StatusCotacao;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,7 +31,7 @@ public class CotacaoModel {
             joinColumns = @JoinColumn(name = "cotacao_id"),
             inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
-    private List<ProdutoModel> produtosCotacao;
+    private List<ProdutoModel> produtosCotacao = new ArrayList<>();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataInicio;
@@ -104,4 +105,6 @@ public class CotacaoModel {
     public void setStatus(StatusCotacao statusCotacao) {
         this.status = statusCotacao;
     }
+
+
 }
