@@ -2,15 +2,16 @@ package com.victorMarchiDev.mvp.service;
 
 import com.victorMarchiDev.mvp.enums.StatusCotacao;
 import com.victorMarchiDev.mvp.model.CotacaoModel;
-import com.victorMarchiDev.mvp.model.CotacaoProdutoModel;
-import com.victorMarchiDev.mvp.model.ProdutoModel;
 import com.victorMarchiDev.mvp.model.PropostaModel;
 import com.victorMarchiDev.mvp.repository.CotacaoRepository;
 import com.victorMarchiDev.mvp.repository.PropostaRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PropostaService {
@@ -40,8 +41,13 @@ public class PropostaService {
         return propostaRepo.findByCotacaoId(cotacaoId);
     }
 
-    public List<CotacaoProdutoModel> listarProdutosPorPropostas(Long idProposta) {
-        return propostaRepo.findProdutosByPropostaId(idProposta);
+    public PropostaModel listarPropostaPorId(Long idProposta) {
+        return propostaRepo.findById(idProposta)
+                .orElseThrow(() -> new RuntimeException("Proposta não encontrada!"));
+    }
+
+    public Optional<PropostaModel> listarProdutoPorProposta(Long idProposta) {
+        return propostaRepo.findByIdComProduto(idProposta);
     }
 
     public List<PropostaModel> listarPropostas(Long id){
