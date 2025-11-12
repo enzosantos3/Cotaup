@@ -6,6 +6,7 @@ import com.victorMarchiDev.mvp.model.ProdutoModel;
 import com.victorMarchiDev.mvp.model.PropostaModel;
 import com.victorMarchiDev.mvp.repository.CotacaoRepository;
 import com.victorMarchiDev.mvp.service.CotacaoService;
+import com.victorMarchiDev.mvp.service.PropostaService;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +19,12 @@ import java.util.List;
 public class CotacaoController {
 
     private final CotacaoService service;
+    private final PropostaService propostaService;
     private final CotacaoRepository cotacaoRepository;
 
-    public CotacaoController(CotacaoService service, CotacaoRepository cotacaoRepository) {
+    public CotacaoController(CotacaoService service, PropostaService propostaService, CotacaoRepository cotacaoRepository) {
         this.service = service;
+        this.propostaService = propostaService;
         this.cotacaoRepository = cotacaoRepository;
     }
 
@@ -48,20 +51,7 @@ public class CotacaoController {
         return ResponseEntity.ok(produtos);
     }
 
-    @PostMapping("/{id}/propostas")
-    public ResponseEntity<String> registrarPropostas(
-            @PathVariable("id") Long id,
-            @RequestBody List<PropostaModel> propostas
-    ) {
-        service.registrarPropostas(id, propostas);
-        return ResponseEntity.ok("Propostas registradas e cotação finalizada com sucesso!");
-    }
-  
-    @GetMapping("/{id}/propostas")
-    public ResponseEntity<List<PropostaModel>> listarPropostas (@PathVariable Long id){
-        List<PropostaModel> propostas = service.listarPropostasPorCotacao(id);
-        return ResponseEntity.ok(propostas);
-    }
+
 
     @GetMapping("/abertas")
     public List<CotacaoModel> listarAbertas(){
