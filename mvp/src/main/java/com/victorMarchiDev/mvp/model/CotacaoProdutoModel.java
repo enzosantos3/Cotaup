@@ -1,9 +1,17 @@
 package com.victorMarchiDev.mvp.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tb_cotacao_produto")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class CotacaoProdutoModel {
 
     @Id
@@ -21,15 +29,4 @@ public class CotacaoProdutoModel {
     @Column(nullable = false)
     private Double precoInformado;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public CotacaoModel getCotacao() { return cotacao; }
-    public void setCotacao(CotacaoModel cotacao) { this.cotacao = cotacao; }
-
-    public ProdutoModel getProduto() { return produto; }
-    public void setProduto(ProdutoModel produto) { this.produto = produto; }
-
-    public Double getPrecoInformado() { return precoInformado; }
-    public void setPrecoInformado(Double precoInformado) { this.precoInformado = precoInformado; }
 }

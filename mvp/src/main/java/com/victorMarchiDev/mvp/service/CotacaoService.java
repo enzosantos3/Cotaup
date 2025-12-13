@@ -33,11 +33,11 @@ public class CotacaoService {
         return repo.save(cotacaoModel);
     }
 
-    public List<ProdutoModel> listarProdutosPorCotacao(Long id) {
-        return repo.findByIdComProdutos(id)
-                .map(CotacaoModel::getProdutosCotacao)
-                .orElse(Collections.emptyList());
-    }
+//    public List<ProdutoModel> listarProdutosPorCotacao(Long id) {
+//        return repo.findByIdComProdutos(id)
+//                .map(CotacaoModel::getProdutosCotacao)
+//                .orElse(Collections.emptyList());
+//    }
 
     public List<CotacaoModel> listarCotacoes() {
         return repo.findAll();

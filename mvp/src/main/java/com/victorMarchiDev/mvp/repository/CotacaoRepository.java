@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface CotacaoRepository extends JpaRepository<CotacaoModel, Long> {
     List<CotacaoModel> findByStatus(StatusCotacao status);
 
-    @Query("SELECT c FROM CotacaoModel c JOIN FETCH c.produtosCotacao WHERE c.id = :id")
-    Optional<CotacaoModel> findByIdComProdutos(@Param("id") Long id);
+//    @Query("SELECT c FROM CotacaoModel c JOIN FETCH c.produtosCotacao WHERE c.id = :id")
+//    Optional<CotacaoModel> findByIdComProdutos(@Param("id") Long id);
 
 }

@@ -1,11 +1,19 @@
 package com.victorMarchiDev.mvp.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "TB_Produtos")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class ProdutoModel {
 
     @Id
@@ -18,79 +26,6 @@ public class ProdutoModel {
     private String unidade;
     private Double quantidade;
     private Long codigoEAN;
-    private BigDecimal preco;
 
-    public ProdutoModel() {
-    }
 
-    public ProdutoModel(Long id, String nome, String marca, String categoria, String unidade, Double quantidade, Long codigoEAN, BigDecimal preco) {
-        this.id = id;
-        this.nome = nome;
-        this.marca = marca;
-        this.categoria = categoria;
-        this.unidade = unidade;
-        this.quantidade = quantidade;
-        this.codigoEAN = codigoEAN;
-        this.preco = preco;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public BigDecimal getPreco() { return preco; }
-
-    public void setPreco(BigDecimal preco) { this.preco = preco; }
-
-    public Long getCodigoEAN() {
-        return codigoEAN;
-    }
-
-    public void setCodigoEAN(Long codigoEAN) {
-        this.codigoEAN = codigoEAN;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public String getUnidade() {
-        return unidade;
-    }
-
-    public void setUnidade(String unidade) {
-        this.unidade = unidade;
-    }
-
-    public Double getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Double quantidade) {
-        this.quantidade = quantidade;
-    }
 }

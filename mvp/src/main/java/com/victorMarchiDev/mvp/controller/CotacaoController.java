@@ -44,12 +44,12 @@ public class CotacaoController {
         return service.listarCotacaoPorId(id);
     }
 
-    @GetMapping("/{id}/produtos")
-    public ResponseEntity<List<ProdutoModel>> listarProdutosPorCotacao(@PathVariable("id") Long id) {
-        List<ProdutoModel> produtos = service.listarProdutosPorCotacao(id);
-        if (produtos.isEmpty()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(produtos);
-    }
+//    @GetMapping("/{id}/produtos")
+//    public ResponseEntity<List<ProdutoModel>> listarProdutosPorCotacao(@PathVariable("id") Long id) {
+//        List<ProdutoModel> produtos = service.listarProdutosPorCotacao(id);
+//        if (produtos.isEmpty()) return ResponseEntity.notFound().build();
+//        return ResponseEntity.ok(produtos);
+//    }
 
 
 
