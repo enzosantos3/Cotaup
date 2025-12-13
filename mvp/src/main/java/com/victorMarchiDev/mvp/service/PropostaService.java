@@ -50,7 +50,7 @@ public class PropostaService {
         return propostaRepo.findByIdComProduto(idProposta);
     }
 
-    public List<PropostaModel> listarPropostas(Long id){
+    public List<PropostaModel> listarPropostas(){
         return propostaRepo.findAll();
     }
 }

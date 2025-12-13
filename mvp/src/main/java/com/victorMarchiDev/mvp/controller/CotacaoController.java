@@ -15,7 +15,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(path = "/cotacao")
+@RequestMapping(path = "/cotacoes")
 public class CotacaoController {
 
     private final CotacaoService service;
@@ -28,13 +28,13 @@ public class CotacaoController {
         this.cotacaoRepository = cotacaoRepository;
     }
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity<CotacaoModel> criarCotacao(@RequestBody CotacaoModel cotacaoModel){
         CotacaoModel cotacaoSalva = service.criarCotacao(cotacaoModel);
         return ResponseEntity.ok().body(cotacaoSalva);
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<CotacaoModel> listarCotacoes(){
         return service.listarCotacoes();
     }
@@ -53,12 +53,12 @@ public class CotacaoController {
 
 
 
-    @GetMapping("/abertas")
+    @GetMapping("/listar/abertas")
     public List<CotacaoModel> listarAbertas(){
         return cotacaoRepository.findByStatus(StatusCotacao.ABERTA);
     }
 
-    @GetMapping("/finalizadas")
+    @GetMapping("/listar/finalizadas")
     public ResponseEntity<List<CotacaoModel>> listarFinalizadas() {
         List<CotacaoModel> cotacoes = cotacaoRepository.findByStatus(StatusCotacao.FINALIZADA);
         return ResponseEntity.ok(cotacoes);

@@ -19,7 +19,7 @@ public class PropostaController {
         this.propostaService = propostaService;
     }
 
-    @PostMapping("/{id}/propostas")
+    @PostMapping("/criar/{id}/")
     public ResponseEntity<String> registrarPropostas(
             @PathVariable("id") Long id,
             @RequestBody List<PropostaModel> propostas
@@ -28,18 +28,18 @@ public class PropostaController {
         return ResponseEntity.ok("Propostas registradas e cotação finalizada com sucesso!");
     }
 
-    @GetMapping("/{id}/propostas")
-    public ResponseEntity<List<PropostaModel>> listarPropostas (@PathVariable("id") Long id){
-        List<PropostaModel> propostas = propostaService.listarPropostas(id);
+    @GetMapping("/listar")
+    public ResponseEntity<List<PropostaModel>> listarPropostas (){
+        List<PropostaModel> propostas = propostaService.listarPropostas();
         return ResponseEntity.ok(propostas);
     }
 
-    @GetMapping("/{id}/produtos")
-    public ResponseEntity<Optional<PropostaModel>> listarProdutosPorProposta(@PathVariable("id") Long id) {
-        Optional<PropostaModel> produtos = propostaService.listarProdutoPorProposta(id);
-        if (produtos.isEmpty()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(produtos);
-    }
+//    @GetMapping("/{id}/produtos")
+//    public ResponseEntity<Optional<PropostaModel>> listarProdutosPorProposta(@PathVariable("id") Long id) {
+//        Optional<PropostaModel> produtos = propostaService.listarProdutoPorProposta(id);
+//        if (produtos.isEmpty()) return ResponseEntity.notFound().build();
+//        return ResponseEntity.ok(produtos);
+//    }
 
 
 }

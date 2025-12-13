@@ -12,7 +12,7 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(path = "/fornecedor")
+@RequestMapping(path = "/fornecedores")
 public class FornecedorController {
 
     private final FornecedorService service;
@@ -20,24 +20,24 @@ public class FornecedorController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity<FornecedorModel> criarFornecedor(@RequestBody FornecedorModel fornecedor){
             service.criarFornecedor(fornecedor);
             return ResponseEntity.ok().body(fornecedor);
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<FornecedorModel> listarFornecedores(){
         return service.listarFornecedores();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<String> deletarFornecedor(@PathVariable("id") Long id){
         service.deletarFornecedor(id);
         return ResponseEntity.ok("Fornecedor deletado com sucesso!");
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<FornecedorModel> atualizarFornecedor(
             @PathVariable("id") Long id,
             @RequestBody FornecedorModel fornecedorAtualizado){
@@ -46,7 +46,7 @@ public class FornecedorController {
         return ResponseEntity.ok(fornecedorAtualizadoSalvo);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/listar/{id}")
     public ResponseEntity<FornecedorModel> getFornecedorById(@PathVariable("id") Long id) {
         Optional<FornecedorModel> fornecedorEncontrado = service.getFornecedorById(id);
 

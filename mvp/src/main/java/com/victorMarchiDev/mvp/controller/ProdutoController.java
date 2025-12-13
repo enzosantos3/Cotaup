@@ -20,18 +20,18 @@ public class ProdutoController {
         this.produtoService = produtoService;
     }
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity<ProdutoModel> criarProduto(@RequestBody ProdutoModel produtoModel) {
         produtoService.criarProduto(produtoModel);
         return ResponseEntity.ok().body(produtoModel);
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<ProdutoModel> getProdutos(){
         return produtoService.listarProdutos();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<ProdutoModel> atualizarProduto(
             @PathVariable("id") Long id,
             @RequestBody ProdutoModel produtoAtualizado){
@@ -40,18 +40,18 @@ public class ProdutoController {
         return ResponseEntity.ok(produtoAtualizadoSalvo);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<String> deletarProduto(@PathVariable("id") Long id){
         produtoService.deletarProduto(id);
         return ResponseEntity.ok().body("Produto deletado com sucesso");
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/listar/{id}")
     public ResponseEntity<ProdutoModel> getProdutoById(@PathVariable("id") Long id) {
         Optional<ProdutoModel> produtoEncontrado = produtoService.getProdutoById(id);
 
         return produtoEncontrado
-                .map(ResponseEntity::ok)                     // se existir, retorna 200 + body
-                .orElseGet(() -> ResponseEntity.notFound().build()); // se não existir, retorna 404
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
