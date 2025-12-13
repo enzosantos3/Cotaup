@@ -1,5 +1,6 @@
 package com.victorMarchiDev.mvp.controller;
 
+import com.victorMarchiDev.mvp.dto.ProdutoDTO;
 import com.victorMarchiDev.mvp.model.FornecedorModel;
 import com.victorMarchiDev.mvp.model.ProdutoModel;
 import com.victorMarchiDev.mvp.service.ProdutoService;
@@ -21,9 +22,9 @@ public class ProdutoController {
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<ProdutoModel> criarProduto(@RequestBody ProdutoModel produtoModel) {
-        produtoService.criarProduto(produtoModel);
-        return ResponseEntity.ok().body(produtoModel);
+    public ResponseEntity<ProdutoDTO> criarProduto(@RequestBody ProdutoDTO dto) {
+        ProdutoDTO produtoCriado = produtoService.criarProduto(dto);
+        return ResponseEntity.ok().body(produtoCriado);
     }
 
     @GetMapping("/listar")
@@ -47,11 +48,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/listar/{id}")
-    public ResponseEntity<ProdutoModel> getProdutoById(@PathVariable("id") Long id) {
-        Optional<ProdutoModel> produtoEncontrado = produtoService.getProdutoById(id);
-
-        return produtoEncontrado
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ProdutoDTO> getProdutoById(@PathVariable("id") Long id) {
+       return ResponseEntity.ok(produtoService.getProdutoById(id));
     }
 }

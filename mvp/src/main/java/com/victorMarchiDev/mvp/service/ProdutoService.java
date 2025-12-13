@@ -1,5 +1,8 @@
 package com.victorMarchiDev.mvp.service;
 
+import com.victorMarchiDev.mvp.dto.ProdutoDTO;
+import com.victorMarchiDev.mvp.exception.ProdutoNaoEncontradoException;
+import com.victorMarchiDev.mvp.mapper.ProdutoMapper;
 import com.victorMarchiDev.mvp.model.FornecedorModel;
 import com.victorMarchiDev.mvp.model.ProdutoModel;
 import com.victorMarchiDev.mvp.repository.ProdutoRepository;
@@ -12,18 +15,23 @@ import java.util.Optional;
 public class ProdutoService {
 
     private final ProdutoRepository repository;
+    private final ProdutoMapper mapper;
 
-    public ProdutoService(ProdutoRepository repository) {
+    public ProdutoService(ProdutoRepository repository, ProdutoMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
-    public ProdutoModel criarProduto(ProdutoModel produtoModel){
-        return repository.save(produtoModel);
+    public ProdutoDTO criarProduto(ProdutoDTO dto){
+        ProdutoModel produto = mapper.toEntity(dto);
+        ProdutoModel salvo = repository.save(produto);
+        return mapper.toDTO(salvo);
     }
 
-    public Optional<ProdutoModel> getProdutoById(Long id){
-        Optional<ProdutoModel> produtoEncontrado = repository.findById(id);
-        return produtoEncontrado;
+    public ProdutoDTO getProdutoById(Long id){
+        ProdutoModel produto = repository.findById(id)
+                .orElseThrow(() -> new ProdutoNaoEncontradoException(id));
+        return mapper.toDTO(produto);
     }
 
     public List<ProdutoModel> listarProdutos(){
