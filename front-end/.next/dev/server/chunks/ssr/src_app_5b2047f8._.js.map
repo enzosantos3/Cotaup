@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///home/guinnas/repositorios/Cotaup/front-end/src/app/favicon.ico.mjs%20%28structured%20image%20object%29"],"sourcesContent":["import src from \"IMAGE\";\nexport default { src, width: 1741, height: 1977 }\n"],"names":[],"mappings":";;;;AAAA;;uCACe;IAAE,KAAA,0IAAG;IAAE,OAAO;IAAM,QAAQ;AAAK"}}]
+}

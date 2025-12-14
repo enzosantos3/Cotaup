@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { 
     FileText, 
     Package, 
@@ -69,8 +70,14 @@ export default function Sidebar() {
                 <div className="flex flex-col h-full">
                     {/* Logo/Header */}
                     <div className="p-6 border-b border-gray-800">
-                        <h1 className="text-2xl font-bold text-blue-400">CotaUp</h1>
-                        <p className="text-sm text-gray-400 mt-1">Sistema de Cotações</p>
+                        <div className="flex items-center justify-center gap-3">
+                            <Image 
+                                src="/CotaUp2.png" 
+                                alt="CotaUp Logo" 
+                                width={70} 
+                                height={70}
+                            />
+                        </div>
                     </div>
 
                     {/* Menu Items */}

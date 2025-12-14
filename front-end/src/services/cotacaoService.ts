@@ -1,15 +1,12 @@
 import { CotacaoDTO } from '../types/cotação';
 
-// Durante desenvolvimento: usa API mock local (/api)
-// Para produção: trocar para a URL do backend real
+// RETIRAR PARA A INTEGRAÇÃO DA API REAL
 const getBaseURL = () => {
-    // Se estiver no servidor (Server Component)
     if (typeof window === 'undefined') {
         return process.env.NEXT_PUBLIC_API_URL 
             ? `http://localhost:3000${process.env.NEXT_PUBLIC_API_URL}`
             : 'http://localhost:3000/api';
     }
-    // Se estiver no cliente (Client Component)
     return process.env.NEXT_PUBLIC_API_URL || '/api';
 };
 
