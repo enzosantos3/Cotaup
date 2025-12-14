@@ -27,5 +27,4 @@ public class ProdutoModel {
     private Double quantidade;
     private Long codigoEAN;
 
-
 }

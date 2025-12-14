@@ -1,8 +1,5 @@
 package com.victorMarchiDev.mvp.repository;
 
-import com.victorMarchiDev.mvp.model.CotacaoModel;
-import com.victorMarchiDev.mvp.model.CotacaoProdutoModel;
-import com.victorMarchiDev.mvp.model.ProdutoModel;
 import com.victorMarchiDev.mvp.model.PropostaModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

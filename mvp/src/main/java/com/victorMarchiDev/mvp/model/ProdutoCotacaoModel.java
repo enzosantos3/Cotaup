@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_cotacao_produto")
+@Table(name = "tb_produtos_cotacao")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class CotacaoProdutoModel {
+public class ProdutoCotacaoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +25,5 @@ public class CotacaoProdutoModel {
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
     private ProdutoModel produto;
-
-    @Column(nullable = false)
-    private Double precoInformado;
 
 }
