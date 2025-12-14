@@ -9,7 +9,8 @@ import {
     Home, 
     Settings, 
     Menu,
-    X 
+    X, 
+    Truck
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -28,6 +29,11 @@ const menuItems = [
         name: 'Produtos',
         href: '/produtos',
         icon: Package,
+    },
+    {
+        name: 'Fornecedores',
+        href: '/fornecedores',
+        icon: Truck,
     },
     {
         name: 'Configurações',
