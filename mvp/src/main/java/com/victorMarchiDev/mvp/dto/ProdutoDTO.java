@@ -8,5 +8,4 @@ public record ProdutoDTO (
         String unidade,
         Double quantidade,
         Long codigoEAN
-)
-{}
+) {}

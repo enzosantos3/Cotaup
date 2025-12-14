@@ -34,25 +34,32 @@ public class ProdutoService {
         return mapper.toDTO(produto);
     }
 
-    public List<ProdutoModel> listarProdutos(){
-        return repository.findAll();
+    public List<ProdutoDTO> listarProdutos(){
+        return repository.findAll()
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
     }
 
-    public ProdutoModel atualizarProduto(Long id, ProdutoModel produtoAtualizado){
+    public ProdutoDTO atualizarProduto(Long id, ProdutoDTO produtoAtualizado){
         ProdutoModel produtoExistente = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto nao encontrado com o id: " + id));
-        produtoExistente.setNome(produtoAtualizado.getNome());
-        produtoExistente.setCategoria(produtoAtualizado.getCategoria());
-        produtoExistente.setMarca(produtoAtualizado.getMarca());
-        produtoExistente.setQuantidade(produtoAtualizado.getQuantidade());
-        produtoExistente.setUnidade(produtoAtualizado.getUnidade());
-        produtoExistente.setCodigoEAN(produtoAtualizado.getCodigoEAN());
-        return repository.save(produtoExistente);
+        produtoExistente.setNome(produtoAtualizado.nome());
+        produtoExistente.setCategoria(produtoAtualizado.categoria());
+        produtoExistente.setMarca(produtoAtualizado.marca());
+        produtoExistente.setQuantidade(produtoAtualizado.quantidade());
+        produtoExistente.setUnidade(produtoAtualizado.unidade());
+        produtoExistente.setCodigoEAN(produtoAtualizado.codigoEAN());
+        repository.save(produtoExistente);
+
+        return mapper.toDTO(produtoExistente);
     }
 
-    public Optional<String> deletarProduto(Long id){
-        repository.deleteById(id);
-        return Optional.ofNullable("Produto deletado com sucesso!");
+    public void deletarProduto(Long id){
+        ProdutoModel produto = repository.findById(id)
+                .orElseThrow(() -> new ProdutoNaoEncontradoException(id));
+
+        repository.delete(produto);
     }
 
 }

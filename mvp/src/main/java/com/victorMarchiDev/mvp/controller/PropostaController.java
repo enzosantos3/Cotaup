@@ -33,13 +33,7 @@ public class PropostaController {
         List<PropostaModel> propostas = propostaService.listarPropostas();
         return ResponseEntity.ok(propostas);
     }
-
-//    @GetMapping("/{id}/produtos")
-//    public ResponseEntity<Optional<PropostaModel>> listarProdutosPorProposta(@PathVariable("id") Long id) {
-//        Optional<PropostaModel> produtos = propostaService.listarProdutoPorProposta(id);
-//        if (produtos.isEmpty()) return ResponseEntity.notFound().build();
-//        return ResponseEntity.ok(produtos);
-//    }
+    
 
 
 }

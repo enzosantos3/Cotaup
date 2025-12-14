@@ -1,5 +1,8 @@
 package com.victorMarchiDev.mvp.service;
 
+import com.victorMarchiDev.mvp.dto.FornecedorDTO;
+import com.victorMarchiDev.mvp.exception.FornecedorNaoEncontradoException;
+import com.victorMarchiDev.mvp.mapper.FornecedorMapper;
 import com.victorMarchiDev.mvp.model.FornecedorModel;
 import com.victorMarchiDev.mvp.repository.FornecedorRepository;
 import org.springframework.stereotype.Service;
@@ -11,39 +14,50 @@ import java.util.Optional;
 public class FornecedorService {
 
     private final FornecedorRepository repository;
-    public FornecedorService(FornecedorRepository repository) {
+    private final FornecedorMapper mapper;
+
+    public FornecedorService(FornecedorRepository repository, FornecedorMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
-    public FornecedorModel criarFornecedor(FornecedorModel fornecedor){
-        return repository.save(fornecedor);
+    public FornecedorDTO criarFornecedor(FornecedorDTO dto){
+        FornecedorModel fornecedor = mapper.toEntity(dto);
+        return mapper.toDto(repository.save(fornecedor));
     }
 
-    public List<FornecedorModel> listarFornecedores(){
-        return repository.findAll();
+    public List<FornecedorDTO> listarFornecedores(){
+        return repository.findAll()
+                .stream()
+                .map(mapper::toDto)
+                .toList();
     }
 
     public void deletarFornecedor(Long id){
         repository.deleteById(id);
     }
 
-    public FornecedorModel atualizarFornecedor(Long id, FornecedorModel fornecedorAtualizado){
-        FornecedorModel fornecedorExistente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Fornecedor nao foi encontrado com o id: " + id));
-        fornecedorExistente.setCnpj(fornecedorAtualizado.getCnpj());
-        fornecedorExistente.setEmail(fornecedorAtualizado.getEmail());
-        fornecedorExistente.setEndereco(fornecedorAtualizado.getEndereco());
-        fornecedorExistente.setNomeFantasia(fornecedorAtualizado.getNomeFantasia());
-        fornecedorExistente.setRazaoSocial(fornecedorAtualizado.getRazaoSocial());
-        fornecedorExistente.setTelefone(fornecedorAtualizado.getTelefone());
-        fornecedorExistente.setRepresentante(fornecedorAtualizado.getRepresentante());
-        fornecedorExistente.setInscricaoEstadual(fornecedorAtualizado.getInscricaoEstadual());
+    public FornecedorDTO atualizarFornecedor(Long id, FornecedorDTO fornecedorExistente){
+        FornecedorModel fornecedorAtualizado = repository.findById(id)
+                        .orElseThrow(() -> new FornecedorNaoEncontradoException(id));
+        fornecedorAtualizado.setCnpj(fornecedorExistente.cnpj());
+        fornecedorAtualizado.setEmail(fornecedorExistente.email());
+        fornecedorAtualizado.setEndereco(fornecedorExistente.endereco());
+        fornecedorAtualizado.setNomeFantasia(fornecedorExistente.nomeFantasia());
+        fornecedorAtualizado.setRazaoSocial(fornecedorExistente.razaoSocial());
+        fornecedorAtualizado.setTelefone(fornecedorExistente.telefone());
+        fornecedorAtualizado.setRepresentante(fornecedorExistente.representante());
+        fornecedorAtualizado.setInscricaoEstadual(fornecedorExistente.inscricaoEstadual());
 
-        return repository.save(fornecedorExistente);
+        repository.save(fornecedorAtualizado);
+
+        return mapper.toDto(fornecedorAtualizado);
     }
 
-    public Optional<FornecedorModel> getFornecedorById(Long id){
-        return repository.findById(id);
+    public FornecedorDTO getFornecedorById(Long id){
+        FornecedorModel fornecedor = repository.findById(id)
+                .orElseThrow(() -> new FornecedorNaoEncontradoException(id));
+        return mapper.toDto(fornecedor);
     }
 
 }

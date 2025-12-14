@@ -1,5 +1,6 @@
 package com.victorMarchiDev.mvp.controller;
 
+import com.victorMarchiDev.mvp.dto.FornecedorDTO;
 import com.victorMarchiDev.mvp.model.FornecedorModel;
 import com.victorMarchiDev.mvp.service.FornecedorService;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,13 @@ public class FornecedorController {
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<FornecedorModel> criarFornecedor(@RequestBody FornecedorModel fornecedor){
-            service.criarFornecedor(fornecedor);
-            return ResponseEntity.ok().body(fornecedor);
+    public ResponseEntity<FornecedorDTO> criarFornecedor(@RequestBody FornecedorDTO fornecedor){
+            FornecedorDTO fornecedorCriado = service.criarFornecedor(fornecedor);
+            return ResponseEntity.ok().body(fornecedorCriado);
     }
 
     @GetMapping("/listar")
-    public List<FornecedorModel> listarFornecedores(){
+    public List<FornecedorDTO> listarFornecedores(){
         return service.listarFornecedores();
     }
 
@@ -38,21 +39,17 @@ public class FornecedorController {
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<FornecedorModel> atualizarFornecedor(
+    public ResponseEntity<FornecedorDTO> atualizarFornecedor(
             @PathVariable("id") Long id,
-            @RequestBody FornecedorModel fornecedorAtualizado){
+            @RequestBody FornecedorDTO fornecedorAtualizado){
 
-        FornecedorModel fornecedorAtualizadoSalvo = service.atualizarFornecedor(id, fornecedorAtualizado);
+        FornecedorDTO fornecedorAtualizadoSalvo = service.atualizarFornecedor(id, fornecedorAtualizado);
         return ResponseEntity.ok(fornecedorAtualizadoSalvo);
     }
 
     @GetMapping("/listar/{id}")
-    public ResponseEntity<FornecedorModel> getFornecedorById(@PathVariable("id") Long id) {
-        Optional<FornecedorModel> fornecedorEncontrado = service.getFornecedorById(id);
-
-        return fornecedorEncontrado
-                .map(ResponseEntity::ok)                     // se existir, retorna 200 + body
-                .orElseGet(() -> ResponseEntity.notFound().build()); // se não existir, retorna 404
+    public ResponseEntity<FornecedorDTO> getFornecedorById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(service.getFornecedorById(id));
     }
 
 

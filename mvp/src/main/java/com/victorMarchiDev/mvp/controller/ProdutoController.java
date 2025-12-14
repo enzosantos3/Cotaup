@@ -28,16 +28,16 @@ public class ProdutoController {
     }
 
     @GetMapping("/listar")
-    public List<ProdutoModel> getProdutos(){
+    public List<ProdutoDTO> getProdutos(){
         return produtoService.listarProdutos();
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<ProdutoModel> atualizarProduto(
+    public ResponseEntity<ProdutoDTO> atualizarProduto(
             @PathVariable("id") Long id,
-            @RequestBody ProdutoModel produtoAtualizado){
+            @RequestBody ProdutoDTO produtoAtualizado){
 
-        ProdutoModel produtoAtualizadoSalvo = produtoService.atualizarProduto(id, produtoAtualizado);
+        ProdutoDTO produtoAtualizadoSalvo = produtoService.atualizarProduto(id, produtoAtualizado);
         return ResponseEntity.ok(produtoAtualizadoSalvo);
     }
 

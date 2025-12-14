@@ -1,5 +1,6 @@
 package com.victorMarchiDev.mvp.controller;
 
+import com.victorMarchiDev.mvp.dto.CotacaoDTO;
 import com.victorMarchiDev.mvp.enums.StatusCotacao;
 import com.victorMarchiDev.mvp.model.CotacaoModel;
 import com.victorMarchiDev.mvp.model.ProdutoModel;
@@ -19,48 +20,37 @@ import java.util.List;
 public class CotacaoController {
 
     private final CotacaoService service;
-    private final PropostaService propostaService;
     private final CotacaoRepository cotacaoRepository;
 
-    public CotacaoController(CotacaoService service, PropostaService propostaService, CotacaoRepository cotacaoRepository) {
+    public CotacaoController(CotacaoService service, CotacaoRepository cotacaoRepository) {
         this.service = service;
-        this.propostaService = propostaService;
         this.cotacaoRepository = cotacaoRepository;
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<CotacaoModel> criarCotacao(@RequestBody CotacaoModel cotacaoModel){
-        CotacaoModel cotacaoSalva = service.criarCotacao(cotacaoModel);
+    public ResponseEntity<CotacaoDTO> criarCotacao(@RequestBody CotacaoDTO cotacao){
+        CotacaoDTO cotacaoSalva = service.criarCotacao(cotacao);
         return ResponseEntity.ok().body(cotacaoSalva);
     }
 
     @GetMapping("/listar")
-    public List<CotacaoModel> listarCotacoes(){
+    public List<CotacaoDTO> listarCotacoes(){
         return service.listarCotacoes();
     }
 
-    @GetMapping("/{id}")
-    public CotacaoModel listarCotacoesPorId(@PathVariable("id") Long id){
+    @GetMapping("/listar/{id}")
+    public CotacaoDTO listarCotacoesPorId(@PathVariable("id") Long id){
         return service.listarCotacaoPorId(id);
     }
 
-//    @GetMapping("/{id}/produtos")
-//    public ResponseEntity<List<ProdutoModel>> listarProdutosPorCotacao(@PathVariable("id") Long id) {
-//        List<ProdutoModel> produtos = service.listarProdutosPorCotacao(id);
-//        if (produtos.isEmpty()) return ResponseEntity.notFound().build();
-//        return ResponseEntity.ok(produtos);
-//    }
-
-
-
     @GetMapping("/listar/abertas")
-    public List<CotacaoModel> listarAbertas(){
+    public List<CotacaoDTO> listarAbertas(){
         return cotacaoRepository.findByStatus(StatusCotacao.ABERTA);
     }
 
     @GetMapping("/listar/finalizadas")
-    public ResponseEntity<List<CotacaoModel>> listarFinalizadas() {
-        List<CotacaoModel> cotacoes = cotacaoRepository.findByStatus(StatusCotacao.FINALIZADA);
+    public ResponseEntity<List<CotacaoDTO>> listarFinalizadas() {
+        List<CotacaoDTO> cotacoes = cotacaoRepository.findByStatus(StatusCotacao.FINALIZADA);
         return ResponseEntity.ok(cotacoes);
     }
 }
