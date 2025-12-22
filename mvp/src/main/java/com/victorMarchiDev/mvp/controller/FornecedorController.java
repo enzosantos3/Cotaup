@@ -38,15 +38,6 @@ public class FornecedorController {
         return ResponseEntity.ok("Fornecedor deletado com sucesso!");
     }
 
-    @PutMapping("/atualizar/{id}")
-    public ResponseEntity<FornecedorDTO> atualizarFornecedor(
-            @PathVariable("id") Long id,
-            @RequestBody FornecedorDTO fornecedorAtualizado){
-
-        FornecedorDTO fornecedorAtualizadoSalvo = service.atualizarFornecedor(id, fornecedorAtualizado);
-        return ResponseEntity.ok(fornecedorAtualizadoSalvo);
-    }
-
     @GetMapping("/listar/{id}")
     public ResponseEntity<FornecedorDTO> getFornecedorById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.getFornecedorById(id));
