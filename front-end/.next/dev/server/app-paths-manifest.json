@@ -1,6 +1,0 @@
-{
-  "/api/cotacoes/route": "app/api/cotacoes/route.js",
-  "/api/produtos/route": "app/api/produtos/route.js",
-  "/cotacoes/page": "app/cotacoes/page.js",
-  "/produtos/page": "app/produtos/page.js"
-}
