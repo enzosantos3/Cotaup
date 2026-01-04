@@ -1,46 +1,47 @@
 front-end/node_modules/@next/swc-linux-x64-gnu/next-swc.linux-x64-gnu.node
 front-end/node_modules/@next/swc-linux-x64-musl/next-swc.linux-x64-musl.node
-front-end/.next/
-front-end/node_modules/
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+front-end/node_modules/
+front-end/.pnp
+front-end/.pnp.*
+front-end/.yarn/*
+!/front-end/.yarn/patches
+!/front-end/.yarn/plugins
+!/front-end/.yarn/releases
+!/front-end/.yarn/versions
 
 # testing
-/coverage
+/front-end/coverage
 
 # next.js
-/.next/
-/out/
+/front-end/.next/
+/front-end/out/
 
 # production
-/build
+/front-end/build
 
 # misc
-.DS_Store
-*.pem
+/front-end/.DS_Store
+/front-end/*.pem
 
 # debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+/front-end/npm-debug.log*
+/front-end/yarn-debug.log*
+/front-end/yarn-error.log*
+/front-end/.pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+/front-end/.env*
 
 # vercel
-.vercel
+/.vercel
 
 # typescript
-*.tsbuildinfo
-next-env.d.ts
+/front-end/*.tsbuildinfo
+/front-end/next-env.d.ts

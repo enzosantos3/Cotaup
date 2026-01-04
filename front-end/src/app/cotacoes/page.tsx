@@ -1,5 +1,5 @@
 import { cotacaoService } from "@/services/cotacaoService";
-import { CotacaoDTO } from "@/types/cotação";
+import { CotacaoDTO } from "@/types/cotacao";
 import Link from "next/link";
 import { Plus, FileText, Calendar, CheckCircle, XCircle } from "lucide-react";
 

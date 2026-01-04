@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { CotacaoDTO, CotacaoStatus } from '@/types/cotação';
+import { CotacaoDTO, CotacaoStatus } from '@/types/cotacao';
 
 let cotacoes: CotacaoDTO[] = [
     {

@@ -36,7 +36,6 @@ export default async function ProdutosPage() {
                             <td className="px-4 py-3">{produto.nome}</td>
                             <td className="px-4 py-3">{produto.marca}</td>
                             <td className="px-4 py-3">{produto.categoria}</td>
-                            <td className="px-4 py-3">R$ {produto.preco}</td>
                         </tr>
                     ))}
                 </tbody>

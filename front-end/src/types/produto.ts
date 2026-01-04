@@ -3,7 +3,6 @@ export interface ProdutoDTO {
     nome: String;
     marca: String;
     categoria: String;
-    unidadeMedida: String;
-    preco: number;
-    codigoBarras: number;
+    unidade: String;
+    codigoEAN: number;
 }

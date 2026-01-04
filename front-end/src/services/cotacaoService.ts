@@ -1,4 +1,4 @@
-import { CotacaoDTO } from '../types/cotação';
+import { CotacaoDTO } from '../types/cotacao';
 
 // RETIRAR PARA A INTEGRAÇÃO DA API REAL
 const getBaseURL = () => {

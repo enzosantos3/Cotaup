@@ -15,16 +15,16 @@ export default function CreateProdutoPage() {
     const [nome, setNome] = useState('');
     const [marca, setMarca] = useState('');
     const [categoria, setCategoria] = useState('');
-    const [unidadeMedida, setUnidadeMedida] = useState('');
+    const [unidade, setUnidade] = useState('');
     const [preco, setPreco] = useState('');
-    const [codigoBarras, setCodigoBarras] = useState('');
+    const [codigoEAN, setCodigoEAN] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
 
         // Validações
-        if (!nome || !marca || !categoria || !unidadeMedida || !preco || !codigoBarras) {
+        if (!nome || !marca || !categoria || !unidade || !preco || !codigoEAN) {
             setError('Preencha todos os campos obrigatórios');
             return;
         }
@@ -41,9 +41,8 @@ export default function CreateProdutoPage() {
                 nome,
                 marca,
                 categoria,
-                unidadeMedida,
-                preco: Number(preco),
-                codigoBarras: Number(codigoBarras),
+                unidade,
+                codigoEAN: Number(codigoEAN),
             };
 
             await produtoService.postCriarProduto(novoProduto);
@@ -136,9 +135,9 @@ export default function CreateProdutoPage() {
                         </label>
                         <input
                             type="text"
-                            id="unidadeMedida"
-                            value={unidadeMedida}
-                            onChange={(e) => setUnidadeMedida(e.target.value)}
+                            id="unidade"
+                            value={unidade}
+                            onChange={(e) => setUnidade(e.target.value)}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                             placeholder="Ex: Saco 50kg, Unidade, m³"
                             required
@@ -170,9 +169,9 @@ export default function CreateProdutoPage() {
                         </label>
                         <input
                             type="number"
-                            id="codigoBarras"
-                            value={codigoBarras}
-                            onChange={(e) => setCodigoBarras(e.target.value)}
+                            id="codigoEAN"
+                            value={codigoEAN}
+                            onChange={(e) => setCodigoEAN(e.target.value)}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                             placeholder="7891234567890"
                             required
