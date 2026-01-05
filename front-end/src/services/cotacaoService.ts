@@ -1,19 +1,10 @@
 import { CotacaoDTO } from '../types/cotacao';
-
-// RETIRAR PARA A INTEGRAÇÃO DA API REAL
-const getBaseURL = () => {
-    if (typeof window === 'undefined') {
-        return process.env.NEXT_PUBLIC_API_URL 
-            ? `http://localhost:3000${process.env.NEXT_PUBLIC_API_URL}`
-            : 'http://localhost:3000/api';
-    }
-    return process.env.NEXT_PUBLIC_API_URL || '/api';
-};
+import { API_BASE_URL, COTACOES_ENDPOINTS, getApiUrl } from '../config/api';
 
 export const cotacaoService = {
 
     getAllCotacoes: async (): Promise<CotacaoDTO[]> => {
-        const response = await fetch(`${getBaseURL()}/cotacoes`, {
+        const response = await fetch(getApiUrl(COTACOES_ENDPOINTS.listar), {
             cache: `no-store`,
         });
 
@@ -22,8 +13,8 @@ export const cotacaoService = {
         
     },
 
-    postCriarCotacao: async (cotacao: CotacaoDTO) : Promise<CotacaoDTO> => {
-        const response = await fetch(`${getBaseURL()}/cotacoes`, {
+    postCriarCotacao: async (cotacao: Omit<CotacaoDTO, 'id'>) : Promise<CotacaoDTO> => {
+        const response = await fetch(getApiUrl(COTACOES_ENDPOINTS.criar), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -31,7 +22,35 @@ export const cotacaoService = {
             body: JSON.stringify(cotacao),
         });
 
-        if (!response.ok) throw new Error('Erro ao conectar com a API');
+        if (!response.ok) throw new Error('Erro ao criar cotação');
+        return response.json();
+    },
+
+    getCotacaoById: async (id: number): Promise<CotacaoDTO> => {
+        const response = await fetch(getApiUrl(COTACOES_ENDPOINTS.detalhe(id)), {
+            cache: `no-store`,
+        });
+
+        if (!response.ok) throw new Error('Erro ao buscar cotação');
+        return response.json();
+    },
+
+    getCotacoesAbertas: async (): Promise<CotacaoDTO[]> => {
+        const response = await fetch(getApiUrl(`${COTACOES_ENDPOINTS.listar}/abertas`), {
+            cache: `no-store`,
+        });
+
+        if (!response.ok) throw new Error('Erro ao buscar cotações abertas');
+        return response.json();
+    },
+
+    getCotacoesFinalizadas: async (): Promise<CotacaoDTO[]> => {
+        const response = await fetch(getApiUrl(`${COTACOES_ENDPOINTS.listar}/finalizadas`), {
+            cache: `no-store`,
+        });
+
+        if (!response.ok) throw new Error('Erro ao buscar cotações finalizadas');
         return response.json();
     }
+
 };

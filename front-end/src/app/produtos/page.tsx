@@ -27,7 +27,7 @@ export default async function ProdutosPage() {
                         <th className="px-4 py-3 text-left">Nome</th>
                         <th className="px-4 py-3 text-left">Marca</th>
                         <th className="px-4 py-3 text-left">Categoria</th>
-                        <th className="px-4 py-3 text-left">Preço</th>
+                        <th className="px-4 py-3 text-left">Cod. EAN</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 text-gray-700">
@@ -36,6 +36,7 @@ export default async function ProdutosPage() {
                             <td className="px-4 py-3">{produto.nome}</td>
                             <td className="px-4 py-3">{produto.marca}</td>
                             <td className="px-4 py-3">{produto.categoria}</td>
+                            <td className="px-4 py-3">{produto.codigoEAN}</td>
                         </tr>
                     ))}
                 </tbody>

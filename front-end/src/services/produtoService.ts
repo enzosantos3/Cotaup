@@ -1,19 +1,10 @@
 import { ProdutoDTO } from "@/types/produto";
-
-// RETIRAR PARA A INTEGRAÇÃO DA API REAL
-const getBaseURL = () => {
-    if (typeof window === 'undefined') {
-        return process.env.NEXT_PUBLIC_API_URL
-            ? `http://localhost:3000${process.env.NEXT_PUBLIC_API_URL}`
-            : 'http://localhost:3000/api';
-    }
-    return process.env.NEXT_PUBLIC_API_URL || '/api';
-};
+import { API_BASE_URL, PRODUTOS_ENDPOINTS, getApiUrl } from '../config/api';
 
 export const produtoService = {
 
     getAllProdutos: async (): Promise<ProdutoDTO[]> => {
-        const response = await fetch(`${getBaseURL()}/produtos`, {
+        const response = await fetch(getApiUrl(PRODUTOS_ENDPOINTS.listar), {
             cache: `no-store`,
         });
 
@@ -22,7 +13,7 @@ export const produtoService = {
     },
 
     getProdutoById: async (id: number): Promise<ProdutoDTO> => {
-        const response = await fetch(`${getBaseURL()}/produtos/${id}`, {
+        const response = await fetch(getApiUrl(PRODUTOS_ENDPOINTS.detalhe(id)), {
             cache: `no-store`,
         });
 
@@ -31,7 +22,7 @@ export const produtoService = {
     },
 
     postCriarProduto: async (produto: Omit<ProdutoDTO, 'id'>) : Promise<ProdutoDTO> => {
-        const response = await fetch(`${getBaseURL()}/produtos`, {
+        const response = await fetch(getApiUrl(PRODUTOS_ENDPOINTS.criar), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +35,7 @@ export const produtoService = {
     },
 
     putAtualizarProduto: async (id: number, produto: Partial<ProdutoDTO>): Promise<ProdutoDTO> => {
-        const response = await fetch(`${getBaseURL()}/produtos/${id}`, {
+        const response = await fetch(getApiUrl(PRODUTOS_ENDPOINTS.atualizar(id)), {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -57,7 +48,7 @@ export const produtoService = {
     },
 
     deleteProduto: async (id: number): Promise<void> => {
-        const response = await fetch(`${getBaseURL()}/produtos/${id}`, {
+        const response = await fetch(getApiUrl(PRODUTOS_ENDPOINTS.deletar(id)), {
             method: 'DELETE',
         });
 

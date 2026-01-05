@@ -14,12 +14,6 @@ export default async function FornecedoresPage() {
                     <h1 className="text-3xl font-bold text-gray-900">Fornecedores</h1>
                     <p className="text-gray-600 mt-1">Gerencie todos os seus fornecedores</p>
                 </div>
-                <Link
-                    href="/fornecedores/create"
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                    Novo Fornecedor
-                </Link>
             </div>
 
             {/* Lista de Fornecedores */}
