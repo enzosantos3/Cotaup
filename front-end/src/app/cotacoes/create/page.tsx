@@ -13,7 +13,6 @@ import { produtoService } from '@/services/produtoService';
 import { CotacaoDTO, CotacaoStatus } from '@/types/cotacao';
 import { ProdutoDTO } from '@/types/produto';
 
-// Registrar locale português brasileiro
 registerLocale('pt-BR', ptBR);
 
 interface ProdutoCotacao extends ProdutoDTO {
@@ -32,7 +31,7 @@ export default function CreateCotacaoPage() {
 
     const [produtosSelecionados, setProdutosSelecionados] = useState<ProdutoCotacao[]>([]);
     const [codigoBarras, setCodigoBarras] = useState('');
-    const [quantidade, setQuantidade] = useState(1);
+    const [quantidade, setQuantidade] = useState<number | string>(1);
     const [buscandoProduto, setBuscandoProduto] = useState(false);
     const [produtoEncontrado, setProdutoEncontrado] = useState<ProdutoDTO | null>(null);
 
@@ -71,14 +70,15 @@ export default function CreateCotacaoPage() {
             return;
         }
 
-        if (quantidade <= 0) {
+        const qtd = typeof quantidade === 'string' ? parseInt(quantidade) || 0 : quantidade;
+        if (qtd <= 0) {
             setError('A quantidade deve ser maior que zero');
             return;
         }
 
         const produtoCotacao: ProdutoCotacao = {
             ...produtoEncontrado,
-            quantidade,
+            quantidade: qtd,
         };
 
         setProdutosSelecionados([...produtosSelecionados, produtoCotacao]);
@@ -335,7 +335,6 @@ export default function CreateCotacaoPage() {
                                 </div>
                             </div>
 
-                            {/* Produto Encontrado */}
                             {produtoEncontrado && (
                                 <div className="mt-4 p-4 bg-white border border-green-200 rounded-lg">
                                     <div className="flex items-start justify-between mb-4">
@@ -360,11 +359,22 @@ export default function CreateCotacaoPage() {
                                                 Quantidade
                                             </label>
                                             <input
-                                                type="number"
-                                                min="1"
+                                                type="text"
                                                 value={quantidade}
-                                                onChange={(e) => setQuantidade(Number(e.target.value))}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    if (value === '' || /^\d+$/.test(value)) {
+                                                        setQuantidade(value === '' ? '' : Number(value));
+                                                    }
+                                                }}
+                                                onBlur={(e) => {
+                                                    if (e.target.value === '' || Number(e.target.value) === 0) {
+                                                        setQuantidade(1);
+                                                    }
+                                                }}
                                                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                                                placeholder="1"
+                                                inputMode="numeric"
                                             />
                                         </div>
                                         <button
@@ -380,7 +390,6 @@ export default function CreateCotacaoPage() {
                             )}
                         </div>
 
-                        {/* Lista de Produtos Adicionados */}
                         <div>
                             <h3 className="font-medium text-gray-900 mb-4">
                                 Produtos Adicionados ({produtosSelecionados.length})
@@ -414,11 +423,21 @@ export default function CreateCotacaoPage() {
                                                     <td className="px-4 py-3 text-sm text-gray-600">{String(produto.unidade)}</td>
                                                     <td className="px-4 py-3 text-sm">
                                                         <input
-                                                            type="number"
-                                                            min="1"
+                                                            type="text"
                                                             value={produto.quantidade}
-                                                            onChange={(e) => handleUpdateQuantidade(produto.id, Number(e.target.value))}
+                                                            onChange={(e) => {
+                                                                const value = e.target.value;
+                                                                if (value === '' || /^\d+$/.test(value)) {
+                                                                    handleUpdateQuantidade(produto.id, value === '' ? 0 : Number(value));
+                                                                }
+                                                            }}
+                                                            onBlur={(e) => {
+                                                                if (e.target.value === '' || Number(e.target.value) === 0) {
+                                                                    handleUpdateQuantidade(produto.id, 1);
+                                                                }
+                                                            }}
                                                             className="w-20 px-2 py-1 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                            inputMode="numeric"
                                                         />
                                                     </td>
                                                     <td className="px-4 py-3 text-center">
@@ -453,7 +472,6 @@ export default function CreateCotacaoPage() {
                             </div>
                         </div>
 
-                        {/* Informações Gerais */}
                         <div className="bg-gray-50 rounded-lg p-6">
                             <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                                 <FileText size={20} />
@@ -479,7 +497,6 @@ export default function CreateCotacaoPage() {
                             </div>
                         </div>
 
-                        {/* Produtos Selecionados */}
                         <div className="bg-gray-50 rounded-lg p-6">
                             <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                                 <Package size={20} />
@@ -506,7 +523,6 @@ export default function CreateCotacaoPage() {
                 )}
             </div>
 
-            {/* Botões de Navegação */}
             <div className="flex justify-between mt-8">
                 <button
                     type="button"

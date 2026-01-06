@@ -1,10 +1,63 @@
+'use client';
+
 import { cotacaoService } from "@/services/cotacaoService";
 import { CotacaoDTO } from "@/types/cotacao";
 import Link from "next/link";
-import { Plus, FileText, Calendar, CheckCircle, XCircle } from "lucide-react";
+import { Plus, FileText, Calendar, CheckCircle, XCircle, Search, X, Pen, Pencil } from "lucide-react";
+import { useState, useEffect } from "react";
 
-export default async function CotacoesPage() {
-    const cotacoes = await cotacaoService.getAllCotacoes();
+export default function CotacoesPage() {
+    const [cotacoes, setCotacoes] = useState<CotacaoDTO[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [statusFilter, setStatusFilter] = useState<'TODAS' | 'ABERTA' | 'FECHADA'>('TODAS');
+    const [filteredCotacoes, setFilteredCotacoes] = useState<CotacaoDTO[]>([]);
+
+    useEffect(() => {
+        const fetchCotacoes = async () => {
+            try {
+                const data = await cotacaoService.getAllCotacoes();
+                setCotacoes(data);
+                setFilteredCotacoes(data);
+            } catch (error) {
+                console.error('Erro ao carregar cotações:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCotacoes();
+    }, []);
+
+    useEffect(() => {
+        let filtered = cotacoes;
+
+        if (searchTerm.trim() !== '') {
+            filtered = filtered.filter(cotacao =>
+                cotacao.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                cotacao.status.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        if (statusFilter !== 'TODAS') {
+            filtered = filtered.filter(cotacao => cotacao.status === statusFilter);
+        }
+
+        setFilteredCotacoes(filtered);
+    }, [searchTerm, statusFilter, cotacoes]);
+
+    const handleClearSearch = () => {
+        setSearchTerm('');
+        setStatusFilter('TODAS');
+    };
+    
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <div className="text-gray-600">Carregando cotações...</div>
+            </div>
+        );
+    }
     
     return (
         <div className="space-y-6">
@@ -66,6 +119,72 @@ export default async function CotacoesPage() {
                 </div>
             </div>
 
+            {/* Barra de Pesquisa */}
+            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div className="flex items-center gap-4">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            placeholder="Pesquisar por nome ou status..."
+                            className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-gray-900"
+                        />
+                        {searchTerm && (
+                            <button
+                                type="button"
+                                onClick={handleClearSearch}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                                <X size={20} />
+                            </button>
+                        )}
+                    </div>
+                    
+                    {/* Filtros de Status */}
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setStatusFilter('TODAS')}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                statusFilter === 'TODAS'
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                        >
+                            Todas
+                        </button>
+                        <button
+                            onClick={() => setStatusFilter('ABERTA')}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                statusFilter === 'ABERTA'
+                                    ? 'bg-green-600 text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                        >
+                            Abertas
+                        </button>
+                        <button
+                            onClick={() => setStatusFilter('FECHADA')}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                statusFilter === 'FECHADA'
+                                    ? 'bg-gray-600 text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                        >
+                            Fechadas
+                        </button>
+                    </div>
+
+                    {(searchTerm || statusFilter !== 'TODAS') && (
+                        <div className="text-sm text-gray-600">
+                            {filteredCotacoes.length} {filteredCotacoes.length === 1 ? 'resultado' : 'resultados'}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+
             {/* Lista de Cotações */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                 <div className="p-6 border-b border-gray-200">
@@ -76,6 +195,9 @@ export default async function CotacoesPage() {
                     <table className="w-full">
                         <thead className="bg-gray-50 border-b border-gray-200">
                             <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Codigo
+                                </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Nome
                                 </th>
@@ -94,11 +216,18 @@ export default async function CotacoesPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
-                            {cotacoes.map((cotacao: CotacaoDTO) => (
+                            {filteredCotacoes.map((cotacao: CotacaoDTO) => (
                                 <tr key={cotacao.id} className="hover:bg-gray-50 transition-colors">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
                                             <FileText className="text-gray-400 mr-3" size={20} />
+                                            <span className="text-sm font-medium text-gray-900">
+                                                {cotacao.id}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="flex items-center">
                                             <span className="text-sm font-medium text-gray-900">
                                                 {cotacao.nome}
                                             </span>
@@ -132,7 +261,7 @@ export default async function CotacoesPage() {
                                             href={`/cotacoes/edit?id=${cotacao.id}`}
                                             className="text-blue-600 hover:text-blue-800 font-medium"
                                         >
-                                            Editar
+                                            <Pencil className="mr-2" size={16} /> 
                                         </Link>
                                     </td>
                                 </tr>
@@ -140,7 +269,26 @@ export default async function CotacoesPage() {
                         </tbody>
                     </table>
 
-                    {cotacoes.length === 0 && (
+                    {filteredCotacoes.length === 0 && searchTerm && (
+                        <div className="text-center py-12">
+                            <Search className="mx-auto text-gray-400 mb-4" size={48} />
+                            <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                Nenhuma cotação encontrada
+                            </h3>
+                            <p className="text-gray-600 mb-4">
+                                Não encontramos cotações com o termo "{searchTerm}"
+                            </p>
+                            <button
+                                onClick={handleClearSearch}
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                            >
+                                <X size={20} />
+                                Limpar pesquisa
+                            </button>
+                        </div>
+                    )}
+
+                    {cotacoes.length === 0 && !searchTerm && (
                         <div className="text-center py-12">
                             <FileText className="mx-auto text-gray-400 mb-4" size={48} />
                             <h3 className="text-lg font-medium text-gray-900 mb-2">
