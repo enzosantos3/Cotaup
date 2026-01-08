@@ -16,6 +16,7 @@ export default async function FornecedoresPage() {
                         {fornecedores.length} {fornecedores.length === 1 ? 'fornecedor cadastrado' : 'fornecedores cadastrados'}
                     </p>
                 </div>
+                {/*
                 <Link
                     href="/fornecedores/create"
                     className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -23,6 +24,7 @@ export default async function FornecedoresPage() {
                     <Plus size={20} />
                     Novo Fornecedor
                 </Link>
+                */}
             </div>
 
             {/* Grade de Fornecedores */}

@@ -21,6 +21,15 @@ export const fornecedorService = {
         return response.json();
     },
 
+    getFornecedorById: async (id: number): Promise<FornecedorDTO> => {
+        const response = await fetch(`${getBaseURL()}/fornecedores/${id}`, {
+            cache: `no-store`,
+        });
+
+        if (!response.ok) throw new Error('Erro ao buscar fornecedor');
+        return response.json();
+    },
+
     postCriarFornecedor: async (fornecedor: Omit<FornecedorDTO, 'id'>) : Promise<FornecedorDTO> => {
         const response = await fetch(`${getBaseURL()}/fornecedores`, {
             method: 'POST',
