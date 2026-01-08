@@ -12,8 +12,4 @@ import java.util.Optional;
 
 public interface CotacaoRepository extends JpaRepository<CotacaoModel, Long> {
     List<CotacaoDTO> findByStatus(StatusCotacao status);
-
-//    @Query("SELECT c FROM CotacaoModel c JOIN FETCH c.produtosCotacao WHERE c.id = :id")
-//    Optional<CotacaoModel> findByIdComProdutos(@Param("id") Long id);
-
 }
