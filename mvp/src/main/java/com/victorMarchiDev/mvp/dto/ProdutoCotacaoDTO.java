@@ -7,5 +7,6 @@ public record ProdutoCotacaoDTO(
          Long id,
          String nomeProduto,
          String marca,
-         Double quantidade
+         Double quantidade,
+         Long idCotacao
 ) {}

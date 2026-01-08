@@ -6,27 +6,33 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
-@Table(name = "tb_cotacao_produto")
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "tb_pedido")
 @Getter
 @Setter
-public class CotacaoProdutoModel {
+@NoArgsConstructor
+@AllArgsConstructor
+public class PedidoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private LocalDate criadoEm;
+
+    @ManyToOne
+    @JoinColumn(name = "comprador_id", nullable = false)
+    private CompradorModel comprador;
+
+    @ManyToOne
+    @JoinColumn(name = "fornecedor_id", nullable = false)
+    private FornecedorModel fornecedor;
+
     @ManyToOne
     @JoinColumn(name = "cotacao_id", nullable = false)
     private CotacaoModel cotacao;
 
-    @ManyToOne
-    @JoinColumn(name = "produto_id", nullable = false)
-    private ProdutoModel produto;
-
-    @Column(nullable = false)
-    private Double precoInformado;
 
 }
