@@ -165,18 +165,22 @@ export default function ProdutosPage() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                        <Link
-                                            href={`/produtos/edit?id=${produto.id}`}
-                                            className="text-blue-600 hover:text-blue-800 font-medium"
-                                        >
-                                            <Pencil className="mr-2" size={16} /> 
-                                        </Link>
-                                        <Link
-                                            href={`/produtos/${produto.id}`}
-                                            className="text-blue-600 hover:text-blue-800 font-medium"
-                                        >
-                                            <Eye className="mr-2" size={16} /> 
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                href={`/produtos/${produto.id}`}
+                                                className="p-2 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-lg transition-colors"
+                                                title="Ver detalhes"
+                                            >
+                                                <Eye size={18} /> 
+                                            </Link>
+                                            <Link
+                                                href={`/produtos/edit?id=${produto.id}`}
+                                                className="p-2 bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-lg transition-colors"
+                                                title="Editar produto"
+                                            >
+                                                <Pencil size={18} /> 
+                                            </Link>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
