@@ -56,6 +56,14 @@ export const PRODUTOS_ENDPOINTS = {
 };
 
 /**
+ * Endpoints da API de ProdutoCotacao
+ */
+
+export const PRODUTOCOTACAO_ENDPOINTS = {
+    listarProdutos: (id: number) => `/produto-cotacao/listar/${id}`,
+};
+
+/**
  * Helper para obter URL completa
  */
 export const getApiUrl = (endpoint: string) => {

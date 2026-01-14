@@ -3,7 +3,7 @@
 import { cotacaoService } from "@/services/cotacaoService";
 import { CotacaoDTO } from "@/types/cotacao";
 import Link from "next/link";
-import { Plus, FileText, Calendar, CheckCircle, XCircle, Search, X, Pen, Pencil } from "lucide-react";
+import { Plus, FileText, Calendar, CheckCircle, XCircle, Search, X, Pen, Pencil, Eye } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function CotacoesPage() {
@@ -257,12 +257,22 @@ export default function CotacoesPage() {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                        <Link
-                                            href={`/cotacoes/edit?id=${cotacao.id}`}
-                                            className="text-blue-600 hover:text-blue-800 font-medium"
-                                        >
-                                            <Pencil className="mr-2" size={16} /> 
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                href={`/cotacoes/${cotacao.id}`}
+                                                className="p-2 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-lg transition-colors"
+                                                title="Ver detalhes"
+                                            >
+                                                <Eye size={18} /> 
+                                            </Link>
+                                            <Link
+                                                href={`/cotacoes/edit?id=${cotacao.id}`}
+                                                className="p-2 bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-lg transition-colors"
+                                                title="Editar cotação"
+                                            >
+                                                <Pencil size={18} /> 
+                                            </Link>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

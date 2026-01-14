@@ -1,4 +1,5 @@
 import { CotacaoDTO } from '../types/cotacao';
+import { ProdutoCotacaoDTO } from '../types/produtoCotacao';
 import { API_BASE_URL, COTACOES_ENDPOINTS, getApiUrl } from '../config/api';
 
 export const cotacaoService = {
@@ -50,6 +51,15 @@ export const cotacaoService = {
         });
 
         if (!response.ok) throw new Error('Erro ao buscar cotações finalizadas');
+        return response.json();
+    },
+
+    getProdutosCotacao: async (cotacaoId: number): Promise<ProdutoCotacaoDTO[]> => {
+        const response = await fetch(getApiUrl(`/produto-cotacao/listar/${cotacaoId}`), {
+            cache: `no-store`,
+        });
+
+        if (!response.ok) throw new Error('Erro ao buscar produtos da cotação');
         return response.json();
     }
 
