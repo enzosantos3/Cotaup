@@ -18,8 +18,9 @@ public class CompradorModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
-    private String email;
+    @OneToOne
+    @JoinColumn(name = "usuario_id")
+    private UsuarioModel usuario;
 
     @ManyToOne
     @JoinColumn(name = "empresa_id", nullable = false)

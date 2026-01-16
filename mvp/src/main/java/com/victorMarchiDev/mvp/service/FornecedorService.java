@@ -40,15 +40,6 @@ public class FornecedorService {
     public FornecedorDTO atualizarFornecedor(Long id, FornecedorDTO fornecedorExistente){
         FornecedorModel fornecedorAtualizado = repository.findById(id)
                         .orElseThrow(() -> new FornecedorNaoEncontradoException(id));
-        fornecedorAtualizado.setCnpj(fornecedorExistente.cnpj());
-        fornecedorAtualizado.setEmail(fornecedorExistente.email());
-        fornecedorAtualizado.setEndereco(fornecedorExistente.endereco());
-        fornecedorAtualizado.setNomeFantasia(fornecedorExistente.nomeFantasia());
-        fornecedorAtualizado.setRazaoSocial(fornecedorExistente.razaoSocial());
-        fornecedorAtualizado.setTelefone(fornecedorExistente.telefone());
-        fornecedorAtualizado.setRepresentante(fornecedorExistente.representante());
-        fornecedorAtualizado.setInscricaoEstadual(fornecedorExistente.inscricaoEstadual());
-
         repository.save(fornecedorAtualizado);
 
         return mapper.toDto(fornecedorAtualizado);

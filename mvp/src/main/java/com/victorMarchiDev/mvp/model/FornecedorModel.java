@@ -20,13 +20,13 @@ public class FornecedorModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nomeFantasia;
-    private String razaoSocial;
-    private String cnpj;
-    private Long inscricaoEstadual;
-    private String representante;
-    private String endereco;
-    private String telefone;
-    private String email;
+    @OneToOne
+    @JoinColumn(name = "usuario_id")
+    private UsuarioModel usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "empresa_id", nullable = false)
+    private EmpresaModel empresa;
+
 
 }
