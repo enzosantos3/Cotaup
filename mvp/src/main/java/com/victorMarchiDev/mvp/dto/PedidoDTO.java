@@ -7,5 +7,6 @@ public record PedidoDTO(
         LocalDate criadoEm,
         Long idComprador,
         Long idFornecedor,
-        Long idCotacao
+        Long idCotacao,
+        Long idUsuarioCriador
 ) {}

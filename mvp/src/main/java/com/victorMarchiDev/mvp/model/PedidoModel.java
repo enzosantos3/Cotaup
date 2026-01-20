@@ -34,5 +34,9 @@ public class PedidoModel {
     @JoinColumn(name = "cotacao_id", nullable = false)
     private CotacaoModel cotacao;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_criador_id", nullable = false)
+    private UsuarioModel usuarioCriador;
+
 
 }
