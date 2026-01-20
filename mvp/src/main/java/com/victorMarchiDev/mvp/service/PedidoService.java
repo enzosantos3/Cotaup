@@ -4,6 +4,7 @@ import com.victorMarchiDev.mvp.dto.PedidoDTO;
 import com.victorMarchiDev.mvp.exception.CompradorNaoEncontradoException;
 import com.victorMarchiDev.mvp.exception.CotacaoNaoEncontradaException;
 import com.victorMarchiDev.mvp.exception.FornecedorNaoEncontradoException;
+import com.victorMarchiDev.mvp.exception.ProdutoNaoEncontradoException;
 import com.victorMarchiDev.mvp.mapper.PedidoMapper;
 import com.victorMarchiDev.mvp.model.CotacaoModel;
 import com.victorMarchiDev.mvp.model.PedidoModel;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -60,4 +62,11 @@ public class PedidoService {
                 .map(mapper::toDto)
                 .toList();
     }
+
+    public PedidoDTO listarPedidoPorId(Long id){
+        PedidoModel pedido = pedidoRepository.findById(id)
+                .orElseThrow( () -> new ProdutoNaoEncontradoException(id));
+        return mapper.toDto(pedido);
+    }
+
 }
