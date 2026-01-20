@@ -13,5 +13,6 @@ public record CotacaoDTO(
          String name,
          LocalDate dataInicio,
          LocalDate dataFim,
-         StatusCotacao status
+         StatusCotacao status,
+         String observacoes
 ) {}

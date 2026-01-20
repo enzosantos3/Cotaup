@@ -36,4 +36,6 @@ public class CotacaoModel {
     @Column(name = "status", nullable = false)
     private StatusCotacao status = StatusCotacao.ABERTA;
 
+    private String observacoes;
+
 }
