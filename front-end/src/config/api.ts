@@ -31,6 +31,11 @@ const ROUTE_SUFFIXES = {
         criar: process.env.NEXT_PUBLIC_PRODUTOS_CRIAR_SUFFIX || '',
         detalhe: process.env.NEXT_PUBLIC_PRODUTOS_DETALHE_SUFFIX || '',
     },
+    pedidos: {
+        listar: process.env.NEXT_PUBLIC_PEDIDOS_LISTAR_SUFFIX || '',
+        criar: process.env.NEXT_PUBLIC_PEDIDOS_CRIAR_SUFFIX || '',
+        detalhe: process.env.NEXT_PUBLIC_PEDIDOS_DETALHE_SUFFIX || '',
+    },
 };
 
 /**
@@ -61,6 +66,14 @@ export const PRODUTOS_ENDPOINTS = {
 
 export const PRODUTOCOTACAO_ENDPOINTS = {
     listarProdutos: (id: number) => `/produto-cotacao/listar/${id}`,
+};
+
+export const PEDIDO_ENDPOINTS = {
+    listar: `/pedidos${ROUTE_SUFFIXES.pedidos.listar}`,
+    criar: `/pedidos${ROUTE_SUFFIXES.pedidos.criar}`,
+    detalhe: (id: number) => `/pedidos${ROUTE_SUFFIXES.pedidos.detalhe}/${id}`,
+    atualizar: (id: number) => `/pedidos/${id}`,
+    deletar: (id: number) => `/pedidos/${id}`,
 };
 
 /**
