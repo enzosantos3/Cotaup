@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "TB_Proposta")
+@Table(name = "tb_proposta")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -24,34 +24,27 @@ public class PropostaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nomeProduto;
-
-    private BigDecimal precoProposto;
-
     private LocalDate dataCriacao;
 
     private LocalDate dataResposta;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusProposta status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cotacao_id")
     private CotacaoModel cotacao;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private StatusProposta statusProposta;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fornecedor_id")
     private FornecedorModel fornecedorModel;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comprador_id")
     private CompradorModel compradorModel;
 
     @OneToMany(mappedBy = "proposta")
     private List<ProdutoCotacaoModel> itensProposta;
-
-
-
 
 }

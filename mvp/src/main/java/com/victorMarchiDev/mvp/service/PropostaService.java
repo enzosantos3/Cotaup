@@ -1,56 +1,71 @@
 package com.victorMarchiDev.mvp.service;
 
+import com.victorMarchiDev.mvp.dto.PropostaDTO;
 import com.victorMarchiDev.mvp.enums.StatusCotacao;
+import com.victorMarchiDev.mvp.enums.StatusProposta;
+import com.victorMarchiDev.mvp.exception.CotacaoNaoEncontradaException;
+import com.victorMarchiDev.mvp.exception.PropostaNaoEncontradaException;
+import com.victorMarchiDev.mvp.mapper.PropostaMapper;
 import com.victorMarchiDev.mvp.model.CotacaoModel;
+import com.victorMarchiDev.mvp.model.ProdutoCotacaoModel;
 import com.victorMarchiDev.mvp.model.PropostaModel;
 import com.victorMarchiDev.mvp.repository.CotacaoRepository;
+import com.victorMarchiDev.mvp.repository.ProdutoCotacaoRepository;
 import com.victorMarchiDev.mvp.repository.PropostaRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class PropostaService {
 
-    private final CotacaoRepository repo;
-    private final PropostaRepository propostaRepo;
+    private final CotacaoRepository cotacaoRepository;
+    private final PropostaRepository propostaRepository;
+    private final ProdutoCotacaoRepository produtoCotacaoRepository;
+    private final PropostaMapper mapper;
 
-    public PropostaService(CotacaoRepository repo, PropostaRepository propostaRepo) {
-        this.repo = repo;
-        this.propostaRepo = propostaRepo;
-    }
+    @Transactional
+    public PropostaModel criarProposta(Long cotacaoId, PropostaModel proposta) {
 
-    public void registrarPropostas(Long cotacaoId, List<PropostaModel> propostasRecebidas){
-        CotacaoModel cotacao = repo.findById(cotacaoId)
-                .orElseThrow(() -> new RuntimeException("Cotação Não Encontrada!"));
+        CotacaoModel cotacao = cotacaoRepository.findById(cotacaoId)
+                .orElseThrow(() -> new RuntimeException("Cotação não encontrada"));
 
-        for (PropostaModel proposta : propostasRecebidas) {
-            proposta.setCotacao(cotacao);
-            propostaRepo.save(proposta);
-        }
+        proposta.setCotacao(cotacao);
+        proposta.setStatus(StatusProposta.CRIADA);
+        proposta.setDataCriacao(LocalDate.now());
+
+        PropostaModel salva = propostaRepository.save(proposta);
+
+        List<ProdutoCotacaoModel> itens =
+                produtoCotacaoRepository.findByCotacaoId(cotacaoId);
+
+        itens.forEach(item -> item.setProposta(salva));
+        produtoCotacaoRepository.saveAll(itens);
 
         cotacao.setStatus(StatusCotacao.FINALIZADA);
-        repo.save(cotacao);
+        cotacaoRepository.save(cotacao);
+
+        return salva;
     }
 
-    public List<PropostaModel> listarPropostasPorCotacao(Long cotacaoId) {
-        return propostaRepo.findByCotacaoId(cotacaoId);
+    public List<PropostaDTO> listarPropostas() {
+        return propostaRepository.findAll()
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
     }
 
-    public PropostaModel listarPropostaPorId(Long idProposta) {
-        return propostaRepo.findById(idProposta)
-                .orElseThrow(() -> new RuntimeException("Proposta não encontrada!"));
-    }
-
-    public Optional<PropostaModel> listarProdutoPorProposta(Long idProposta) {
-        return propostaRepo.findByIdComProduto(idProposta);
-    }
-
-    public List<PropostaModel> listarPropostas(){
-        return propostaRepo.findAll();
+    public PropostaDTO listarPropostaPorId(Long id) {
+        PropostaModel propostaModel = propostaRepository.findById(id)
+                .orElseThrow( () -> new PropostaNaoEncontradaException(id));
+        return mapper.toDTO(propostaModel);
     }
 }

@@ -1,12 +1,13 @@
 package com.victorMarchiDev.mvp.controller;
 
+import com.victorMarchiDev.mvp.dto.PropostaDTO;
+import com.victorMarchiDev.mvp.mapper.PropostaMapper;
 import com.victorMarchiDev.mvp.model.PropostaModel;
 import com.victorMarchiDev.mvp.service.PropostaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -14,26 +15,31 @@ import java.util.Optional;
 public class PropostaController {
 
     private final PropostaService propostaService;
+    private final PropostaMapper mapper;
 
-    public PropostaController(PropostaService propostaService) {
+    public PropostaController(PropostaService propostaService, PropostaMapper mapper) {
         this.propostaService = propostaService;
+        this.mapper = mapper;
     }
 
     @PostMapping("/criar/{id}/")
-    public ResponseEntity<String> registrarPropostas(
+    public ResponseEntity<PropostaDTO> registrarPropostas(
             @PathVariable("id") Long id,
-            @RequestBody List<PropostaModel> propostas
+            @RequestBody PropostaModel propostaModel
     ) {
-        propostaService.registrarPropostas(id, propostas);
-        return ResponseEntity.ok("Propostas registradas e cotação finalizada com sucesso!");
+        PropostaModel proposta = propostaService.criarProposta(id, propostaModel);
+        return ResponseEntity.ok().body(mapper.toDTO(proposta));
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<PropostaModel>> listarPropostas (){
-        List<PropostaModel> propostas = propostaService.listarPropostas();
+    public ResponseEntity<List<PropostaDTO>> listarPropostas() {
+        List<PropostaDTO> propostas = propostaService.listarPropostas();
         return ResponseEntity.ok(propostas);
     }
-    
 
+    @GetMapping("/listar/{id}")
+    public PropostaDTO listarPropostaPorId(@PathVariable Long id) {
+        return propostaService.listarPropostaPorId(id);
+    }
 
 }
