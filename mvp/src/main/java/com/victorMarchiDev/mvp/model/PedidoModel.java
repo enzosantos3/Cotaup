@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -43,5 +44,5 @@ public class PedidoModel {
     @Column(name = "status", nullable = false)
     private StatusPedido status;
 
-
+    private BigDecimal subTotal;
 }
