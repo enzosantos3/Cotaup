@@ -44,5 +44,6 @@ public class PedidoModel {
     @Column(name = "status", nullable = false)
     private StatusPedido status;
 
+    @Column(nullable = false ,precision = 15, scale = 2)
     private BigDecimal subTotal;
 }
