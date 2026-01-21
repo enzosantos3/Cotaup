@@ -1,5 +1,6 @@
 package com.victorMarchiDev.mvp.model;
 
+import com.victorMarchiDev.mvp.enums.StatusPedido;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,6 +38,10 @@ public class PedidoModel {
     @ManyToOne
     @JoinColumn(name = "usuario_criador_id", nullable = false)
     private UsuarioModel usuarioCriador;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StatusPedido status;
 
 
 }
