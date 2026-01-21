@@ -2,8 +2,10 @@ package com.victorMarchiDev.mvp.controller;
 
 import com.victorMarchiDev.mvp.dto.PedidoDTO;
 import com.victorMarchiDev.mvp.dto.ProdutoDTO;
+import com.victorMarchiDev.mvp.model.PedidoModel;
 import com.victorMarchiDev.mvp.service.PedidoService;
 import lombok.AllArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,12 @@ public class PedidoController {
     @GetMapping("/listar")
     public List<PedidoDTO> listarPedidos(){
         return service.listarPedidos();
+    }
+
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<PedidoDTO> listarPedidoPorId(Long id){
+        PedidoDTO dto = service.listarPedidoPorId(id);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping("/criar")

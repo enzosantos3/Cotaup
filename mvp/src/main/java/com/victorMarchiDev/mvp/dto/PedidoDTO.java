@@ -1,5 +1,8 @@
 package com.victorMarchiDev.mvp.dto;
 
+import com.victorMarchiDev.mvp.enums.StatusPedido;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record PedidoDTO(
@@ -8,5 +11,7 @@ public record PedidoDTO(
         Long idComprador,
         Long idFornecedor,
         Long idCotacao,
-        Long idUsuarioCriador
+        Long idUsuarioCriador,
+        StatusPedido status,
+        BigDecimal subTotal
 ) {}
