@@ -1,16 +1,19 @@
 'use client';
 
 import { pedidoService } from "@/services/pedidoService";
+import { fornecedorService } from "@/services/fornecedorService";
 import { PedidoDTO } from "@/types/pedido";
-import { Package, Plus, Search, X } from "lucide-react";
+import { FornecedorDTO } from "@/types/fornecedor";
+import { Calendar, Package, Plus, Search, TrendingUp, X } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function PedidosPage() {
     const [pedidos, setPedidos] = useState<PedidoDTO[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredPedidos, setFilteredPedidos] = useState<PedidoDTO[]>([]);
+    const [fornecedores, setFornecedores] = useState<Map<number, FornecedorDTO>>(new Map());
 
     useEffect(() => {
         const fetchPedidos = async () => {
@@ -18,6 +21,22 @@ export default function PedidosPage() {
                 const data = await pedidoService.getAllPedidos();
                 setPedidos(data);
                 setFilteredPedidos(data);
+                
+                const fornecedorIds = [...new Set(data.map(pedido => pedido.idFornecedor))];
+                const fornecedoresMap = new Map<number, FornecedorDTO>();
+                
+                await Promise.all(
+                    fornecedorIds.map(async (id) => {
+                        try {
+                            const fornecedor = await fornecedorService.getFornecedorById(id);
+                            fornecedoresMap.set(id, fornecedor);
+                        } catch (error) {
+                            console.warn(`Fornecedor ${id} não encontrado`);
+                        }
+                    })
+                );
+                
+                setFornecedores(fornecedoresMap);
             } catch (error) {
                 console.error('Erro ao carregar pedidos:', error);
             } finally {
@@ -32,18 +51,44 @@ export default function PedidosPage() {
         let filtered = pedidos;
 
         if (searchTerm.trim() !== '') {
-            filtered = pedidos.filter(pedido =>
-                pedido.id.toString().includes(searchTerm) ||
-                pedido.idComprador.toString().includes(searchTerm)
-            );
+            filtered = pedidos.filter(pedido => {
+                const fornecedor = fornecedores.get(pedido.idFornecedor);
+                return (
+                    pedido.id.toString().includes(searchTerm) ||
+                    pedido.idComprador.toString().includes(searchTerm) ||
+                    fornecedor?.nomeFantasia.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    fornecedor?.razaoSocial.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            });
         }
 
         setFilteredPedidos(filtered);
-    }, [searchTerm, pedidos]);
+    }, [searchTerm, pedidos, fornecedores]);
 
     const handleClearSearch = () => {
         setSearchTerm('');
     };
+
+    const stats = useMemo(() => {
+        const totalPedidos = pedidos.length;
+        const volumeTotal = 0; // Placeholder - adicionar quando tiver valor nos pedidos
+        
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+        
+        const pedidosEsteMes = pedidos.filter(pedido => {
+            const pedidoDate = new Date(pedido.criadoEm);
+            return pedidoDate.getMonth() === currentMonth && 
+                   pedidoDate.getFullYear() === currentYear;
+        }).length;
+
+        return {
+            totalPedidos,
+            volumeTotal,
+            pedidosEsteMes
+        };
+    }, [pedidos]);
 
     if (loading) {
         return (
@@ -70,7 +115,47 @@ export default function PedidosPage() {
                 </Link>
             </div>
 
-            {/* Search Bar */}
+            {/* Statistics Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Package className="text-blue-600" size={24} />
+                        </div>
+                        <div>
+                            <p className="text-2xl font-bold text-gray-900">{stats.totalPedidos}</p>
+                            <p className="text-sm text-gray-600">Total de Pedidos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <TrendingUp className="text-green-600" size={24} />
+                        </div>
+                        <div>
+                            <p className="text-2xl font-bold text-gray-900">
+                                R$ {stats.volumeTotal > 0 ? (stats.volumeTotal / 1000).toFixed(0) + 'k' : '0'}
+                            </p>
+                            <p className="text-sm text-gray-600">Volume Total</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Calendar className="text-purple-600" size={24} />
+                        </div>
+                        <div>
+                            <p className="text-2xl font-bold text-gray-900">{stats.pedidosEsteMes}</p>
+                            <p className="text-sm text-gray-600">Este Mês</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
                 <div className="flex items-center gap-4">
                     <div className="relative flex-1">
@@ -124,7 +209,7 @@ export default function PedidosPage() {
                                         </div>
                                         
                                         <p className="text-gray-600 text-sm mb-2">
-                                            Fornecedor ID: {pedido.idFornecedor}
+                                            Fornecedor: {fornecedores.get(pedido.idFornecedor)?.nomeFantasia || `ID: ${pedido.idFornecedor}`}
                                         </p>
                                         
                                         <div className="flex items-center gap-4 text-sm text-gray-500">

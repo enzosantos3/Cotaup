@@ -3,9 +3,9 @@ import { PedidoDTO } from "@/types/pedido";
 let pedidos: PedidoDTO[] = [
     {
         id: 1,
-        criadoEm: '2025-01-15T10:30:00Z',
+        criadoEm: '2026-01-15T10:30:00Z',
         idComprador: 101,
-        idFornecedor: 201,
+        idFornecedor: 1,
         idCotacao: 1,
         idUsuarioCriador: 1001,
     },
@@ -13,7 +13,7 @@ let pedidos: PedidoDTO[] = [
         id: 2,
         criadoEm: '2025-02-05T14:20:00Z',
         idComprador: 102,
-        idFornecedor: 202,
+        idFornecedor: 2,
         idCotacao: 2,
         idUsuarioCriador: 1002,
     },

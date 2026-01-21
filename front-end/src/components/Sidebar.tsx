@@ -10,7 +10,8 @@ import {
     Settings, 
     Menu,
     X, 
-    Truck
+    Truck,
+    BaggageClaim
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -34,6 +35,11 @@ const menuItems = [
         name: 'Fornecedores',
         href: '/fornecedores',
         icon: Truck,
+    },
+    {
+        name: 'Pedidos',
+        href: '/pedidos',
+        icon: BaggageClaim,
     },
     {
         name: 'Configurações',
@@ -74,7 +80,6 @@ export default function Sidebar() {
                 `}
             >
                 <div className="flex flex-col h-full">
-                    {/* Logo/Header */}
                     <div className="p-6 border-b border-gray-800">
                         <div className="flex items-center justify-center gap-3">
                             <Image 
@@ -86,7 +91,6 @@ export default function Sidebar() {
                         </div>
                     </div>
 
-                    {/* Menu Items */}
                     <nav className="flex-1 p-4 space-y-2">
                         {menuItems.map((item) => {
                             const Icon = item.icon;
