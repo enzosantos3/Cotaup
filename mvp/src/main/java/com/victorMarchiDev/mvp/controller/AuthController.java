@@ -2,6 +2,7 @@ package com.victorMarchiDev.mvp.controller;
 
 import com.victorMarchiDev.mvp.dto.LoginRequest;
 import com.victorMarchiDev.mvp.dto.RegisterRequest;
+import com.victorMarchiDev.mvp.dto.TokenResponse;
 import com.victorMarchiDev.mvp.service.AuthService;
 import com.victorMarchiDev.mvp.service.LoginService;
 import jakarta.validation.Valid;
@@ -32,10 +33,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest dto){
+    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest dto){
         try {
-            loginService.login(dto);
-            return ResponseEntity.ok().build();
+            String token = loginService.login(dto);
+            return ResponseEntity.ok(new TokenResponse(token));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

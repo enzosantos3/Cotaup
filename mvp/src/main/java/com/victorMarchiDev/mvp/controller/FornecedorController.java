@@ -4,6 +4,8 @@ import com.victorMarchiDev.mvp.dto.FornecedorDTO;
 import com.victorMarchiDev.mvp.model.FornecedorModel;
 import com.victorMarchiDev.mvp.service.FornecedorService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,9 +29,23 @@ public class FornecedorController {
             return ResponseEntity.ok().body(fornecedorCriado);
     }
 
+    @PreAuthorize("hasRole('FORNECEDOR')")
     @GetMapping("/listar")
     public List<FornecedorDTO> listarFornecedores(){
         return service.listarFornecedores();
+    }
+
+    @GetMapping("/ping")
+    public ResponseEntity<?> listar() {
+
+        var auth = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        System.out.println("AUTH = " + auth);
+        System.out.println("AUTHORITIES = " + auth.getAuthorities());
+
+        return ResponseEntity.ok("PONG");
     }
 
     @DeleteMapping("/deletar/{id}")
