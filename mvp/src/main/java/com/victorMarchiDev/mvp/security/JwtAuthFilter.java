@@ -1,4 +1,4 @@
-package com.victorMarchiDev.mvp.service;
+package com.victorMarchiDev.mvp.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

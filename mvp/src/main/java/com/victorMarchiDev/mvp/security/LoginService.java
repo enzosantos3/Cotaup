@@ -1,7 +1,6 @@
-package com.victorMarchiDev.mvp.service;
+package com.victorMarchiDev.mvp.security;
 
 import com.victorMarchiDev.mvp.dto.LoginRequest;
-import org.apache.catalina.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;

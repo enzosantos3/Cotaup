@@ -1,4 +1,4 @@
-package com.victorMarchiDev.mvp.service;
+package com.victorMarchiDev.mvp.security;
 
 import com.victorMarchiDev.mvp.model.UsuarioModel;
 import com.victorMarchiDev.mvp.repository.UsuarioRepository;
