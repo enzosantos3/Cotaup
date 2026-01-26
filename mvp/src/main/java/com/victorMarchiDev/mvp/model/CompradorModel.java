@@ -23,7 +23,7 @@ public class CompradorModel {
     private UsuarioModel usuario;
 
     @ManyToOne
-    @JoinColumn(name = "empresa_id", nullable = false)
+    @JoinColumn(name = "empresa_id", nullable = true)
     private EmpresaModel empresa;
 
 }
