@@ -1,12 +1,6 @@
 import { FornecedorDTO } from "@/types/fornecedor";
 
-// RETIRAR PARA A INTEGRAÇÃO DA API REAL
 const getBaseURL = () => {
-    if (typeof window === 'undefined') {
-        return process.env.NEXT_PUBLIC_API_URL
-            ? `http://localhost:3000${process.env.NEXT_PUBLIC_API_URL}`
-            : 'http://localhost:3000/api';
-    }
     return process.env.NEXT_PUBLIC_API_URL || '/api';
 };
 
