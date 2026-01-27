@@ -38,4 +38,11 @@ public class CotacaoModel {
 
     private String observacoes;
 
+    @OneToMany(
+            mappedBy = "cotacao",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ProdutoCotacaoModel> produtos;
+
 }

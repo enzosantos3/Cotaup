@@ -7,6 +7,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record CotacaoDTO(
          Long id,
@@ -14,5 +15,6 @@ public record CotacaoDTO(
          LocalDate dataInicio,
          LocalDate dataFim,
          StatusCotacao status,
-         String observacoes
+         String observacoes,
+         List<ProdutoCotacaoDTO> produtos
 ) {}

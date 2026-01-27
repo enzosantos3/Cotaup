@@ -10,22 +10,11 @@ import java.math.BigDecimal;
 
 public record ProdutoCotacaoDTO(
          Long id,
-
-         @NotNull
          Long cotacaoId,
-
-         @NotNull
          Long produtoId,
-
+         String nomeProduto,
          Long propostaId,
-
-         @NotNull
-         @Positive
          Integer quantidade,
-
-         @NotNull
-         @PositiveOrZero
          BigDecimal valorUnitario,
-
          BigDecimal valorTotal
 ) {}

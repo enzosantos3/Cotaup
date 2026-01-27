@@ -6,6 +6,7 @@ import com.victorMarchiDev.mvp.enums.StatusCotacao;
 import com.victorMarchiDev.mvp.exception.CotacaoNaoEncontradaException;
 import com.victorMarchiDev.mvp.mapper.CotacaoMapper;
 import com.victorMarchiDev.mvp.model.CotacaoModel;
+import com.victorMarchiDev.mvp.model.ProdutoCotacaoModel;
 import com.victorMarchiDev.mvp.model.ProdutoModel;
 import com.victorMarchiDev.mvp.model.PropostaModel;
 import com.victorMarchiDev.mvp.repository.CotacaoRepository;
@@ -38,6 +39,10 @@ public class CotacaoService {
         cotacao.setDataFim(seteDiasDepois);
         cotacao.setStatus(StatusCotacao.ABERTA);
 
+        for (ProdutoCotacaoModel pc : cotacao.getProdutos()) {
+            pc.setCotacao(cotacao);
+        }
+
         CotacaoModel salva = repo.save(cotacao);
 
         return mapper.toDTO(salva);
@@ -45,7 +50,7 @@ public class CotacaoService {
 
 
     public List<CotacaoDTO> listarCotacoes() {
-        return repo.findAll()
+        return repo.findAllComProdutos()
                 .stream()
                 .map(mapper::toDTO)
                 .toList();
