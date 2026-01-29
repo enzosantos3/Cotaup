@@ -11,11 +11,17 @@ import {
     Menu,
     X, 
     Truck,
-    BaggageClaim
+    BaggageClaim,
+    Building2,
+    ShoppingCart,
+    ClipboardList,
+    MessageSquare,
+    Store,
+    Users
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const menuItems = [
+const menuItemsComprador = [
     {
         name: 'Dashboard',
         href: '/',
@@ -23,7 +29,7 @@ const menuItems = [
     },
     {
         name: 'Cotações',
-        href: '/cotacoes',
+        href: '/comprador/cotacoes',
         icon: FileText,
     },
     {
@@ -33,13 +39,61 @@ const menuItems = [
     },
     {
         name: 'Fornecedores',
-        href: '/fornecedores',
+        href: '/comprador/fornecedores',
         icon: Truck,
     },
     {
         name: 'Pedidos',
         href: '/pedidos',
         icon: BaggageClaim,
+    },
+    {
+        name: 'Propostas',
+        href: '/propostas',
+        icon: ClipboardList,
+    },
+    {
+        name: 'Configurações',
+        href: '/configuracoes',
+        icon: Settings,
+    },
+];
+
+const menuItemsFornecedor = [
+    {
+        name: 'Dashboard',
+        href: '/',
+        icon: Home,
+    },
+    {
+        name: 'Marketplace',
+        href: '/fornecedor/marketplace',
+        icon: Store,
+    },
+    {
+        name: 'Propostas',
+        href: '/fornecedor/propostas',
+        icon: ClipboardList,
+    },
+    {
+        name: 'Pedidos',
+        href: '/pedidos',
+        icon: BaggageClaim,
+    },
+    {
+        name: 'Clientes',
+        href: '/fornecedor/clientes',
+        icon: Users,
+    },
+    {
+        name: 'Produtos',
+        href: '/produtos',
+        icon: Package,
+    },
+    {
+        name: 'Mensagens',
+        href: '/mensagens',
+        icon: MessageSquare,
     },
     {
         name: 'Configurações',
@@ -51,6 +105,16 @@ const menuItems = [
 export default function Sidebar() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
+    const [userType, setUserType] = useState<'comprador' | 'fornecedor'>('comprador');
+
+    useEffect(() => {
+        const savedUserType = localStorage.getItem('userType') as 'comprador' | 'fornecedor' | null;
+        if (savedUserType) {
+            setUserType(savedUserType);
+        }
+    }, []);
+
+    const menuItems = userType === 'fornecedor' ? menuItemsFornecedor : menuItemsComprador;
 
     return (
         <>
@@ -120,11 +184,19 @@ export default function Sidebar() {
                     {/* Footer */}
                     <div className="p-4 border-t border-gray-800">
                         <div className="flex items-center gap-3 px-4 py-3">
-                            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-                                <span className="text-sm font-bold">U</span>
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                userType === 'fornecedor' ? 'bg-blue-600' : 'bg-purple-600'
+                            }`}>
+                                {userType === 'fornecedor' ? (
+                                    <Building2 size={20} />
+                                ) : (
+                                    <ShoppingCart size={20} />
+                                )}
                             </div>
                             <div className="flex-1">
-                                <p className="text-sm font-medium">Usuário</p>
+                                <p className="text-sm font-medium">
+                                    {userType === 'fornecedor' ? 'Fornecedor' : 'Comprador'}
+                                </p>
                                 <p className="text-xs text-gray-400">usuario@email.com</p>
                             </div>
                         </div>

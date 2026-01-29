@@ -1,8 +1,10 @@
 'use client';
 
-import { Building2, ShoppingCart, User, Lock, Mail } from "lucide-react";
+import { Building2, ShoppingCart, User, Lock, Mail, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { authService } from "@/services/authService";
+import { Role } from "@/types/auth";
 
 type UserType = 'fornecedor' | 'comprador' | null;
 
@@ -12,18 +14,38 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        setError('');
 
-        // Simulação de login
-        setTimeout(() => {
-            console.log('Login como:', selectedType, { email, password });
+        try {
+            const { token, user } = await authService.login(email, password);
+            
+            console.log('Login realizado com sucesso:', { user });
+            
+            const expectedRole: Role = selectedType === 'fornecedor' ? 'FORNECEDOR' : 'COMPRADOR';
+            if (user.role !== expectedRole) {
+                setError(`Esta conta não é de ${selectedType}. Por favor, selecione o tipo correto.`);
+                authService.logout();
+                setLoading(false);
+                return;
+            }
+            
+            if (user.role === 'FORNECEDOR') {
+                router.push('/fornecedor/dashboard');
+            } else if (user.role === 'COMPRADOR') {
+                router.push('/comprador/dashboard');
+            } else {
+                router.push('/');
+            }
+        } catch (err: any) {
+            console.error('Erro no login:', err);
+            setError(err.message || 'Erro ao realizar login. Tente novamente.');
             setLoading(false);
-            // Redirecionar para dashboard
-            router.push('/dashboard');
-        }, 1000);
+        }
     };
 
     if (!selectedType) {
@@ -40,7 +62,6 @@ export default function LoginPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Card Fornecedor */}
                         <button
                             onClick={() => setSelectedType('fornecedor')}
                             className="group bg-white rounded-2xl shadow-lg border-2 border-gray-200 p-8 hover:border-blue-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
@@ -65,7 +86,6 @@ export default function LoginPage() {
                             </div>
                         </button>
 
-                        {/* Card Comprador */}
                         <button
                             onClick={() => setSelectedType('comprador')}
                             className="group bg-white rounded-2xl shadow-lg border-2 border-gray-200 p-8 hover:border-purple-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
@@ -103,7 +123,6 @@ export default function LoginPage() {
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
             <div className="max-w-md w-full">
                 <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-                    {/* Header */}
                     <div className="text-center mb-8">
                         <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
                             selectedType === 'fornecedor' ? 'bg-blue-100' : 'bg-purple-100'
@@ -122,9 +141,14 @@ export default function LoginPage() {
                         </p>
                     </div>
 
-                    {/* Form */}
                     <form onSubmit={handleLogin} className="space-y-5">
-                        {/* Email */}
+                        {error && (
+                            <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+                                <AlertCircle className="text-red-500 flex-shrink-0 mt-0.5" size={20} />
+                                <p className="text-sm text-red-700">{error}</p>
+                            </div>
+                        )}
+
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                                 E-mail
@@ -145,7 +169,6 @@ export default function LoginPage() {
                             </div>
                         </div>
 
-                        {/* Senha */}
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                                 Senha
@@ -166,7 +189,6 @@ export default function LoginPage() {
                             </div>
                         </div>
 
-                        {/* Lembrar-me e Esqueci a senha */}
                         <div className="flex items-center justify-between">
                             <label className="flex items-center">
                                 <input
@@ -183,7 +205,6 @@ export default function LoginPage() {
                             </button>
                         </div>
 
-                        {/* Botão de Login */}
                         <button
                             type="submit"
                             disabled={loading}
@@ -197,7 +218,6 @@ export default function LoginPage() {
                         </button>
                     </form>
 
-                    {/* Voltar */}
                     <div className="mt-6 text-center">
                         <button
                             onClick={() => setSelectedType(null)}
@@ -207,20 +227,18 @@ export default function LoginPage() {
                         </button>
                     </div>
 
-                    {/* Cadastro */}
                     <div className="mt-6 pt-6 border-t border-gray-200 text-center">
                         <p className="text-sm text-gray-600">
                             Não tem uma conta?{' '}
-                            <button className="text-blue-600 hover:text-blue-700 font-semibold">
+                            <button
+                                type="button"
+                                onClick={() => router.push('/register')}
+                                className="text-blue-600 hover:text-blue-700 font-semibold"
+                            >
                                 Cadastre-se
                             </button>
                         </p>
                     </div>
-                </div>
-
-                {/* Informação */}
-                <div className="text-center mt-6 text-gray-500 text-sm">
-                    <p>Login simulado - Qualquer credencial será aceita</p>
                 </div>
             </div>
         </div>

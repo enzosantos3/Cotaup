@@ -48,8 +48,9 @@ let produtosCotacao: ProdutoCotacaoDTO[] = [
 
 export async function GET(
     request: Request,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
+    const params = await context.params;
     const idCotacao = Number(params.id);
     const produtos = produtosCotacao.filter(
         (pc) => pc.idCotacao === idCotacao

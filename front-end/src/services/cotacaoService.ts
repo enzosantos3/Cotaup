@@ -37,7 +37,7 @@ export const cotacaoService = {
     },
 
     getCotacoesAbertas: async (): Promise<CotacaoDTO[]> => {
-        const response = await fetch(getApiUrl(`${COTACOES_ENDPOINTS.listar}/abertas`), {
+        const response = await fetch(getApiUrl('/cotacoes/listar/abertas'), {
             cache: `no-store`,
         });
 
@@ -46,7 +46,7 @@ export const cotacaoService = {
     },
 
     getCotacoesFinalizadas: async (): Promise<CotacaoDTO[]> => {
-        const response = await fetch(getApiUrl(`${COTACOES_ENDPOINTS.listar}/finalizadas`), {
+        const response = await fetch(getApiUrl('/cotacoes/listar/finalizadas'), {
             cache: `no-store`,
         });
 

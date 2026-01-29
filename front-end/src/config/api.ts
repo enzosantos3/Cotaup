@@ -1,50 +1,27 @@
 /**
  * Configuração centralizada da API
- * Permite trocar entre mock local e backend real apenas alterando variáveis de ambiente
  */
 
-// URL base da API
-const getBaseURL = () => {
-    // Se estiver no servidor (Server Component)
-    if (typeof window === 'undefined') {
-        return process.env.NEXT_PUBLIC_API_URL 
-            ? process.env.NEXT_PUBLIC_API_URL.startsWith('http')
-                ? process.env.NEXT_PUBLIC_API_URL
-                : `http://localhost:3000${process.env.NEXT_PUBLIC_API_URL}`
-            : 'http://localhost:3000/api';
-    }
-    // Se estiver no cliente (Client Component)
-    return process.env.NEXT_PUBLIC_API_URL || '/api';
-};
+// URL base da API real
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.cotaup.com.br';
 
-export const API_BASE_URL = getBaseURL();
-
-// Sufixos das rotas (para compatibilidade com backend Spring Boot)
-const ROUTE_SUFFIXES = {
-    cotacoes: {
-        listar: process.env.NEXT_PUBLIC_COTACOES_LISTAR_SUFFIX || '',
-        criar: process.env.NEXT_PUBLIC_COTACOES_CRIAR_SUFFIX || '',
-        detalhe: process.env.NEXT_PUBLIC_COTACOES_DETALHE_SUFFIX || '',
-    },
-    produtos: {
-        listar: process.env.NEXT_PUBLIC_PRODUTOS_LISTAR_SUFFIX || '',
-        criar: process.env.NEXT_PUBLIC_PRODUTOS_CRIAR_SUFFIX || '',
-        detalhe: process.env.NEXT_PUBLIC_PRODUTOS_DETALHE_SUFFIX || '',
-    },
-    pedidos: {
-        listar: process.env.NEXT_PUBLIC_PEDIDOS_LISTAR_SUFFIX || '',
-        criar: process.env.NEXT_PUBLIC_PEDIDOS_CRIAR_SUFFIX || '',
-        detalhe: process.env.NEXT_PUBLIC_PEDIDOS_DETALHE_SUFFIX || '',
-    },
+/**
+ * Endpoints de Autenticação
+ */
+export const AUTH_ENDPOINTS = {
+    login: '/auth/login',
+    register: '/auth/register',
 };
 
 /**
  * Endpoints da API de Cotações
  */
 export const COTACOES_ENDPOINTS = {
-    listar: `/cotacoes${ROUTE_SUFFIXES.cotacoes.listar}`,
-    criar: `/cotacoes${ROUTE_SUFFIXES.cotacoes.criar}`,
-    detalhe: (id: number) => `/cotacoes${ROUTE_SUFFIXES.cotacoes.detalhe}/${id}`,
+    listar: '/cotacoes/listar',
+    criar: '/cotacoes/criar',
+    detalhe: (id: number) => `/cotacoes/listar/${id}`,
+    abertas: '/cotacoes/listar/abertas',
+    finalizadas: '/cotacoes/listar/finalizadas',
     atualizar: (id: number) => `/cotacoes/${id}`,
     deletar: (id: number) => `/cotacoes/${id}`,
 };
@@ -53,9 +30,9 @@ export const COTACOES_ENDPOINTS = {
  * Endpoints da API de Produtos
  */
 export const PRODUTOS_ENDPOINTS = {
-    listar: `/produtos${ROUTE_SUFFIXES.produtos.listar}`,
-    criar: `/produtos${ROUTE_SUFFIXES.produtos.criar}`,
-    detalhe: (id: number) => `/produtos${ROUTE_SUFFIXES.produtos.detalhe}/${id}`,
+    listar: '/produtos/listar',
+    criar: '/produtos/criar',
+    detalhe: (id: number) => `/produtos/listar/${id}`,
     atualizar: (id: number) => `/produtos/${id}`,
     deletar: (id: number) => `/produtos/${id}`,
 };
@@ -63,15 +40,17 @@ export const PRODUTOS_ENDPOINTS = {
 /**
  * Endpoints da API de ProdutoCotacao
  */
-
 export const PRODUTOCOTACAO_ENDPOINTS = {
     listarProdutos: (id: number) => `/produto-cotacao/listar/${id}`,
 };
 
+/**
+ * Endpoints da API de Pedidos
+ */
 export const PEDIDO_ENDPOINTS = {
-    listar: `/pedidos${ROUTE_SUFFIXES.pedidos.listar}`,
-    criar: `/pedidos${ROUTE_SUFFIXES.pedidos.criar}`,
-    detalhe: (id: number) => `/pedidos${ROUTE_SUFFIXES.pedidos.detalhe}/${id}`,
+    listar: '/pedidos/listar',
+    criar: '/pedidos/criar',
+    detalhe: (id: number) => `/pedidos/listar/${id}`,
     atualizar: (id: number) => `/pedidos/${id}`,
     deletar: (id: number) => `/pedidos/${id}`,
 };
