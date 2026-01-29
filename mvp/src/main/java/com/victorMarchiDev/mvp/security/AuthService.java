@@ -1,6 +1,7 @@
 package com.victorMarchiDev.mvp.security;
 
 import com.victorMarchiDev.mvp.dto.RegisterRequest;
+import com.victorMarchiDev.mvp.exception.EmailCadastradoException;
 import com.victorMarchiDev.mvp.model.UsuarioModel;
 import com.victorMarchiDev.mvp.model.UsuarioService;
 import com.victorMarchiDev.mvp.repository.UsuarioRepository;
@@ -22,7 +23,7 @@ public class AuthService {
 
     public void registrar(RegisterRequest dto){
         if(repository.findByEmail(dto.email()).isPresent())
-            throw new RuntimeException("Email já cadastrado");
+            throw new EmailCadastradoException();
 
         UsuarioModel user = new UsuarioModel();
         user.setEmail(dto.email());

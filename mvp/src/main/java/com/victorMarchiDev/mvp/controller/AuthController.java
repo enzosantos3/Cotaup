@@ -3,6 +3,7 @@ package com.victorMarchiDev.mvp.controller;
 import com.victorMarchiDev.mvp.dto.LoginRequest;
 import com.victorMarchiDev.mvp.dto.RegisterRequest;
 import com.victorMarchiDev.mvp.dto.TokenResponse;
+import com.victorMarchiDev.mvp.exception.EmailCadastradoException;
 import com.victorMarchiDev.mvp.security.AuthService;
 import com.victorMarchiDev.mvp.security.LoginService;
 import jakarta.validation.Valid;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,9 +30,20 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody @Valid RegisterRequest dto){
-        authService.registrar(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest dto){
+
+        try{
+            authService.registrar(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (EmailCadastradoException e){
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(Map.of(
+                            "error", "EMAIL_ALREADY_EXISTS",
+                            "message", e.getMessage()
+                    ));
+        }
+
     }
 
     @PostMapping("/login")
