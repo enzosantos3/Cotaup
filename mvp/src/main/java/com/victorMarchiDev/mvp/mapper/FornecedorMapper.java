@@ -21,7 +21,7 @@ public interface FornecedorMapper {
     FornecedorDTO toDto(FornecedorModel fornecedor);
 
     @Mapping(source = "usuarioId", target = "usuario.id")
-    @Mapping(source = "empresaId", target = "empresa.id")
+    @Mapping(target = "empresa", ignore = true)
     FornecedorModel toEntity(FornecedorDTO dto);
 }
 
