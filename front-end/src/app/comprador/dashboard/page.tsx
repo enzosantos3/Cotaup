@@ -22,15 +22,8 @@ interface RecentQuote {
 
 export default function CompradorDashboard() {
     const router = useRouter();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const userType = localStorage.getItem('userType');
-        if (userType !== 'comprador') {
-            router.push('/login');
-        }
-        setLoading(false);
-    }, [router]);
 
     const metrics: MetricCard[] = [
         {

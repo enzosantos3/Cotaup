@@ -29,7 +29,7 @@ export default function LoginPage() {
             const expectedRole: Role = selectedType === 'fornecedor' ? 'FORNECEDOR' : 'COMPRADOR';
             if (user.role !== expectedRole) {
                 setError(`Esta conta não é de ${selectedType}. Por favor, selecione o tipo correto.`);
-                authService.logout();
+                await authService.logout();
                 setLoading(false);
                 return;
             }

@@ -1,52 +1,156 @@
-# 🔧 Configuração da API
+# 🔧 Configuração da API - Arquitetura com Proxy
 
-Este projeto está preparado para funcionar tanto com **mock local** (desenvolvimento) quanto com o **backend real** (produção), sem precisar reescrever código.
+Este projeto utiliza **rotas de API proxy** do Next.js para resolver problemas de CORS e melhorar a segurança.
 
-## 📋 Como Funciona
+## 🏗️ Arquitetura
 
-Toda a configuração de rotas está centralizada em:
-- **`/src/config/api.ts`** - Define os endpoints
-- **`.env.local`** - Configuração de desenvolvimento
-- **`.env.production`** - Configuração de produção
-
-## 🚀 Desenvolvimento (Mock Local)
-
-### Configuração atual (`.env.local`):
-```bash
-NEXT_PUBLIC_API_URL=/api
-NEXT_PUBLIC_COTACOES_LISTAR_SUFFIX=
-NEXT_PUBLIC_COTACOES_CRIAR_SUFFIX=
-NEXT_PUBLIC_PRODUTOS_LISTAR_SUFFIX=
-NEXT_PUBLIC_PRODUTOS_CRIAR_SUFFIX=
+```
+Cliente (Browser)
+    ↓
+Next.js Frontend (localhost:3000)
+    ↓
+API Routes (Proxy) - /api/*
+    ↓
+Backend Spring Boot (api.cotaup.com.br)
 ```
 
-### Resultado:
-- `GET /api/cotacoes` - Lista cotações (mock)
-- `POST /api/cotacoes` - Cria cotação (mock)
-- `GET /api/produtos` - Lista produtos (mock)
+## ✅ Vantagens desta Arquitetura
 
-## 🌐 Produção (Backend Real)
+1. **Zero CORS**: Frontend e API no mesmo domínio
+2. **HttpOnly Cookies**: Token salvo em cookie seguro (não acessível via JS)
+3. **Segurança**: Protege contra XSS attacks
+4. **Performance**: Menor latência em desenvolvimento
+5. **Simplicidade**: Sem configuração CORS complexa
 
-### Quando integrar com o backend, atualize `.env.local`:
+## 📂 Estrutura de Rotas de Proxy
 
-```bash
-# URL do backend Spring Boot
-NEXT_PUBLIC_API_URL=http://localhost:8080/api
+### Autenticação
+- `POST /api/auth/login` → Proxy para `https://api.cotaup.com.br/auth/login`
+- `POST /api/auth/register` → Proxy para `https://api.cotaup.com.br/auth/register`
+- `POST /api/auth/logout` → Limpa cookies de autenticação
 
-# Sufixos das rotas do Spring Boot
-NEXT_PUBLIC_COTACOES_LISTAR_SUFFIX=/listar
-NEXT_PUBLIC_COTACOES_CRIAR_SUFFIX=/criar
-NEXT_PUBLIC_COTACOES_DETALHE_SUFFIX=/listar
+### Outras rotas (a implementar conforme necessário)
+- `GET /api/cotacoes/*` → Proxy com token no header
+- `GET /api/produtos/*` → Proxy com token no header
+- etc.
 
-NEXT_PUBLIC_PRODUTOS_LISTAR_SUFFIX=/listar
-NEXT_PUBLIC_PRODUTOS_CRIAR_SUFFIX=/criar
-NEXT_PUBLIC_PRODUTOS_DETALHE_SUFFIX=/listar
+## 🔐 Sistema de Autenticação
+
+### Login Flow
+1. Cliente envia credenciais para `/api/auth/login`
+2. Proxy encaminha para backend Spring Boot
+3. Backend retorna JWT token
+4. Proxy salva token em:
+   - Cookie httpOnly (para segurança)
+   - Response JSON (para localStorage no cliente)
+5. Cliente redireciona para dashboard
+
+### Proteção de Rotas
+Agora usando **client-side protection** via componente `ProtectedRoute`:
+
+```tsx
+<ProtectedRoute requiredRole="COMPRADOR">
+  <CompradorDashboard />
+</ProtectedRoute>
 ```
 
-### Resultado automático:
-- `GET http://localhost:8080/api/cotacoes/listar` - Lista cotações (backend)
-- `POST http://localhost:8080/api/cotacoes/criar` - Cria cotação (backend)
-- `GET http://localhost:8080/api/produtos/listar` - Lista produtos (backend)
+**Não usa middleware** - proteção acontece no layout de cada seção.
+
+## 🌐 Configuração de Ambiente
+
+### `.env.local` (Desenvolvimento)
+## 🌐 Configuração de Ambiente
+
+### `.env.local` (Desenvolvimento)
+```bash
+# URL do backend (usada pelas rotas de proxy)
+NEXT_PUBLIC_API_URL=http://localhost:8080
+
+# Ou apontar direto para produção
+NEXT_PUBLIC_API_URL=https://api.cotaup.com.br
+```
+
+### `.env.production` (Produção)
+```bash
+NEXT_PUBLIC_API_URL=https://api.cotaup.com.br
+NODE_ENV=production
+```
+
+## 🛠️ Como Adicionar Novos Endpoints Proxy
+
+### 1. Criar rota de API
+```typescript
+// src/app/api/cotacoes/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+export async function GET(request: NextRequest) {
+    const token = request.cookies.get('auth_token')?.value;
+    
+    const response = await fetch(`${API_BASE_URL}/cotacoes/listar`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+    
+    const data = await response.json();
+    return NextResponse.json(data);
+}
+```
+
+### 2. Usar no service
+```typescript
+// src/services/cotacaoService.ts
+async listarCotacoes() {
+    const response = await fetch('/api/cotacoes');
+    return response.json();
+}
+```
+
+## 📝 Migração de Código Existente
+
+Se você tem serviços que fazem chamadas diretas ao backend:
+
+**Antes:**
+```typescript
+fetch('https://api.cotaup.com.br/cotacoes/listar', {
+    headers: { 'Authorization': `Bearer ${token}` }
+})
+```
+
+**Depois:**
+```typescript
+fetch('/api/cotacoes') // Token é enviado automaticamente via cookie
+```
+
+## 🔒 Segurança
+
+### Cookies HttpOnly
+- Token armazenado em cookie `httpOnly=true`
+- Não acessível via JavaScript
+- Protege contra XSS attacks
+- Enviado automaticamente em todas as requisições
+
+### LocalStorage (Backup)
+- Também salva em localStorage para compatibilidade
+- Usado para verificações client-side (role, email)
+- Não contém informações sensíveis além do token
+
+## 🐛 Debug
+
+### Verificar se proxy está funcionando
+1. Abra DevTools → Network
+2. Faça login
+3. Verifique requisição para `/api/auth/login`
+4. Status deve ser `200` ou `401` (não `403` de CORS)
+5. Cookie `auth_token` deve aparecer em Application → Cookies
+
+### Logs do servidor
+```bash
+# Terminal do Next.js mostrará logs das rotas de API
+[API] Login proxy: { status: 200 }
+```
 
 ## ✨ Vantagens
 

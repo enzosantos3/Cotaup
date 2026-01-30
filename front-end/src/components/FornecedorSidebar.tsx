@@ -13,6 +13,7 @@ import {
     LogOut
 } from 'lucide-react';
 import { useState } from 'react';
+import { authService } from '@/services/authService';
 
 const menuItems = [
     {
@@ -47,10 +48,8 @@ export default function FornecedorSidebar() {
     const router = useRouter();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    const handleLogout = () => {
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('auth_user');
-        document.cookie = 'auth_token=; Max-Age=0; path=/';
+    const handleLogout = async () => {
+        await authService.logout();
         router.push('/login');
     };
 
