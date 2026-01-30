@@ -3,7 +3,7 @@ package com.victorMarchiDev.mvp.security;
 import com.victorMarchiDev.mvp.dto.RegisterRequest;
 import com.victorMarchiDev.mvp.exception.EmailCadastradoException;
 import com.victorMarchiDev.mvp.model.UsuarioModel;
-import com.victorMarchiDev.mvp.model.UsuarioService;
+import com.victorMarchiDev.mvp.service.UsuarioService;
 import com.victorMarchiDev.mvp.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

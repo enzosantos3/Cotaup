@@ -1,8 +1,9 @@
-package com.victorMarchiDev.mvp.model;
+package com.victorMarchiDev.mvp.service;
 
-import com.victorMarchiDev.mvp.dto.UsuarioDTO;
-import com.victorMarchiDev.mvp.enums.Role;
 import com.victorMarchiDev.mvp.mapper.UsuarioMapper;
+import com.victorMarchiDev.mvp.model.CompradorModel;
+import com.victorMarchiDev.mvp.model.FornecedorModel;
+import com.victorMarchiDev.mvp.model.UsuarioModel;
 import com.victorMarchiDev.mvp.repository.CompradorRepository;
 import com.victorMarchiDev.mvp.repository.EmpresaRepository;
 import com.victorMarchiDev.mvp.repository.FornecedorRepository;

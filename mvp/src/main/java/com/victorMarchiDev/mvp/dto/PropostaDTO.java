@@ -8,22 +8,11 @@ import java.util.List;
 
 public record PropostaDTO(
         Long id,
-
         LocalDate dataCriacao,
-
         LocalDate dataResposta,
-
-        @NotNull
         StatusProposta status,
-
-        @NotNull
         Long cotacaoId,
-
-        @NotNull
         Long fornecedorId,
-
-        @NotNull
         Long compradorId,
-
         List<ProdutoCotacaoDTO> itens
 ) {}

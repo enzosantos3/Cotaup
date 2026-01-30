@@ -12,6 +12,7 @@ import com.victorMarchiDev.mvp.model.PropostaModel;
 import com.victorMarchiDev.mvp.repository.CotacaoRepository;
 import com.victorMarchiDev.mvp.repository.PropostaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -30,13 +31,12 @@ public class CotacaoService {
         this.mapper = mapper;
     }
 
+    @Transactional
     public CotacaoDTO criarCotacao(CotacaoDTO dto){
-        LocalDate hoje = LocalDate.now(ZoneId.of("America/Sao_Paulo"));
-        LocalDate seteDiasDepois = hoje.plusDays(7);
         CotacaoModel cotacao = mapper.toEntity(dto);
 
-        cotacao.setDataInicio(hoje);
-        cotacao.setDataFim(seteDiasDepois);
+        cotacao.setDataInicio(dto.dataInicio());
+        cotacao.setDataFim(dto.dataFim());
         cotacao.setStatus(StatusCotacao.ABERTA);
 
         for (ProdutoCotacaoModel pc : cotacao.getProdutos()) {
