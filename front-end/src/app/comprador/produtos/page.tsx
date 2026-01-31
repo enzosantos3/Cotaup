@@ -64,7 +64,7 @@ export default function ProdutosPage() {
                     <p className='text-gray-600 mt-1'>Gerencie todos os seus produtos</p>
                 </div>
                 <Link
-                    href="/produtos/create"
+                    href="/comprador/produtos/create"
                     className='flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
                 >
                     + Novo Produto
@@ -100,7 +100,7 @@ export default function ProdutosPage() {
             {/* Lista de Produtos */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                 <div className='p-6 border-b border-gray-200'>
-                    <h2 className="text-xl font-semibold text-gray-900">Todas as Cotações</h2>
+                    <h2 className="text-xl font-semibold text-gray-900">Todos os Produtos</h2>
                 </div>
 
                 <div className="overflow-x-auto">
@@ -121,6 +121,9 @@ export default function ProdutosPage() {
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Cod. EAN
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Quantidade
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Unidade Medida
@@ -161,20 +164,25 @@ export default function ProdutosPage() {
                                     </td>
                                     <td className='px-6 py-4 whitespace-nowrap'>
                                         <div className='flex items-center'>
+                                            <span className='text-sm font-medium text-gray-900'>{produto.quantidade}</span>
+                                        </div>
+                                    </td>
+                                    <td className='px-6 py-4 whitespace-nowrap'>
+                                        <div className='flex items-center'>
                                             <span className='text-sm font-medium text-gray-900'>{produto.unidade}</span>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                                         <div className="flex items-center gap-2">
                                             <Link
-                                                href={`/produtos/${produto.id}`}
+                                                href={`/comprador/produtos/${produto.id}`}
                                                 className="p-2 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-lg transition-colors"
                                                 title="Ver detalhes"
                                             >
                                                 <Eye size={18} /> 
                                             </Link>
                                             <Link
-                                                href={`/produtos/edit?id=${produto.id}`}
+                                                href={`/comprador/produtos/edit?id=${produto.id}`}
                                                 className="p-2 bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-lg transition-colors"
                                                 title="Editar produto"
                                             >

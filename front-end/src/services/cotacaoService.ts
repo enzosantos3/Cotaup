@@ -1,12 +1,16 @@
 import { CotacaoDTO } from '../types/cotacao';
 import { ProdutoCotacaoDTO } from '../types/produtoCotacao';
 import { API_BASE_URL, COTACOES_ENDPOINTS, getApiUrl } from '../config/api';
+import { authService } from './authService';
 
 export const cotacaoService = {
 
     getAllCotacoes: async (): Promise<CotacaoDTO[]> => {
         const response = await fetch(getApiUrl(COTACOES_ENDPOINTS.listar), {
             cache: `no-store`,
+            headers: {
+                ...authService.getAuthHeader(),
+            },
         });
 
         if (!response.ok) throw new Error('Erro ao conectar com a API');
@@ -14,22 +18,35 @@ export const cotacaoService = {
         
     },
 
-    postCriarCotacao: async (cotacao: Omit<CotacaoDTO, 'id'>) : Promise<CotacaoDTO> => {
+    postCriarCotacao: async (cotacao: any) : Promise<any> => {
+        const headers = {
+            'Content-Type': 'application/json',
+            ...authService.getAuthHeader(),
+        };
+        
+        console.log('[CotacaoService] Criando cotação com headers:', headers);
+        console.log('[CotacaoService] Dados da cotação:', cotacao);
+        
         const response = await fetch(getApiUrl(COTACOES_ENDPOINTS.criar), {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers,
             body: JSON.stringify(cotacao),
         });
 
-        if (!response.ok) throw new Error('Erro ao criar cotação');
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('[CotacaoService] Erro ao criar cotação:', response.status, errorText);
+            throw new Error(`Erro ao criar cotação: ${response.status}`);
+        }
         return response.json();
     },
 
     getCotacaoById: async (id: number): Promise<CotacaoDTO> => {
         const response = await fetch(getApiUrl(COTACOES_ENDPOINTS.detalhe(id)), {
             cache: `no-store`,
+            headers: {
+                ...authService.getAuthHeader(),
+            },
         });
 
         if (!response.ok) throw new Error('Erro ao buscar cotação');
@@ -39,6 +56,9 @@ export const cotacaoService = {
     getCotacoesAbertas: async (): Promise<CotacaoDTO[]> => {
         const response = await fetch(getApiUrl('/cotacoes/listar/abertas'), {
             cache: `no-store`,
+            headers: {
+                ...authService.getAuthHeader(),
+            },
         });
 
         if (!response.ok) throw new Error('Erro ao buscar cotações abertas');
@@ -48,6 +68,9 @@ export const cotacaoService = {
     getCotacoesFinalizadas: async (): Promise<CotacaoDTO[]> => {
         const response = await fetch(getApiUrl('/cotacoes/listar/finalizadas'), {
             cache: `no-store`,
+            headers: {
+                ...authService.getAuthHeader(),
+            },
         });
 
         if (!response.ok) throw new Error('Erro ao buscar cotações finalizadas');
@@ -57,6 +80,9 @@ export const cotacaoService = {
     getProdutosCotacao: async (cotacaoId: number): Promise<ProdutoCotacaoDTO[]> => {
         const response = await fetch(getApiUrl(`/produto-cotacao/listar/${cotacaoId}`), {
             cache: `no-store`,
+            headers: {
+                ...authService.getAuthHeader(),
+            },
         });
 
         if (!response.ok) throw new Error('Erro ao buscar produtos da cotação');

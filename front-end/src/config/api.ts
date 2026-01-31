@@ -33,8 +33,8 @@ export const PRODUTOS_ENDPOINTS = {
     listar: '/produtos/listar',
     criar: '/produtos/criar',
     detalhe: (id: number) => `/produtos/listar/${id}`,
-    atualizar: (id: number) => `/produtos/${id}`,
-    deletar: (id: number) => `/produtos/${id}`,
+    atualizar: (id: number) => `/produtos/atualizar/${id}`,
+    deletar: (id: number) => `/produtos/deletar/${id}`,
 };
 
 /**
