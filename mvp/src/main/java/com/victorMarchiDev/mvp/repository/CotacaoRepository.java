@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CotacaoRepository extends JpaRepository<CotacaoModel, Long> {
-    List<CotacaoDTO> findByStatus(StatusCotacao status);
+    List<CotacaoModel> findByStatus(StatusCotacao status);
 
     @Query("""
     SELECT DISTINCT c

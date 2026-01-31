@@ -8,10 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CompradorMapper {
 
-    @Mapping(source = "usuarioId", target = "usuario.id")
-    @Mapping(source = "empresaId", target = "empresa.id")
-    CompradorModel toEntity(CompradorDTO dto);
-
     @Mapping(source = "usuario.id", target = "usuarioId")
     @Mapping(source = "usuario.email", target = "email")
     @Mapping(source = "usuario.role", target = "role")
@@ -23,4 +19,9 @@ public interface CompradorMapper {
     @Mapping(source = "empresa.razaoSocial", target = "razaoSocial")
     @Mapping(source = "empresa.cnpj", target = "cnpj")
     CompradorDTO toDto(CompradorModel model);
+
+    @Mapping(source = "usuarioId", target = "usuario.id")
+    @Mapping(target = "empresa", ignore = true)
+    CompradorModel toEntity(CompradorDTO dto);
+
 }

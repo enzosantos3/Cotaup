@@ -18,10 +18,12 @@ public class CotacaoController {
 
     private final CotacaoService service;
     private final CotacaoRepository cotacaoRepository;
+    private final CotacaoService cotacaoService;
 
-    public CotacaoController(CotacaoService service, CotacaoRepository cotacaoRepository) {
+    public CotacaoController(CotacaoService service, CotacaoRepository cotacaoRepository, CotacaoService cotacaoService) {
         this.service = service;
         this.cotacaoRepository = cotacaoRepository;
+        this.cotacaoService = cotacaoService;
     }
 
     @PostMapping("/criar")
@@ -44,12 +46,11 @@ public class CotacaoController {
 
     @GetMapping("/listar/abertas")
     public List<CotacaoDTO> listarAbertas(){
-        return cotacaoRepository.findByStatus(StatusCotacao.ABERTA);
+        return cotacaoService.listarCotacoesPorStatus(StatusCotacao.ABERTA);
     }
 
     @GetMapping("/listar/finalizadas")
-    public ResponseEntity<List<CotacaoDTO>> listarFinalizadas() {
-        List<CotacaoDTO> cotacoes = cotacaoRepository.findByStatus(StatusCotacao.FINALIZADA);
-        return ResponseEntity.ok(cotacoes);
+    public List<CotacaoDTO> listarFinalizadas() {
+        return cotacaoService.listarCotacoesPorStatus(StatusCotacao.FINALIZADA);
     }
 }

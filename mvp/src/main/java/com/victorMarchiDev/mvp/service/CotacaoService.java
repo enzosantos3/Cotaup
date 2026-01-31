@@ -69,5 +69,12 @@ public class CotacaoService {
         return mapper.toDTO(cotacao);
     }
 
+    public List<CotacaoDTO> listarCotacoesPorStatus(StatusCotacao status){
+        return repo.findByStatus(status)
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
+    }
+
 
 }
