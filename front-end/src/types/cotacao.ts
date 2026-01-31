@@ -15,6 +15,6 @@ export interface CotacaoDTO {
     dataInicio: string;
     dataFim: string;
     status: CotacaoStatus;
-    observacoes: string;
-    produtos: ProdutoCotacaoRequest[];
+    observacoes?: string;
+    produtos?: ProdutoCotacaoRequest[];
 }

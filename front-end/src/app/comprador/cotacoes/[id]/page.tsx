@@ -1,25 +1,58 @@
+'use client';
+
 import { cotacaoService } from "@/services/cotacaoService";
 import { ArrowLeft, Calendar, FileText, Package, AlertCircle, CheckCircle, XCircle, Pencil, DollarSign, Clock, Building2, ShoppingCart } from "lucide-react";
 import Link from 'next/link';
-import { notFound } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { PropostaFornecedorDTO } from "@/types/produtoCotacao";
+import { useEffect, useState } from "react";
+import { CotacaoDTO } from "@/types/cotacao";
+import { ProdutoCotacaoDTO } from "@/types/produtoCotacao";
 
-export default async function CotacaoDetalhePage({
-    params,
-}: {
-    params: Promise<{ id: string }>;
-}) {
-    const resolvedParams = await params;
-    
-    let cotacao;
-    let produtosCotacao;
+export default function CotacaoDetalhePage() {
+    const params = useParams();
+    const router = useRouter();
+    const [cotacao, setCotacao] = useState<CotacaoDTO | null>(null);
+    const [produtosCotacao, setProdutosCotacao] = useState<ProdutoCotacaoDTO[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    try {
-        cotacao = await cotacaoService.getCotacaoById(Number(resolvedParams.id));
-        produtosCotacao = await cotacaoService.getProdutosCotacao(Number(resolvedParams.id));
-    } catch (error) {
-        console.error('Erro ao buscar cotação:', error);
-        notFound();
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const id = Number(params.id);
+                const cotacaoData = await cotacaoService.getCotacaoById(id);
+                setCotacao(cotacaoData);
+                
+                try {
+                    const produtosData = await cotacaoService.getProdutosCotacao(id);
+                    setProdutosCotacao(produtosData);
+                } catch (prodError) {
+                    console.warn('Não foi possível carregar produtos da cotação:', prodError);
+                    setProdutosCotacao([]);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar cotação:', error);
+                router.push('/comprador/cotacoes');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (params.id) {
+            fetchData();
+        }
+    }, [params.id, router]);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <div className="text-gray-600">Carregando cotação...</div>
+            </div>
+        );
+    }
+
+    if (!cotacao) {
+        return null;
     }
 
     const propostas: PropostaFornecedorDTO[] = [
@@ -394,20 +427,4 @@ export default async function CotacaoDetalhePage({
             </div>
         </div>
     )
-}
-
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
-    try {
-        const resolvedParams = await params;
-        const cotacao = await cotacaoService.getCotacaoById(Number(resolvedParams.id));
-        
-        return {
-            title: `${cotacao.name} - Cotação #${cotacao.id} | CotaUp`,
-            description: `Detalhes da cotação ${cotacao.name} - Status: ${cotacao.status}`,
-        };
-    } catch (error) {
-        return {
-            title: 'Cotação não encontrada',
-        };
-    }
 }
