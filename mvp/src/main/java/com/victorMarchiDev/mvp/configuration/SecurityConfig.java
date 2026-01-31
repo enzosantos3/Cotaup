@@ -33,8 +33,6 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/fornecedores/**").hasRole("FORNECEDOR")
-                        .requestMatchers("/compradores/**").hasRole("COMPRADOR")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(

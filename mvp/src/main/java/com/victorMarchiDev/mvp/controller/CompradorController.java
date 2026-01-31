@@ -19,27 +19,23 @@ public class CompradorController {
         this.service = service;
     }
 
-    @PreAuthorize("hasRole('COMPRADOR')")
     @PostMapping("/criar")
     public ResponseEntity<CompradorDTO> criarComprador(@RequestBody CompradorDTO Comprador){
         CompradorDTO CompradorCriado = service.criarComprador(Comprador);
         return ResponseEntity.ok().body(CompradorCriado);
     }
 
-    @PreAuthorize("hasRole('COMPRADOR')")
     @GetMapping("/listar")
     public List<CompradorDTO> listarCompradores(){
         return service.listarCompradores();
     }
 
-    @PreAuthorize("hasRole('COMPRADOR')")
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<String> deletarComprador(@PathVariable("id") Long id){
         service.deletarComprador(id);
         return ResponseEntity.ok("Comprador deletado com sucesso!");
     }
 
-    @PreAuthorize("hasRole('COMPRADOR')")
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<CompradorDTO> atualizarComprador(
             @PathVariable("id") Long id,
@@ -49,7 +45,6 @@ public class CompradorController {
         return ResponseEntity.ok(CompradorAtualizadoSalvo);
     }
 
-    @PreAuthorize("hasRole('COMPRADOR')")
     @GetMapping("/listar/{id}")
     public ResponseEntity<CompradorDTO> getCompradorById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.getCompradorById(id));

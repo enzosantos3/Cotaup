@@ -23,27 +23,23 @@ public class FornecedorController {
         this.service = service;
     }
 
-    @PreAuthorize("hasRole('FORNECEDOR')")
     @PostMapping("/criar")
     public ResponseEntity<FornecedorDTO> criarFornecedor(@RequestBody FornecedorDTO fornecedor){
             FornecedorDTO fornecedorCriado = service.criarFornecedor(fornecedor);
             return ResponseEntity.ok().body(fornecedorCriado);
     }
 
-    @PreAuthorize("hasRole('FORNECEDOR')")
     @GetMapping("/listar")
     public List<FornecedorDTO> listarFornecedores(){
         return service.listarFornecedores();
     }
 
-    @PreAuthorize("hasRole('FORNECEDOR')")
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<String> deletarFornecedor(@PathVariable("id") Long id){
         service.deletarFornecedor(id);
         return ResponseEntity.ok("Fornecedor deletado com sucesso!");
     }
 
-    @PreAuthorize("hasRole('FORNECEDOR')")
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<FornecedorDTO> atualizarFornecedor(
             @PathVariable("id") Long id,
@@ -53,7 +49,6 @@ public class FornecedorController {
         return ResponseEntity.ok(fornecedorAtualizadoSalvo);
     }
 
-    @PreAuthorize("hasRole('FORNECEDOR')")
     @GetMapping("/listar/{id}")
     public ResponseEntity<FornecedorDTO> getFornecedorById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.getFornecedorById(id));
