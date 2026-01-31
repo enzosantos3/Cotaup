@@ -1,11 +1,12 @@
 export interface FornecedorDTO {
     id: number;
-    nomeFantasia: string;
-    razaoSocial: string;
-    cnpj: string;
-    inscricaoEstadual: number;
-    representante: string;
-    endereco: string;
-    telefone: string;
+    usuarioId?: number;
+    empresaId?: number;
     email: string;
+    nomeFantasia: string;
+    cnpj: string;
+    role?: string;
+    razaoSocial: string;
+    inscricaoEstadual: string;
+    endereco: string;
 }

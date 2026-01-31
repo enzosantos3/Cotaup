@@ -45,6 +45,17 @@ export const PRODUTOCOTACAO_ENDPOINTS = {
 };
 
 /**
+ * Endpoints da API de Fornecedores
+ */
+export const FORNECEDOR_ENDPOINTS = {
+    listar: '/fornecedores/listar',
+    criar: '/fornecedores/criar',
+    detalhe: (id: number) => `/fornecedores/listar/${id}`,
+    atualizar: (id: number) => `/fornecedores/atualizar/${id}`,
+    deletar: (id: number) => `/fornecedores/deletar/${id}`,
+};
+
+/**
  * Endpoints da API de Pedidos
  */
 export const PEDIDO_ENDPOINTS = {

@@ -1,22 +1,47 @@
+'use client';
+
 import { produtoService } from '@/services/produtoService';
-import { notFound } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Package, Tag, Barcode, Box } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ProdutoDTO } from '@/types/produto';
 
-export default async function ProdutoDetalhePage({
-    params,
-}: {
-    params: Promise<{ id: string }>;
-}) {
-    const resolvedParams = await params; // Por algum motivo a partir do NextJS 15 só funciona desta forma, por favor não remova
-    
-    let produto;
-    
-    try {
-        produto = await produtoService.getProdutoById(Number(resolvedParams.id));
-    } catch (error) {
-        console.error('Erro ao carregar produto:', error);
-        notFound(); // Retorna 404 automaticamente
+export default function ProdutoDetalhePage() {
+    const params = useParams();
+    const router = useRouter();
+    const [produto, setProduto] = useState<ProdutoDTO | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProduto = async () => {
+            try {
+                const id = Number(params.id);
+                const data = await produtoService.getProdutoById(id);
+                setProduto(data);
+            } catch (error) {
+                console.error('Erro ao carregar produto:', error);
+                router.push('/comprador/produtos');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (params.id) {
+            fetchProduto();
+        }
+    }, [params.id, router]);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <div className="text-gray-600">Carregando produto...</div>
+            </div>
+        );
+    }
+
+    if (!produto) {
+        return null;
     }
 
     return (
@@ -132,23 +157,3 @@ export default async function ProdutoDetalhePage({
         </div>
     );
 }
-
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
-    try {
-        const resolvedParams = await params;
-        
-        const produto = await produtoService.getProdutoById(Number(resolvedParams.id));
-        
-        return {
-            title: `${produto.nome} - ${produto.marca} | CotaUp`,
-            description: `Detalhes do produto ${produto.nome} - ${produto.categoria}`,
-        };
-    } catch (error) {
-        return {
-            title: 'Produto não encontrado',
-        };
-    }
-}
-
-
-

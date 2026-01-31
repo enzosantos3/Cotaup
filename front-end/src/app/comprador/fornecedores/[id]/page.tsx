@@ -82,18 +82,6 @@ export default async function FornecedorDetalhePage({
                         </div>
 
                         <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                            <div className="p-3 bg-purple-100 rounded-lg">
-                                <User className="text-purple-600" size={24} />
-                            </div>
-                            <div>
-                                <p className="text-sm text-gray-600 mb-1">Representante</p>
-                                <p className="text-lg font-semibold text-gray-900">
-                                    {fornecedor.representante}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
                             <div className="p-3 bg-orange-100 rounded-lg">
                                 <MapPin className="text-orange-600" size={24} />
                             </div>
@@ -121,12 +109,7 @@ export default async function FornecedorDetalhePage({
                         </div>
                         <div>
                             <p className="text-sm text-gray-600 mb-1">Telefone</p>
-                            <a 
-                                href={`tel:${fornecedor.telefone}`}
-                                className="text-lg font-semibold text-blue-600 hover:text-blue-700 transition-colors"
-                            >
-                                {fornecedor.telefone}
-                            </a>
+                            
                         </div>
                     </div>
 
