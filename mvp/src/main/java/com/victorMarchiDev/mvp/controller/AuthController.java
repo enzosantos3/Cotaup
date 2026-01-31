@@ -31,19 +31,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest dto){
-
-        try{
             authService.registrar(dto);
             return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (EmailCadastradoException e){
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body(Map.of(
-                            "error", "EMAIL_ALREADY_EXISTS",
-                            "message", e.getMessage()
-                    ));
-        }
-
     }
 
     @PostMapping("/login")
