@@ -41,7 +41,18 @@ export const PRODUTOS_ENDPOINTS = {
  * Endpoints da API de ProdutoCotacao
  */
 export const PRODUTOCOTACAO_ENDPOINTS = {
-    listarProdutos: (id: number) => `/produto-cotacao/listar/${id}`,
+    listarProdutos: (id: number) => `/produtos-cotacao/listar/${id}`,
+};
+
+/**
+ * Endpoints da API de Fornecedores
+ */
+export const FORNECEDOR_ENDPOINTS = {
+    listar: '/fornecedores/listar',
+    criar: '/fornecedores/criar',
+    detalhe: (id: number) => `/fornecedores/listar/${id}`,
+    atualizar: (id: number) => `/fornecedores/atualizar/${id}`,
+    deletar: (id: number) => `/fornecedores/deletar/${id}`,
 };
 
 /**

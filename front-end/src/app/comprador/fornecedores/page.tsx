@@ -1,17 +1,38 @@
+'use client';
+
 import { fornecedorService } from "@/services/fornecedorService";
 import { FornecedorDTO } from "@/types/fornecedor";
 import Link from "next/link";
 import { Plus, Building2, Eye, AlertCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
-export default async function FornecedoresPage() {
-    let fornecedores: FornecedorDTO[] = [];
-    let error = false;
+export default function FornecedoresPage() {
+    const [fornecedores, setFornecedores] = useState<FornecedorDTO[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
-    try {
-        fornecedores = await fornecedorService.getAllFornecedores();
-    } catch (err) {
-        error = true;
-        console.error('Erro ao buscar fornecedores:', err);
+    useEffect(() => {
+        const fetchFornecedores = async () => {
+            try {
+                const data = await fornecedorService.getAllFornecedores();
+                setFornecedores(data);
+            } catch (err) {
+                setError(true);
+                console.error('Erro ao buscar fornecedores:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchFornecedores();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <div className="text-gray-600">Carregando fornecedores...</div>
+            </div>
+        );
     }
     
     return (

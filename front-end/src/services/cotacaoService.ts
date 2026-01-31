@@ -1,6 +1,6 @@
 import { CotacaoDTO } from '../types/cotacao';
 import { ProdutoCotacaoDTO } from '../types/produtoCotacao';
-import { API_BASE_URL, COTACOES_ENDPOINTS, getApiUrl } from '../config/api';
+import { API_BASE_URL, COTACOES_ENDPOINTS, PRODUTOCOTACAO_ENDPOINTS, getApiUrl } from '../config/api';
 import { authService } from './authService';
 
 export const cotacaoService = {
@@ -49,8 +49,15 @@ export const cotacaoService = {
             },
         });
 
-        if (!response.ok) throw new Error('Erro ao buscar cotação');
-        return response.json();
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('[CotacaoService] Erro ao buscar cotação por ID:', response.status, errorText);
+            throw new Error('Erro ao buscar cotação');
+        }
+        
+        const data = await response.json();
+        console.log('[CotacaoService] Cotação recebida:', data);
+        return data;
     },
 
     getCotacoesAbertas: async (): Promise<CotacaoDTO[]> => {
@@ -78,14 +85,18 @@ export const cotacaoService = {
     },
 
     getProdutosCotacao: async (cotacaoId: number): Promise<ProdutoCotacaoDTO[]> => {
-        const response = await fetch(getApiUrl(`/produto-cotacao/listar/${cotacaoId}`), {
+        const response = await fetch(getApiUrl(PRODUTOCOTACAO_ENDPOINTS.listarProdutos(cotacaoId)), {
             cache: `no-store`,
             headers: {
                 ...authService.getAuthHeader(),
             },
         });
 
-        if (!response.ok) throw new Error('Erro ao buscar produtos da cotação');
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('[CotacaoService] Erro ao buscar produtos da cotação:', response.status, errorText);
+            throw new Error('Erro ao buscar produtos da cotação');
+        }
         return response.json();
     }
 
