@@ -13,6 +13,7 @@ import com.victorMarchiDev.mvp.repository.CotacaoRepository;
 import com.victorMarchiDev.mvp.repository.PropostaRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Collections;
@@ -39,8 +40,14 @@ public class CotacaoService {
         cotacao.setDataFim(seteDiasDepois);
         cotacao.setStatus(StatusCotacao.ABERTA);
 
+
         for (ProdutoCotacaoModel pc : cotacao.getProdutos()) {
             pc.setCotacao(cotacao);
+            BigDecimal valorTotal =
+                    pc.getValorUnitario()
+                            .multiply(BigDecimal.valueOf(pc.getQuantidade()));
+
+            pc.setValorTotal(valorTotal);
         }
 
         CotacaoModel salva = repo.save(cotacao);
