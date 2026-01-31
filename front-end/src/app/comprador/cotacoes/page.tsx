@@ -10,7 +10,7 @@ export default function CotacoesPage() {
     const [cotacoes, setCotacoes] = useState<CotacaoDTO[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [statusFilter, setStatusFilter] = useState<'TODAS' | 'ABERTA' | 'FECHADA'>('TODAS');
+    const [statusFilter, setStatusFilter] = useState<'TODAS' | 'ABERTA' | 'FINALIZADA'>('TODAS');
     const [filteredCotacoes, setFilteredCotacoes] = useState<CotacaoDTO[]>([]);
 
     useEffect(() => {
@@ -34,7 +34,7 @@ export default function CotacoesPage() {
 
         if (searchTerm.trim() !== '') {
             filtered = filtered.filter(cotacao =>
-                cotacao.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                cotacao.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 cotacao.status.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
@@ -68,7 +68,7 @@ export default function CotacoesPage() {
                     <p className="text-gray-600 mt-1">Gerencie todas as suas cotações</p>
                 </div>
                 <Link
-                    href="/cotacoes/create"
+                    href="/comprador/cotacoes/create"
                     className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                     <Plus size={20} />
@@ -107,9 +107,9 @@ export default function CotacoesPage() {
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm text-gray-600">Cotações Fechadas</p>
+                            <p className="text-sm text-gray-600">Cotações Finalizadas</p>
                             <p className="text-2xl font-bold text-gray-600 mt-1">
-                                {cotacoes.filter(c => c.status === 'FECHADA').length}
+                                {cotacoes.filter(c => c.status === 'FINALIZADA').length}
                             </p>
                         </div>
                         <div className="p-3 bg-gray-100 rounded-lg">
@@ -165,14 +165,14 @@ export default function CotacoesPage() {
                             Abertas
                         </button>
                         <button
-                            onClick={() => setStatusFilter('FECHADA')}
+                            onClick={() => setStatusFilter('FINALIZADA')}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                                statusFilter === 'FECHADA'
+                                statusFilter === 'FINALIZADA'
                                     ? 'bg-gray-600 text-white'
                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                             }`}
                         >
-                            Fechadas
+                            Finalizadas
                         </button>
                     </div>
 
@@ -229,7 +229,7 @@ export default function CotacoesPage() {
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
                                             <span className="text-sm font-medium text-gray-900">
-                                                {cotacao.nome}
+                                                {cotacao.name}
                                             </span>
                                         </div>
                                     </td>
@@ -259,14 +259,14 @@ export default function CotacoesPage() {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                                         <div className="flex items-center gap-2">
                                             <Link
-                                                href={`/cotacoes/${cotacao.id}`}
+                                                href={`/comprador/cotacoes/${cotacao.id}`}
                                                 className="p-2 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-lg transition-colors"
                                                 title="Ver detalhes"
                                             >
                                                 <Eye size={18} /> 
                                             </Link>
                                             <Link
-                                                href={`/cotacoes/edit?id=${cotacao.id}`}
+                                                href={`/comprador/cotacoes/edit?id=${cotacao.id}`}
                                                 className="p-2 bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-lg transition-colors"
                                                 title="Editar cotação"
                                             >
@@ -308,7 +308,7 @@ export default function CotacoesPage() {
                                 Comece criando sua primeira cotação
                             </p>
                             <Link
-                                href="/cotacoes/create"
+                                href="/comprador/cotacoes/create"
                                 className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                             >
                                 <Plus size={20} />

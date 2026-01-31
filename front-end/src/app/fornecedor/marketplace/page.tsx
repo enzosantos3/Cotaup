@@ -37,7 +37,7 @@ export default function MarketplacePage() {
     }, []);
 
     const filteredCotacoes = cotacoes.filter(cotacao => {
-        const matchesSearch = cotacao.nome.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = cotacao.name.toLowerCase().includes(searchTerm.toLowerCase());
         // TODO: Implementar filtro por categoria quando houver essa informação na API
         
         return matchesSearch;
@@ -128,7 +128,7 @@ export default function MarketplacePage() {
                                         </div>
                                         <div className="flex-1">
                                             <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                                                {cotacao.nome}
+                                                {cotacao.name}
                                             </h3>
                                             <p className="text-sm text-gray-600">Cotação #{cotacao.id}</p>
                                         </div>

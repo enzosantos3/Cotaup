@@ -1,11 +1,15 @@
 import { ProdutoDTO } from "@/types/produto";
 import { API_BASE_URL, PRODUTOS_ENDPOINTS, getApiUrl } from '../config/api';
+import { authService } from './authService';
 
 export const produtoService = {
 
     getAllProdutos: async (): Promise<ProdutoDTO[]> => {
         const response = await fetch(getApiUrl(PRODUTOS_ENDPOINTS.listar), {
             cache: `no-store`,
+            headers: {
+                ...authService.getAuthHeader(),
+            },
         });
 
         if (!response.ok) throw new Error('Erro ao conectar com a API');
@@ -15,6 +19,9 @@ export const produtoService = {
     getProdutoById: async (id: number): Promise<ProdutoDTO> => {
         const response = await fetch(getApiUrl(PRODUTOS_ENDPOINTS.detalhe(id)), {
             cache: `no-store`,
+            headers: {
+                ...authService.getAuthHeader(),
+            },
         });
 
         if (!response.ok) throw new Error('Erro ao buscar produto');
@@ -26,6 +33,7 @@ export const produtoService = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                ...authService.getAuthHeader(),
             },
             body: JSON.stringify(produto),
         });
@@ -39,6 +47,7 @@ export const produtoService = {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                ...authService.getAuthHeader(),
             },
             body: JSON.stringify(produto),
         });
@@ -50,6 +59,9 @@ export const produtoService = {
     deleteProduto: async (id: number): Promise<void> => {
         const response = await fetch(getApiUrl(PRODUTOS_ENDPOINTS.deletar(id)), {
             method: 'DELETE',
+            headers: {
+                ...authService.getAuthHeader(),
+            },
         });
 
         if (!response.ok) throw new Error('Erro ao deletar produto');

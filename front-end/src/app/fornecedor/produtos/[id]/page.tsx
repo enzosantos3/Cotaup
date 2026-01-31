@@ -24,14 +24,14 @@ export default async function ProdutoDetalhePage({
             {/* Header */}
             <div className="flex items-center justify-between">
                 <Link
-                    href="/produtos"
+                    href="/fornecedor/produtos"
                     className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
                 >
                     <ArrowLeft size={20} />
                     Voltar para Produtos
                 </Link>
                 <Link
-                    href={`/produtos/edit/${produto.id}`}
+                    href={`/fornecedor/produtos/edit/${produto.id}`}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                     Editar Produto
@@ -87,7 +87,7 @@ export default async function ProdutoDetalhePage({
                         </div>
 
                         {/* Código EAN */}
-                        <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg md:col-span-2">
+                        <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
                             <div className="p-3 bg-purple-100 rounded-lg">
                                 <Barcode className="text-purple-600" size={24} />
                             </div>
@@ -95,6 +95,19 @@ export default async function ProdutoDetalhePage({
                                 <p className="text-sm text-gray-600 mb-1">Código de Barras (EAN)</p>
                                 <p className="text-2xl font-mono font-bold text-gray-900 tracking-wider">
                                     {String(produto.codigoEAN)}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Quantidade */}
+                        <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                            <div className="p-3 bg-orange-100 rounded-lg">
+                                <Package className="text-orange-600" size={24} />
+                            </div>
+                            <div>
+                                <p className="text-sm text-gray-600 mb-1">Quantidade</p>
+                                <p className="text-lg font-semibold text-gray-900">
+                                    {produto.quantidade}
                                 </p>
                             </div>
                         </div>

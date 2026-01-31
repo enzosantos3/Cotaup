@@ -1,12 +1,20 @@
 export enum CotacaoStatus {
     ABERTA = 'ABERTA',
-    FECHADA = 'FECHADA',
+    FINALIZADA = 'FINALIZADA',
+}
+
+export interface ProdutoCotacaoRequest {
+    produtoId: number;
+    quantidade: number;
+    valorUnitario: number;
 }
 
 export interface CotacaoDTO {
     id: number;
-    nome: string;
+    name: string;
     dataInicio: string;
     dataFim: string;
     status: CotacaoStatus;
+    observacoes: string;
+    produtos: ProdutoCotacaoRequest[];
 }

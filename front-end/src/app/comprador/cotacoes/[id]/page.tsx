@@ -62,7 +62,7 @@ export default async function CotacaoDetalhePage({
             {/* Header */}
             <div className="flex items-center justify-between">
                 <Link
-                    href="/cotacoes"
+                    href="/comprador/cotacoes"
                     className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
                 >
                     <ArrowLeft size={20} />
@@ -89,7 +89,7 @@ export default async function CotacaoDetalhePage({
                             <div className="flex items-start justify-between">
                                 <div>
                                     <h1 className="text-3xl font-bold text-white mb-2">
-                                        {cotacao.nome}
+                                        {cotacao.name}
                                     </h1>
                                     <p className="text-blue-100 text-lg">Cotação #{cotacao.id}</p>
                                 </div>
@@ -402,8 +402,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         const cotacao = await cotacaoService.getCotacaoById(Number(resolvedParams.id));
         
         return {
-            title: `${cotacao.nome} - Cotação #${cotacao.id} | CotaUp`,
-            description: `Detalhes da cotação ${cotacao.nome} - Status: ${cotacao.status}`,
+            title: `${cotacao.name} - Cotação #${cotacao.id} | CotaUp`,
+            description: `Detalhes da cotação ${cotacao.name} - Status: ${cotacao.status}`,
         };
     } catch (error) {
         return {

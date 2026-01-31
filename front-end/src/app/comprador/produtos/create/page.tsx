@@ -15,6 +15,7 @@ export default function CreateProdutoPage() {
     const [marca, setMarca] = useState('');
     const [categoria, setCategoria] = useState('');
     const [unidade, setUnidade] = useState('');
+    const [quantidade, setQuantidade] = useState('');
     const [codigoEAN, setCodigoEAN] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -22,7 +23,7 @@ export default function CreateProdutoPage() {
         setError('');
 
         // Validações
-        if (!nome || !marca || !categoria || !unidade || !codigoEAN) {
+        if (!nome || !marca || !categoria || !unidade || !quantidade || !codigoEAN) {
             setError('Preencha todos os campos obrigatórios');
             return;
         }
@@ -35,11 +36,12 @@ export default function CreateProdutoPage() {
                 marca,
                 categoria,
                 unidade,
+                quantidade: Number(quantidade),
                 codigoEAN: Number(codigoEAN),
             };
 
             await produtoService.postCriarProduto(novoProduto);
-            router.push('/produtos');
+            router.push('/comprador/produtos');
         } catch (err) {
             setError('Erro ao criar produto. Tente novamente.');
             console.error(err);
@@ -52,7 +54,7 @@ export default function CreateProdutoPage() {
         <div className="p-6 max-w-4xl mx-auto">
             <div className="mb-6">
                 <button
-                    onClick={() => router.push('/produtos')}
+                    onClick={() => router.push('/comprador/produtos')}
                     className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 transition-colors"
                 >
                     <ArrowLeft size={20} />
@@ -131,6 +133,25 @@ export default function CreateProdutoPage() {
                         />
                     </div>
 
+                    <div>
+                        <label htmlFor="quantidade" className="block text-sm font-medium text-gray-700 mb-2">
+                            Quantidade *
+                        </label>
+                        <input
+                            type="text"
+                            id="quantidade"
+                            value={quantidade}
+                            onChange={(e) => {
+                                const value = e.target.value.replace(/[^0-9.,]/g, '');
+                                setQuantidade(value);
+                            }}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-gray-900"
+                            placeholder="Ex: 100"
+                            inputMode="decimal"
+                            required
+                        />
+                    </div>
+
                     <div className="md:col-span-2">
                         <label htmlFor="codigoEAN" className="block text-sm font-medium text-gray-700 mb-2">
                             Código EAN *
@@ -155,7 +176,7 @@ export default function CreateProdutoPage() {
                 <div className="flex gap-4 justify-end mt-8 pt-6 border-t border-gray-200">
                     <button
                         type="button"
-                        onClick={() => router.push('/produtos')}
+                        onClick={() => router.push('/comprador/produtos')}
                         className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                         disabled={loading}
                     >

@@ -17,6 +17,7 @@ registerLocale('pt-BR', ptBR);
 
 interface ProdutoCotacao extends ProdutoDTO {
     quantidade: number;
+    valorUnitario: number;
 }
 
 export default function CreateCotacaoPage() {
@@ -28,10 +29,12 @@ export default function CreateCotacaoPage() {
     const [nome, setNome] = useState('');
     const [dataInicio, setDataInicio] = useState<Date | null>(null);
     const [dataFim, setDataFim] = useState<Date | null>(null);
+    const [observacoes, setObservacoes] = useState('');
 
     const [produtosSelecionados, setProdutosSelecionados] = useState<ProdutoCotacao[]>([]);
     const [codigoBarras, setCodigoBarras] = useState('');
     const [quantidade, setQuantidade] = useState<number | string>(1);
+    const [valorUnitario, setValorUnitario] = useState<number | string>('');
     const [buscandoProduto, setBuscandoProduto] = useState(false);
     const [produtoEncontrado, setProdutoEncontrado] = useState<ProdutoDTO | null>(null);
 
@@ -76,15 +79,23 @@ export default function CreateCotacaoPage() {
             return;
         }
 
+        const valor = typeof valorUnitario === 'string' ? parseFloat(valorUnitario) || 0 : valorUnitario;
+        if (valor <= 0) {
+            setError('O valor unitário deve ser maior que zero');
+            return;
+        }
+
         const produtoCotacao: ProdutoCotacao = {
             ...produtoEncontrado,
             quantidade: qtd,
+            valorUnitario: valor,
         };
 
         setProdutosSelecionados([...produtosSelecionados, produtoCotacao]);
         
         setCodigoBarras('');
         setQuantidade(1);
+        setValorUnitario('');
         setProdutoEncontrado(null);
         setError('');
     };
@@ -97,6 +108,14 @@ export default function CreateCotacaoPage() {
         setProdutosSelecionados(
             produtosSelecionados.map(p => 
                 p.id === id ? { ...p, quantidade: novaQuantidade } : p
+            )
+        );
+    };
+
+    const handleUpdateValorUnitario = (id: number, novoValor: number) => {
+        setProdutosSelecionados(
+            produtosSelecionados.map(p => 
+                p.id === id ? { ...p, valorUnitario: novoValor } : p
             )
         );
     };
@@ -145,15 +164,21 @@ export default function CreateCotacaoPage() {
         setLoading(true);
 
         try {
-            const novaCotacao: Omit<CotacaoDTO, 'id'> = {
-                nome,
+            const novaCotacao = {
+                name: nome,
                 dataInicio: dataInicio?.toISOString().split('T')[0] || '',
                 dataFim: dataFim?.toISOString().split('T')[0] || '',
                 status: CotacaoStatus.ABERTA,
+                observacoes: observacoes,
+                produtos: produtosSelecionados.map(p => ({
+                    produtoId: p.id,
+                    quantidade: p.quantidade,
+                    valorUnitario: p.valorUnitario
+                }))
             };
 
             await cotacaoService.postCriarCotacao(novaCotacao);
-            router.push('/cotacoes');
+            router.push('/comprador/cotacoes');
         } catch (err) {
             setError('Erro ao criar cotação. Tente novamente.');
             console.error(err);
@@ -167,7 +192,7 @@ export default function CreateCotacaoPage() {
             {/* Header */}
             <div className="mb-8">
                 <button
-                    onClick={() => router.push('/cotacoes')}
+                    onClick={() => router.push('/comprador/cotacoes')}
                     className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 transition-colors"
                 >
                     <ArrowLeft size={20} />
@@ -281,6 +306,19 @@ export default function CreateCotacaoPage() {
                                 </div>
                             </div>
                         </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Observações
+                            </label>
+                            <textarea
+                                value={observacoes}
+                                onChange={(e) => setObservacoes(e.target.value)}
+                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                                placeholder="Ex: Forma de pagamento, condições especiais, etc."
+                                rows={4}
+                            />
+                        </div>
                     </div>
                 )}
 
@@ -377,6 +415,24 @@ export default function CreateCotacaoPage() {
                                                 inputMode="numeric"
                                             />
                                         </div>
+                                        <div className="flex-1">
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Valor Unitário (R$)
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={valorUnitario}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    if (value === '' || /^\d*\.?\d{0,2}$/.test(value)) {
+                                                        setValorUnitario(value);
+                                                    }
+                                                }}
+                                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                                                placeholder="0.00"
+                                                inputMode="decimal"
+                                            />
+                                        </div>
                                         <button
                                             type="button"
                                             onClick={handleAddProdutoFromBarcode}
@@ -411,6 +467,7 @@ export default function CreateCotacaoPage() {
                                                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Categoria</th>
                                                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Unidade</th>
                                                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Quantidade</th>
+                                                <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Valor Unit. (R$)</th>
                                                 <th className="px-4 py-3 text-center text-sm font-medium text-gray-700">Ações</th>
                                             </tr>
                                         </thead>
@@ -438,6 +495,20 @@ export default function CreateCotacaoPage() {
                                                             }}
                                                             className="w-20 px-2 py-1 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                             inputMode="numeric"
+                                                        />
+                                                    </td>
+                                                    <td className="px-4 py-3 text-sm">
+                                                        <input
+                                                            type="text"
+                                                            value={produto.valorUnitario}
+                                                            onChange={(e) => {
+                                                                const value = e.target.value;
+                                                                if (value === '' || /^\d*\.?\d{0,2}$/.test(value)) {
+                                                                    handleUpdateValorUnitario(produto.id, value === '' ? 0 : Number(value));
+                                                                }
+                                                            }}
+                                                            className="w-24 px-2 py-1 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                            inputMode="decimal"
                                                         />
                                                     </td>
                                                     <td className="px-4 py-3 text-center">
@@ -495,6 +566,12 @@ export default function CreateCotacaoPage() {
                                     </p>
                                 </div>
                             </div>
+                            {observacoes && (
+                                <div className="mt-4">
+                                    <p className="text-sm text-gray-600 mb-1">Observações</p>
+                                    <p className="font-medium text-gray-900">{observacoes}</p>
+                                </div>
+                            )}
                         </div>
 
                         <div className="bg-gray-50 rounded-lg p-6">
@@ -505,15 +582,23 @@ export default function CreateCotacaoPage() {
                             <div className="space-y-3">
                                 {produtosSelecionados.map((produto) => (
                                     <div key={produto.id} className="flex items-center justify-between bg-white p-4 rounded-lg border border-gray-200">
-                                        <div>
+                                        <div className="flex-1">
                                             <p className="font-medium text-gray-900">{String(produto.nome)}</p>
                                             <p className="text-sm text-gray-600">
                                                 {String(produto.marca)} • {String(produto.categoria)} • {String(produto.unidade)}
                                             </p>
                                         </div>
-                                        <div className="text-right">
+                                        <div className="text-right mr-4">
                                             <p className="text-sm text-gray-600">Quantidade</p>
                                             <p className="font-semibold text-blue-600">{produto.quantidade}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-sm text-gray-600">Valor Unitário</p>
+                                            <p className="font-semibold text-green-600">
+                                                R$ {typeof produto.valorUnitario === 'number' 
+                                                    ? produto.valorUnitario.toFixed(2) 
+                                                    : Number(produto.valorUnitario).toFixed(2)}
+                                            </p>
                                         </div>
                                     </div>
                                 ))}
