@@ -2,17 +2,14 @@ package com.victorMarchiDev.mvp.controller;
 
 import com.victorMarchiDev.mvp.dto.CotacaoDTO;
 import com.victorMarchiDev.mvp.enums.StatusCotacao;
-import com.victorMarchiDev.mvp.model.CotacaoModel;
-import com.victorMarchiDev.mvp.model.ProdutoModel;
-import com.victorMarchiDev.mvp.model.PropostaModel;
 import com.victorMarchiDev.mvp.repository.CotacaoRepository;
 import com.victorMarchiDev.mvp.service.CotacaoService;
-import com.victorMarchiDev.mvp.service.PropostaService;
-import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -28,9 +25,11 @@ public class CotacaoController {
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<CotacaoDTO> criarCotacao(@RequestBody CotacaoDTO cotacao){
+    public ResponseEntity<Map<String, Long>> criarCotacao(@RequestBody CotacaoDTO cotacao){
         CotacaoDTO cotacaoSalva = service.criarCotacao(cotacao);
-        return ResponseEntity.ok().body(cotacaoSalva);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(Map.of("idCotacao", cotacaoSalva.id()));
     }
 
     @GetMapping("/listar")
