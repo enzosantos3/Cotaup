@@ -14,14 +14,22 @@ public class CorsFilterConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5500", "http://127.0.0.1:5500", "https://www.cotaup.com.br",
-                "https://cotaup.com.br"));
+
+        config.setAllowedOrigins(List.of(
+                "https://app.cotaup.com.br",
+                "https://www.app.cotaup.com.br",
+                "http://localhost:5500",
+                "http://127.0.0.1:5500"
+        ));
+
         config.addAllowedHeader("*");
-        config.addAllowedMethod("*");   // GET, POST, PUT, DELETE, OPTIONS
-        config.setAllowCredentials(false);
+        config.addAllowedMethod("*"); // GET, POST, PUT, DELETE, OPTIONS
+
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
+
         return new CorsFilter(source);
     }
 }
