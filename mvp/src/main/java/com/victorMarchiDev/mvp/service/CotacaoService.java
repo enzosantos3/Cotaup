@@ -11,6 +11,7 @@ import com.victorMarchiDev.mvp.model.ProdutoModel;
 import com.victorMarchiDev.mvp.model.PropostaModel;
 import com.victorMarchiDev.mvp.repository.CotacaoRepository;
 import com.victorMarchiDev.mvp.repository.PropostaRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,6 +75,12 @@ public class CotacaoService {
                 .stream()
                 .map(mapper::toDTO)
                 .toList();
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
+    public void atualizarCotacoesExpiradas() {
+        repo.finalizarCotacoesExpiradas();
     }
 
 

@@ -13,6 +13,7 @@ import com.victorMarchiDev.mvp.repository.CotacaoRepository;
 import com.victorMarchiDev.mvp.repository.ProdutoCotacaoRepository;
 import com.victorMarchiDev.mvp.repository.PropostaRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,4 +69,12 @@ public class PropostaService {
                 .orElseThrow( () -> new PropostaNaoEncontradaException(id));
         return mapper.toDTO(propostaModel);
     }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
+    public void atualizarPropostasExpiradas() {
+        propostaRepository.finalizarPropostasExpiradas();
+    }
+
+
 }
