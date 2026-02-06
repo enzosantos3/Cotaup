@@ -21,12 +21,9 @@ public class UsuarioDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
         UsuarioModel user = repository.findByEmail(email)
-                .orElseThrow( () -> new UsernameNotFoundException("Usuário não encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        return User.builder()
-                .username(user.getEmail())
-                .password(user.getSenha())
-                .roles(user.getRole().name())
-                .build();
+        return new UserDetailsImpl(user);
     }
+
 }

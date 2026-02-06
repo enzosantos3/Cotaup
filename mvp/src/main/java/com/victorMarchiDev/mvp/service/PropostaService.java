@@ -7,12 +7,11 @@ import com.victorMarchiDev.mvp.exception.CotacaoNaoEncontradaException;
 import com.victorMarchiDev.mvp.exception.PropostaNaoEncontradaException;
 import com.victorMarchiDev.mvp.mapper.PropostaMapper;
 import com.victorMarchiDev.mvp.model.*;
-import com.victorMarchiDev.mvp.repository.CotacaoRepository;
-import com.victorMarchiDev.mvp.repository.ProdutoCotacaoRepository;
-import com.victorMarchiDev.mvp.repository.ProdutoRepository;
-import com.victorMarchiDev.mvp.repository.PropostaRepository;
+import com.victorMarchiDev.mvp.repository.*;
+import com.victorMarchiDev.mvp.security.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,18 +31,31 @@ public class PropostaService {
     private final ProdutoCotacaoRepository produtoCotacaoRepository;
     private final PropostaMapper mapper;
     private final ProdutoRepository produtoRepository;
+    private final FornecedorRepository fornecedorRepository;
 
     @Transactional
     public PropostaDTO criarProposta(Long cotacaoId, PropostaDTO dto) {
+
+        UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        Long usuarioId = user.getId();
 
         PropostaModel proposta = mapper.toEntity(dto);
 
         CotacaoModel cotacao = cotacaoRepository.findById(cotacaoId)
                 .orElseThrow(() -> new RuntimeException("Cotação não encontrada"));
 
+        FornecedorModel fornecedor = fornecedorRepository.findByUsuarioId(usuarioId)
+                .orElseThrow( () -> new RuntimeException("Fornecedor não encontrado"));
+
         proposta.setCotacao(cotacao);
         proposta.setStatus(StatusProposta.CRIADA);
         proposta.setDataInicio(dto.dataInicio());
+        proposta.setFornecedorModel(fornecedor);
+
 
         for (ProdutoPropostaModel pc : proposta.getProdutos()){
 

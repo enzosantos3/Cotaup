@@ -13,6 +13,5 @@ public record PropostaDTO(
         LocalDate dataFim,
         StatusProposta status,
         Long cotacaoId,
-        Long fornecedorId,
         List<ProdutoPropostaDTO> produtos
 ) {}
