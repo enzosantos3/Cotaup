@@ -1,5 +1,6 @@
 package com.victorMarchiDev.mvp.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.victorMarchiDev.mvp.enums.StatusProposta;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,9 +25,11 @@ public class PropostaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate dataCriacao;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate dataInicio;
 
-    private LocalDate dataResposta;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate dataFim;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -40,11 +43,12 @@ public class PropostaModel {
     @JoinColumn(name = "fornecedor_id")
     private FornecedorModel fornecedorModel;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comprador_id")
-    private CompradorModel compradorModel;
 
-    @OneToMany(mappedBy = "proposta")
-    private List<ProdutoCotacaoModel> itensProposta;
+    @OneToMany(
+            mappedBy = "proposta",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ProdutoPropostaModel> produtos;
 
 }

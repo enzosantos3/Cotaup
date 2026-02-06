@@ -4,6 +4,7 @@ import com.victorMarchiDev.mvp.dto.PropostaDTO;
 import com.victorMarchiDev.mvp.mapper.PropostaMapper;
 import com.victorMarchiDev.mvp.model.PropostaModel;
 import com.victorMarchiDev.mvp.service.PropostaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +23,14 @@ public class PropostaController {
         this.mapper = mapper;
     }
 
-    @PostMapping("/criar/{id}/")
-    public ResponseEntity<PropostaDTO> registrarPropostas(
+    @PostMapping("/criar/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public PropostaDTO registrarPropostas(
             @PathVariable("id") Long id,
-            @RequestBody PropostaModel propostaModel
+            @RequestBody PropostaDTO propostaDTO
     ) {
-        PropostaModel proposta = propostaService.criarProposta(id, propostaModel);
-        return ResponseEntity.ok().body(mapper.toDTO(proposta));
+        PropostaDTO proposta = propostaService.criarProposta(id, propostaDTO);
+        return proposta;
     }
 
     @GetMapping("/listar")

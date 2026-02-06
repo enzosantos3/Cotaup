@@ -9,20 +9,20 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "tb_produtos_cotacao")
+@Table(name = "tb_produtos_proposta")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class ProdutoCotacaoModel {
+public class ProdutoPropostaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cotacao_id", nullable = false)
-    private CotacaoModel cotacao;
+    @JoinColumn(name = "proposta_id", nullable = false)
+    private PropostaModel proposta;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "produto_id", nullable = false)

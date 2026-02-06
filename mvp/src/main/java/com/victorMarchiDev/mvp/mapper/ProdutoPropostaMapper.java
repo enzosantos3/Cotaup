@@ -1,23 +1,24 @@
 package com.victorMarchiDev.mvp.mapper;
 
 import com.victorMarchiDev.mvp.dto.ProdutoCotacaoDTO;
+import com.victorMarchiDev.mvp.dto.ProdutoPropostaDTO;
 import com.victorMarchiDev.mvp.model.ProdutoCotacaoModel;
 import com.victorMarchiDev.mvp.model.ProdutoModel;
+import com.victorMarchiDev.mvp.model.ProdutoPropostaModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface ProdutoCotacaoMapper {
+public interface ProdutoPropostaMapper {
 
-    @Mapping(target = "cotacaoId", source = "cotacao.id")
     @Mapping(target = "produtoId", source = "produto.id")
     @Mapping(target = "nomeProduto", source = "produto.nome")
-    ProdutoCotacaoDTO toDto(ProdutoCotacaoModel model);
+    ProdutoPropostaDTO toDto(ProdutoPropostaModel model);
 
-    @Mapping(target = "cotacao", ignore = true)
+    @Mapping(target = "proposta", ignore = true)
     @Mapping(target = "produto", source = "produtoId")
     @Mapping(target = "valorTotal", ignore = true)
-    ProdutoCotacaoModel toEntity(ProdutoCotacaoDTO dto);
+    ProdutoPropostaModel toEntity(ProdutoPropostaDTO dto);
 
     default ProdutoModel map(Long id) {
         if (id == null) return null;

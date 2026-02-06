@@ -13,7 +13,6 @@ public record ProdutoCotacaoDTO(
          Long cotacaoId,
          Long produtoId,
          String nomeProduto,
-         Long propostaId,
          Integer quantidade,
          BigDecimal valorUnitario,
          BigDecimal valorTotal
