@@ -99,5 +99,12 @@ public class PropostaService {
         propostaRepository.finalizarPropostasExpiradas();
     }
 
+    public List<PropostaDTO> listarPropostasPorCotacao(Long id){
+        return propostaRepository.findByCotacaoId(id)
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
+    }
+
 
 }

@@ -44,4 +44,8 @@ public class PropostaController {
         return propostaService.listarPropostaPorId(id);
     }
 
+    @GetMapping("/listar/cotacao/{idCotacao}")
+    public List<PropostaDTO> listarPropostasPorCotacao(@PathVariable Long idCotacao){
+        return propostaService.listarPropostasPorCotacao(idCotacao);
+    }
 }
